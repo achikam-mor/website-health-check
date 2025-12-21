@@ -40,7 +40,7 @@ const pagesToTest = [
   'https://www.stockscanner.net/market-overview.html',
   'https://www.stockscanner.net/hot-stocks.html',
   'https://www.stockscanner.net/watch-list.html',
-  'https://www.stockscanner.net/faorites.html' // Note: Ensure this URL is correct (typo check: 'favorites'?)
+  'https://www.stockscanner.net/favorites.html' // Note: Ensure this URL is correct (typo check: 'favorites'?)
 ];
 
 test.describe('StockScanner Health Check', () => {
