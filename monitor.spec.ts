@@ -103,15 +103,15 @@ test.describe('StockScanner Health Check', () => {
     // Increased timeout to 20 mins to account for all pages with slow scrolling
     test.setTimeout(1200000);
 
+    // Select a single random user agent for this entire execution
+    const userAgent = getRandomUserAgent();
+    await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
+    console.log(`\n🌐 User-Agent for this execution: ${userAgent}\n`);
+
     for (let i = 0; i < pagesToTest.length; i++) {
       const url = pagesToTest[i];
       
       await test.step(`[${i + 1}] Visit and scroll: ${url}`, async () => {
-        // Set a random user agent for this page
-        const userAgent = getRandomUserAgent();
-        await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
-        console.log(`Using User-Agent: ${userAgent}`);
-        
         console.log(`Navigating to ${url}...`);
 
         try {
