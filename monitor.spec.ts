@@ -37,6 +37,33 @@ function getRandomUserAgent(): string {
   return userAgents[Math.floor(Math.random() * userAgents.length)];
 }
 
+// List of geolocations (USA, Canada, Western Europe)
+const geolocations = [
+  // USA
+  { latitude: 40.7128, longitude: -74.0060, name: 'New York, USA' },
+  { latitude: 34.0522, longitude: -118.2437, name: 'Los Angeles, USA' },
+  { latitude: 41.8781, longitude: -87.6298, name: 'Chicago, USA' },
+  { latitude: 37.7749, longitude: -122.4194, name: 'San Francisco, USA' },
+  { latitude: 47.6062, longitude: -122.3321, name: 'Seattle, USA' },
+  // Canada
+  { latitude: 43.6532, longitude: -79.3832, name: 'Toronto, Canada' },
+  { latitude: 45.5017, longitude: -73.5673, name: 'Montreal, Canada' },
+  { latitude: 49.2827, longitude: -123.1207, name: 'Vancouver, Canada' },
+  { latitude: 51.0447, longitude: -114.0719, name: 'Calgary, Canada' },
+  // Western Europe
+  { latitude: 51.5074, longitude: -0.1278, name: 'London, UK' },
+  { latitude: 48.8566, longitude: 2.3522, name: 'Paris, France' },
+  { latitude: 52.5200, longitude: 13.4050, name: 'Berlin, Germany' },
+  { latitude: 52.3676, longitude: 4.9041, name: 'Amsterdam, Netherlands' },
+  { latitude: 50.8503, longitude: 4.3517, name: 'Brussels, Belgium' },
+  { latitude: 41.3851, longitude: 2.1734, name: 'Barcelona, Spain' },
+];
+
+// Get a random geolocation
+function getRandomGeolocation(): { latitude: number; longitude: number; name: string } {
+  return geolocations[Math.floor(Math.random() * geolocations.length)];
+}
+
 // Function to simulate human-like scrolling
 async function humanScroll(page: Page) {
   // 1. Scroll Down
@@ -90,7 +117,7 @@ interface PageFailure {
 }
 
 test.describe('StockScanner Health Check', () => {
-  test('Visit and scroll all pages', async ({ page }) => {
+  test('Visit and scroll all pages', async ({ page, context }) => {
     // Build final page list: homepage first, shuffled inner pages, homepage last
     const pagesToTest = [
       'https://www.stockscanner.net',
@@ -106,7 +133,14 @@ test.describe('StockScanner Health Check', () => {
     // Select a single random user agent for this entire execution
     const userAgent = getRandomUserAgent();
     await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
-    console.log(`\n🌐 User-Agent for this execution: ${userAgent}\n`);
+
+    // Set random geolocation for this execution
+    const geo = getRandomGeolocation();
+    await context.grantPermissions(['geolocation']);
+    await context.setGeolocation({ latitude: geo.latitude, longitude: geo.longitude });
+
+    console.log(`\n🌐 User-Agent: ${userAgent}`);
+    console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})\n`);
 
     for (let i = 0; i < pagesToTest.length; i++) {
       const url = pagesToTest[i];
