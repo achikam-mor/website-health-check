@@ -84,53 +84,55 @@ const innerPages = [
   'https://www.stockscanner.net/export.html'
 ];
 
-// Build final page list: homepage first, shuffled inner pages, homepage last
-const pagesToTest = [
-  'https://www.stockscanner.net',
-  ...shuffleArray(innerPages),
-  'https://www.stockscanner.net'
-];
-
 interface PageFailure {
   url: string;
   error: string;
 }
 
 test.describe('StockScanner Health Check', () => {
-  const failures: PageFailure[] = [];
+  test('Visit and scroll all pages', async ({ page }) => {
+    // Build final page list: homepage first, shuffled inner pages, homepage last
+    const pagesToTest = [
+      'https://www.stockscanner.net',
+      ...shuffleArray(innerPages),
+      'https://www.stockscanner.net'
+    ];
 
-  for (let i = 0; i < pagesToTest.length; i++) {
-    const url = pagesToTest[i];
-    test(`[${i + 1}] Visit and scroll: ${url}`, async ({ page }) => {
-      // Set a random user agent for this test
-      const userAgent = getRandomUserAgent();
-      await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
-      console.log(`Using User-Agent: ${userAgent}`);
+    const failures: PageFailure[] = [];
+    
+    // Increased timeout to 20 mins to account for all pages with slow scrolling
+    test.setTimeout(1200000);
+
+    for (let i = 0; i < pagesToTest.length; i++) {
+      const url = pagesToTest[i];
       
-      console.log(`Navigating to ${url}...`);
-      
-      // Increased timeout to 2 mins per test to account for slow scrolling
-      test.setTimeout(120000); 
-
-      try {
-        await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await test.step(`[${i + 1}] Visit and scroll: ${url}`, async () => {
+        // Set a random user agent for this page
+        const userAgent = getRandomUserAgent();
+        await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
+        console.log(`Using User-Agent: ${userAgent}`);
         
-        // Verify basic element exists to confirm page load
-        await expect(page.locator('body')).toBeVisible();
+        console.log(`Navigating to ${url}...`);
 
-        // Perform the scrolling
-        await humanScroll(page);
-        
-        console.log(`✅ Successfully checked: ${url}`);
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        console.error(`❌ Failed to check: ${url} - ${errorMessage}`);
-        failures.push({ url, error: errorMessage });
-      }
-    });
-  }
+        try {
+          await page.goto(url, { waitUntil: 'domcontentloaded' });
+          
+          // Verify basic element exists to confirm page load
+          await expect(page.locator('body')).toBeVisible();
 
-  test.afterAll(() => {
+          // Perform the scrolling
+          await humanScroll(page);
+          
+          console.log(`✅ Successfully checked: ${url}`);
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          console.error(`❌ Failed to check: ${url} - ${errorMessage}`);
+          failures.push({ url, error: errorMessage });
+        }
+      });
+    }
+
+    // Final report
     if (failures.length > 0) {
       console.error('\n========== HEALTH CHECK FAILED ==========');
       console.error(`${failures.length} page(s) failed:\n`);
