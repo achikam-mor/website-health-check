@@ -99,8 +99,9 @@ interface PageFailure {
 test.describe('StockScanner Health Check', () => {
   const failures: PageFailure[] = [];
 
-  for (const url of pagesToTest) {
-    test(`Visit and scroll: ${url}`, async ({ page }) => {
+  for (let i = 0; i < pagesToTest.length; i++) {
+    const url = pagesToTest[i];
+    test(`[${i + 1}] Visit and scroll: ${url}`, async ({ page }) => {
       // Set a random user agent for this test
       const userAgent = getRandomUserAgent();
       await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
