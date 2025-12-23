@@ -40,6 +40,33 @@ function getRandomUserAgent(): string {
   return userAgents[Math.floor(Math.random() * userAgents.length)];
 }
 
+// Get a unique user agent based on index (ensures each location gets different UA)
+function getUniqueUserAgent(index: number): string {
+  return userAgents[index % userAgents.length];
+}
+
+// Common screen resolutions
+const screenResolutions = [
+  { width: 1920, height: 1080 },
+  { width: 1366, height: 768 },
+  { width: 1536, height: 864 },
+  { width: 1440, height: 900 },
+  { width: 1280, height: 720 },
+  { width: 2560, height: 1440 },
+  { width: 1600, height: 900 },
+  { width: 1680, height: 1050 },
+  { width: 1280, height: 1024 },
+  { width: 1024, height: 768 },
+  { width: 1920, height: 1200 },
+  { width: 2048, height: 1152 },
+  { width: 3840, height: 2160 },
+];
+
+// Get unique viewport based on index
+function getUniqueViewport(index: number) {
+  return screenResolutions[index % screenResolutions.length];
+}
+
 // List of geolocations (USA, Canada, Western Europe)
 const geolocations = [
   // USA
@@ -247,13 +274,15 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       
       try {
         // Launch browser with proxy configuration
-        const userAgent = getRandomUserAgent();
+        const userAgent = getUniqueUserAgent(index); // Unique UA per location
         const geo = getRandomGeolocation();
+        const viewport = getUniqueViewport(index); // Unique screen size per location
         
         const browserSetup = await launchBrowserWithProxy({
           proxy: config.proxy,
           userAgent,
-          geolocation: geo
+          geolocation: geo,
+          viewport // Add viewport to config
         });
         
         browser = browserSetup.browser;
@@ -261,6 +290,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         const page = await context.newPage();
         
         console.log(`🌐 User-Agent: ${userAgent}`);
+        console.log(`📱 Viewport: ${viewport.width}x${viewport.height}`);
         console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
         if (config.proxy) {
           console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);

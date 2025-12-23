@@ -14,6 +14,10 @@ export interface BrowserConfig {
     longitude: number;
     name: string;
   };
+  viewport?: {
+    width: number;
+    height: number;
+  };
 }
 
 /**
@@ -39,6 +43,10 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
   
   if (config.userAgent) {
     contextOptions.userAgent = config.userAgent;
+  }
+  
+  if (config.viewport) {
+    contextOptions.viewport = config.viewport;
   }
   
   if (config.geolocation) {
