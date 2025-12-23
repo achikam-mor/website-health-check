@@ -45,6 +45,11 @@ function getUniqueUserAgent(index: number): string {
   return userAgents[index % userAgents.length];
 }
 
+// Get a unique geolocation based on index (ensures each location gets different geo)
+function getUniqueGeolocation(index: number): { latitude: number; longitude: number; name: string } {
+  return geolocations[index % geolocations.length];
+}
+
 // Common screen resolutions
 const screenResolutions = [
   { width: 1920, height: 1080 },
@@ -281,7 +286,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       try {
         // Launch browser with proxy configuration
         const userAgent = getUniqueUserAgent(index); // Unique UA per location
-        const geo = getRandomGeolocation();
+        const geo = getUniqueGeolocation(index); // Unique geo per location
         const viewport = getUniqueViewport(index); // Unique screen size per location
         
         const browserSetup = await launchBrowserWithProxy({
