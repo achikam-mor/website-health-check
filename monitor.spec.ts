@@ -72,6 +72,92 @@ function getLanguageHeader(geoName: string): string {
   return 'en-US,en;q=0.9';
 }
 
+// Get language header based on country (for proxy locations)
+function getLanguageForCountry(country: string): string {
+  if (country.includes('United States') || country.includes('USA')) {
+    return 'en-US,en;q=0.9';
+  } else if (country.includes('Canada')) {
+    return 'en-CA,en;q=0.9,fr-CA;q=0.8';
+  } else if (country.includes('United Kingdom') || country.includes('UK')) {
+    return 'en-GB,en;q=0.9';
+  } else if (country.includes('France')) {
+    return 'fr-FR,fr;q=0.9,en;q=0.8';
+  } else if (country.includes('Germany')) {
+    return 'de-DE,de;q=0.9,en;q=0.8';
+  } else if (country.includes('Netherlands')) {
+    return 'nl-NL,nl;q=0.9,en;q=0.8';
+  } else if (country.includes('Spain')) {
+    return 'es-ES,es;q=0.9,en;q=0.8';
+  } else if (country.includes('Belgium')) {
+    return 'fr-BE,nl-BE;q=0.9,en;q=0.8';
+  } else if (country.includes('Italy')) {
+    return 'it-IT,it;q=0.9,en;q=0.8';
+  } else if (country.includes('Poland')) {
+    return 'pl-PL,pl;q=0.9,en;q=0.8';
+  } else if (country.includes('Russia')) {
+    return 'ru-RU,ru;q=0.9,en;q=0.8';
+  } else if (country.includes('Japan')) {
+    return 'ja-JP,ja;q=0.9,en;q=0.8';
+  } else if (country.includes('China')) {
+    return 'zh-CN,zh;q=0.9,en;q=0.8';
+  } else if (country.includes('India')) {
+    return 'en-IN,en;q=0.9,hi;q=0.8';
+  } else if (country.includes('Brazil')) {
+    return 'pt-BR,pt;q=0.9,en;q=0.8';
+  } else if (country.includes('Australia')) {
+    return 'en-AU,en;q=0.9';
+  }
+  return 'en-US,en;q=0.9';
+}
+
+// Get approximate coordinates for a city (used when GeoIP provides city)
+function getCoordinatesForCity(city: string, country: string): { latitude: number; longitude: number } {
+  const cityKey = `${city}, ${country}`.toLowerCase();
+  
+  // Major cities coordinates
+  const cityCoords: { [key: string]: { latitude: number; longitude: number } } = {
+    'amsterdam, netherlands': { latitude: 52.3676, longitude: 4.9041 },
+    'london, united kingdom': { latitude: 51.5074, longitude: -0.1278 },
+    'paris, france': { latitude: 48.8566, longitude: 2.3522 },
+    'berlin, germany': { latitude: 52.5200, longitude: 13.4050 },
+    'madrid, spain': { latitude: 40.4168, longitude: -3.7038 },
+    'rome, italy': { latitude: 41.9028, longitude: 12.4964 },
+    'new york, united states': { latitude: 40.7128, longitude: -74.0060 },
+    'los angeles, united states': { latitude: 34.0522, longitude: -118.2437 },
+    'chicago, united states': { latitude: 41.8781, longitude: -87.6298 },
+    'toronto, canada': { latitude: 43.6532, longitude: -79.3832 },
+    'sydney, australia': { latitude: -33.8688, longitude: 151.2093 },
+    'tokyo, japan': { latitude: 35.6762, longitude: 139.6503 },
+  };
+  
+  // Try exact match
+  if (cityCoords[cityKey]) {
+    return cityCoords[cityKey];
+  }
+  
+  // Default coordinates by country
+  const countryDefaults: { [key: string]: { latitude: number; longitude: number } } = {
+    'netherlands': { latitude: 52.3676, longitude: 4.9041 },
+    'united kingdom': { latitude: 51.5074, longitude: -0.1278 },
+    'france': { latitude: 48.8566, longitude: 2.3522 },
+    'germany': { latitude: 52.5200, longitude: 13.4050 },
+    'spain': { latitude: 40.4168, longitude: -3.7038 },
+    'italy': { latitude: 41.9028, longitude: 12.4964 },
+    'united states': { latitude: 37.0902, longitude: -95.7129 },
+    'canada': { latitude: 45.5017, longitude: -73.5673 },
+  };
+  
+  const countryLower = country.toLowerCase();
+  for (const [key, coords] of Object.entries(countryDefaults)) {
+    if (countryLower.includes(key)) {
+      return coords;
+    }
+  }
+  
+  // Fallback to center of Europe
+  return { latitude: 50.0, longitude: 10.0 };
+}
+
 // Common screen resolutions
 const screenResolutions = [
   { width: 1920, height: 1080 },
@@ -308,15 +394,31 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       try {
         // Launch browser with proxy configuration
         const userAgent = getUniqueUserAgent(index); // Unique UA per location
-        const geo = getUniqueGeolocation(index); // Unique geo per location
         const viewport = getUniqueViewport(index); // Unique screen size per location
+        
+        // CRITICAL: Match geolocation to proxy's actual location for consistency
+        let geo, language;
+        if (config.proxy && config.proxy.realCity && config.proxy.realCountry) {
+          // Use proxy's real location
+          const coords = getCoordinatesForCity(config.proxy.realCity, config.proxy.realCountry);
+          geo = {
+            latitude: coords.latitude,
+            longitude: coords.longitude,
+            name: `${config.proxy.realCity}, ${config.proxy.realCountry}`
+          };
+          language = getLanguageForCountry(config.proxy.realCountry);
+        } else {
+          // No proxy or location unknown - use random geo
+          geo = getUniqueGeolocation(index);
+          language = getLanguageHeader(geo.name);
+        }
         
         const browserSetup = await launchBrowserWithProxy({
           proxy: config.proxy,
           userAgent,
           geolocation: geo,
-          viewport, // Add viewport to config
-          language: getLanguageHeader(geo.name),
+          viewport,
+          language: language,
           timezone: config.proxy?.timezone
         });
         
