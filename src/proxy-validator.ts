@@ -10,6 +10,32 @@ export interface ValidatedProxy extends ProxyInfo {
   validated: boolean;
   responseTime?: number;
   error?: string;
+  realCountry?: string;
+  realCity?: string;
+  timezone?: string;
+}
+
+/**
+ * Get real location data for a proxy IP using free GeoIP API
+ */
+async function getProxyLocation(ip: string): Promise<{ country?: string; city?: string; timezone?: string }> {
+  try {
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city,timezone`, {
+      signal: AbortSignal.timeout(3000)
+    });
+    if (!response.ok) return {};
+    const data = await response.json();
+    if (data.status === 'success') {
+      return {
+        country: data.country,
+        city: data.city,
+        timezone: data.timezone
+      };
+    }
+  } catch (error) {
+    // Ignore errors, location data is optional
+  }
+  return {};
 }
 
 /**
@@ -51,10 +77,16 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
     
     await browser.close();
     
+    // Get real location data for the proxy
+    const location = await getProxyLocation(proxy.host);
+    
     return {
       ...proxy,
       validated: true,
-      responseTime
+      responseTime,
+      realCountry: location.country,
+      realCity: location.city,
+      timezone: location.timezone
     };
     
   } catch (error) {

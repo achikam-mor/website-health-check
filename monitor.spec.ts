@@ -50,6 +50,28 @@ function getUniqueGeolocation(index: number): { latitude: number; longitude: num
   return geolocations[index % geolocations.length];
 }
 
+// Get language header based on geolocation
+function getLanguageHeader(geoName: string): string {
+  if (geoName.includes('USA') || geoName.includes('Seattle') || geoName.includes('New York') || geoName.includes('Chicago')) {
+    return 'en-US,en;q=0.9';
+  } else if (geoName.includes('Canada')) {
+    return 'en-CA,en;q=0.9,fr-CA;q=0.8';
+  } else if (geoName.includes('UK') || geoName.includes('London')) {
+    return 'en-GB,en;q=0.9';
+  } else if (geoName.includes('France') || geoName.includes('Paris')) {
+    return 'fr-FR,fr;q=0.9,en;q=0.8';
+  } else if (geoName.includes('Germany') || geoName.includes('Berlin')) {
+    return 'de-DE,de;q=0.9,en;q=0.8';
+  } else if (geoName.includes('Netherlands') || geoName.includes('Amsterdam')) {
+    return 'nl-NL,nl;q=0.9,en;q=0.8';
+  } else if (geoName.includes('Spain') || geoName.includes('Barcelona')) {
+    return 'es-ES,es;q=0.9,en;q=0.8';
+  } else if (geoName.includes('Belgium') || geoName.includes('Brussels')) {
+    return 'fr-BE,nl-BE;q=0.9,en;q=0.8';
+  }
+  return 'en-US,en;q=0.9';
+}
+
 // Common screen resolutions
 const screenResolutions = [
   { width: 1920, height: 1080 },
@@ -293,7 +315,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           proxy: config.proxy,
           userAgent,
           geolocation: geo,
-          viewport // Add viewport to config
+          viewport, // Add viewport to config
+          language: getLanguageHeader(geo.name),
+          timezone: config.proxy?.timezone
         });
         
         browser = browserSetup.browser;
@@ -303,8 +327,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         console.log(`🌐 User-Agent: ${userAgent}`);
         console.log(`📱 Viewport: ${viewport.width}x${viewport.height}`);
         console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
+        console.log(`🗣️  Language: ${getLanguageHeader(geo.name)}`);
         if (config.proxy) {
+          const location = config.proxy.realCity && config.proxy.realCountry 
+            ? `${config.proxy.realCity}, ${config.proxy.realCountry}` 
+            : config.proxy.country;
           console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
+          console.log(`🌍 Proxy Location: ${location}${config.proxy.timezone ? ' (' + config.proxy.timezone + ')' : ''}`);
           console.log(`ℹ️  Note: Using HTTP protocol with proxy (free proxies don't support HTTPS tunneling)`);
         }
         console.log('');
@@ -323,6 +352,12 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           const url = pagesToTest[pageIndex];
           
           console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
+          
+          // Random delay between pages (1-4 seconds) to simulate human behavior
+          if (pageIndex > 0) {
+            const delay = Math.floor(Math.random() * 3000) + 1000;
+            await page.waitForTimeout(delay);
+          }
           
           try {
             await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });

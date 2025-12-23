@@ -18,6 +18,8 @@ export interface BrowserConfig {
     width: number;
     height: number;
   };
+  language?: string;
+  timezone?: string;
 }
 
 /**
@@ -55,6 +57,17 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
       longitude: config.geolocation.longitude
     };
     contextOptions.permissions = ['geolocation'];
+  }
+  
+  if (config.language) {
+    contextOptions.locale = config.language.split(',')[0];
+    contextOptions.extraHTTPHeaders = {
+      'Accept-Language': config.language
+    };
+  }
+  
+  if (config.timezone) {
+    contextOptions.timezoneId = config.timezone;
   }
   
   const context = await browser.newContext(contextOptions);
