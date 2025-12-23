@@ -37,9 +37,9 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
     // Set a timeout for the navigation
     page.setDefaultTimeout(timeout);
     
-    // Test with HTTPS site to ensure proxy supports SSL tunneling
-    // Using httpbin.org/get which is reliable and proxy-friendly
-    await page.goto('https://httpbin.org/get', { waitUntil: 'domcontentloaded' });
+    // Test with HTTP site (proxies handle HTTP better than HTTPS tunneling)
+    // Using httpbin.org which is reliable and proxy-friendly
+    await page.goto('http://httpbin.org/get', { waitUntil: 'domcontentloaded' });
     
     // Verify the page loaded
     const content = await page.content();

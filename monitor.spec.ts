@@ -67,6 +67,11 @@ function getRandomGeolocation(): { latitude: number; longitude: number; name: st
   return geolocations[Math.floor(Math.random() * geolocations.length)];
 }
 
+// Convert HTTPS URL to HTTP (for proxy compatibility)
+function toHttpUrl(url: string): string {
+  return url.replace('https://', 'http://');
+}
+
 // Function to simulate human-like scrolling
 async function humanScroll(page: Page) {
   // 1. Scroll Down
@@ -103,6 +108,7 @@ async function humanScroll(page: Page) {
 }
 
 // Base pages (excluding homepage)
+// Note: These will be converted to HTTP when using proxies
 const innerPages = [
   'https://www.stockscanner.net/market-overview.html',
   'https://www.stockscanner.net/hot-stocks.html',
@@ -251,14 +257,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
           if (config.proxy) {
             console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
+            console.log(`ℹ️  Note: Using HTTP protocol with proxy (free proxies don't support HTTPS tunneling)`);
           }
           console.log('');
           
           // Build final page list: homepage first, shuffled inner pages, homepage last
+          // Use HTTP URLs when using proxy for compatibility
+          const useHttp = !!config.proxy;
           const pagesToTest = [
-            'https://www.stockscanner.net',
-            ...shuffleArray(innerPages),
-            'https://www.stockscanner.net'
+            useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net',
+            ...shuffleArray(innerPages.map(url => useHttp ? toHttpUrl(url) : url)),
+            useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net'
           ];
           
           // Visit each page
