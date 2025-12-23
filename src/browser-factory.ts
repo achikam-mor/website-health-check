@@ -79,6 +79,18 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
     contextOptions.extraHTTPHeaders['Referer'] = config.referrer;
   }
   
+  // Add realistic headers that vary per user
+  contextOptions.extraHTTPHeaders = contextOptions.extraHTTPHeaders || {};
+  
+  // Randomly set Do Not Track (50% of users have it)
+  if (Math.random() < 0.5) {
+    contextOptions.extraHTTPHeaders['DNT'] = '1';
+  }
+  
+  // Vary connection preferences
+  const connectionPrefs = ['keep-alive', 'close'];
+  contextOptions.extraHTTPHeaders['Connection'] = connectionPrefs[Math.floor(Math.random() * connectionPrefs.length)];
+  
   if (config.timezone) {
     contextOptions.timezoneId = config.timezone;
   }
@@ -94,23 +106,6 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
       Object.defineProperty(navigator, 'deviceMemory', { get: () => hw.deviceMemory });
       Object.defineProperty(navigator, 'platform', { get: () => hw.platform });
     }, config.hardware);
-  }
-  
-  // Override hardware fingerprints if provided
-  if (config.hardware) {
-    await context.addInitScript((hw) => {
-      Object.defineProperty(window.screen, 'colorDepth', { get: () => hw.colorDepth });
-      Object.defineProperty(window.screen, 'pixelDepth', { get: () => hw.colorDepth });
-      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => hw.cpuCores });
-      Object.defineProperty(navigator, 'deviceMemory', { get: () => hw.deviceMemory });
-      Object.defineProperty(navigator, 'platform', { get: () => hw.platform });
-    }, config.hardware);
-  }
-  
-  // Set referrer if provided (for first page load)
-  if (config.referrer) {
-    contextOptions.extraHTTPHeaders = contextOptions.extraHTTPHeaders || {};
-    contextOptions.extraHTTPHeaders['Referer'] = config.referrer;
   }
   
   return { browser, context };

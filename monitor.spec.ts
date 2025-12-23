@@ -465,12 +465,12 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations with randomized behavior (0-20s start spread)...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations with randomized behavior (0-60s start spread)...\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
-      // Random stagger (0-20 seconds) between each browser start
-      const randomDelay = Math.floor(Math.random() * 20000); // 0-20 seconds
+      // Random stagger (0-60 seconds) between each browser start for better GA separation
+      const randomDelay = Math.floor(Math.random() * 60000); // 0-60 seconds
       if (index > 0) {
         await new Promise(resolve => setTimeout(resolve, randomDelay));
       }
@@ -526,8 +526,14 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         
         console.log(`🌐 User-Agent: ${userAgent}`);
         console.log(`📱 Viewport: ${viewport.width}x${viewport.height}`);
+        console.log(`�️  Hardware: ${hardware.cpuCores} cores, ${hardware.deviceMemory}GB RAM, ${hardware.colorDepth}-bit color, ${hardware.platform}`);
         console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
-        console.log(`🗣️  Language: ${getLanguageHeader(geo.name)}`);
+        console.log(`🗣️  Language: ${language}`);
+        if (referrer) {
+          console.log(`🔗 Referrer: ${referrer}`);
+        } else {
+          console.log(`🔗 Referrer: Direct traffic`);
+        }
         if (config.proxy) {
           const location = config.proxy.realCity && config.proxy.realCountry 
             ? `${config.proxy.realCity}, ${config.proxy.realCountry}` 
