@@ -20,11 +20,21 @@ export interface ProxyInfo {
  * 
  * Format: { host: 'IP', port: PORT, protocol: 'http', country: 'COUNTRY', source: 'Manual' }
  * 
- * Last updated: 2025-12-23
+ * Last updated: 2025-12-23 (27 working proxies discovered)
  */
 const HARDCODED_PROXIES: ProxyInfo[] = [
-  { host: '185.176.24.226', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1118ms - Verified working
-  { host: '104.27.4.65', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1154ms - Verified working
+  { host: '23.227.60.224', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 574ms
+  { host: '104.16.0.167', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 648ms
+  { host: '185.146.173.210', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 670ms
+  { host: '104.25.121.229', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 728ms
+  { host: '104.17.52.129', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 819ms
+  { host: '198.41.218.95', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 826ms
+  { host: '172.67.80.120', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 848ms
+  { host: '104.27.202.46', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 853ms
+  { host: '154.194.12.191', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 855ms
+  { host: '185.162.230.248', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 914ms
+  { host: '185.176.24.226', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1194ms - Previously verified
+  { host: '104.27.4.65', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1195ms - Previously verified
 ];
 
 /**
