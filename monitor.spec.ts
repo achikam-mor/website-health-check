@@ -96,6 +96,12 @@ function getLanguageForCountry(country: string): string {
     return 'pl-PL,pl;q=0.9,en;q=0.8';
   } else if (country.includes('Russia')) {
     return 'ru-RU,ru;q=0.9,en;q=0.8';
+  } else if (country.includes('Cyprus')) {
+    return 'el-CY,el;q=0.9,en;q=0.8';
+  } else if (country.includes('Costa Rica')) {
+    return 'es-CR,es;q=0.9,en;q=0.8';
+  } else if (country.includes('Singapore')) {
+    return 'en-SG,en;q=0.9,zh;q=0.8';
   } else if (country.includes('Japan')) {
     return 'ja-JP,ja;q=0.9,en;q=0.8';
   } else if (country.includes('China')) {
@@ -128,6 +134,12 @@ function getCoordinatesForCity(city: string, country: string): { latitude: numbe
     'toronto, canada': { latitude: 43.6532, longitude: -79.3832 },
     'sydney, australia': { latitude: -33.8688, longitude: 151.2093 },
     'tokyo, japan': { latitude: 35.6762, longitude: 139.6503 },
+    'moscow, russia': { latitude: 55.7558, longitude: 37.6173 },
+    'novosibirsk, russia': { latitude: 55.0084, longitude: 82.9357 },
+    'kaliningrad, russia': { latitude: 54.7104, longitude: 20.4522 },
+    'nicosia, cyprus': { latitude: 35.1856, longitude: 33.3823 },
+    'pozos, costa rica': { latitude: 9.9281, longitude: -84.0907 },
+    'singapore, singapore': { latitude: 1.3521, longitude: 103.8198 },
   };
   
   // Try exact match
@@ -145,6 +157,10 @@ function getCoordinatesForCity(city: string, country: string): { latitude: numbe
     'italy': { latitude: 41.9028, longitude: 12.4964 },
     'united states': { latitude: 37.0902, longitude: -95.7129 },
     'canada': { latitude: 45.5017, longitude: -73.5673 },
+    'russia': { latitude: 55.7558, longitude: 37.6173 },
+    'cyprus': { latitude: 35.1856, longitude: 33.3823 },
+    'costa rica': { latitude: 9.9281, longitude: -84.0907 },
+    'singapore': { latitude: 1.3521, longitude: 103.8198 },
   };
   
   const countryLower = country.toLowerCase();
@@ -360,8 +376,16 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       if (workingProxies.length === 0) {
         console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
       } else {
-        console.log(`\n✅ Found ${workingProxies.length} working proxies:`);
-        for (const proxy of workingProxies) {
+        console.log(`\n✅ Found ${workingProxies.length} working proxies:`);      // Log country distribution
+      const countryDist = new Map<string, number>();
+      for (const proxy of workingProxies) {
+        const country = proxy.realCountry || proxy.country;
+        countryDist.set(country, (countryDist.get(country) || 0) + 1);
+      }
+      console.log('📊 Country distribution:');
+      for (const [country, count] of countryDist) {
+        console.log(`   ${country}: ${count} proxies`);
+      }        for (const proxy of workingProxies) {
           console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
         }
       }
