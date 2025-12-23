@@ -3,8 +3,8 @@
  * Run: npx ts-node scripts/find-working-proxies.ts
  */
 
-import { fetchAllProxies, getRegionalProxies, ProxyInfo } from '../src/proxy-providers';
-import { validateProxies, ValidatedProxy } from '../src/proxy-validator';
+import { fetchAllProxies, getRegionalProxies, ProxyInfo } from '../src/proxy-providers.js';
+import { validateProxies, ValidatedProxy } from '../src/proxy-validator.js';
 
 async function findWorkingProxies() {
   console.log('🔍 Finding working proxies...\n');

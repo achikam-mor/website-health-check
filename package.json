@@ -1,9 +1,10 @@
 {
   "name": "website-health-check",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "test": "playwright test",
-    "find-proxies": "npx ts-node scripts/find-working-proxies.ts"
+    "find-proxies": "node scripts/find-working-proxies.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
