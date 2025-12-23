@@ -185,6 +185,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       // Validate proxies (concurrency: 20, timeout: 10s per proxy)
       const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000);
       
+      // Log ALL working proxies for reference
+      const allWorking = validatedProxies.filter(p => p.validated);
+      if (allWorking.length > 0) {
+        console.log(`\n✅ All ${allWorking.length} working proxies (sorted by speed):`);
+        allWorking.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
+        for (const proxy of allWorking.slice(0, 15)) {
+          console.log(`   { host: '${proxy.host}', port: ${proxy.port}, protocol: '${proxy.protocol}', country: '${proxy.country}', source: 'Manual' }, // ${proxy.responseTime}ms`);
+        }
+        console.log('');
+      }
+      
       // Select diverse working proxies from different regions (target 5-7)
       workingProxies = selectDiverseProxies(validatedProxies, 7);
       

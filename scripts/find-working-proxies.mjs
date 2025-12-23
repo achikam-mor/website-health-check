@@ -88,22 +88,22 @@ async function findWorkingProxies() {
     return;
   }
   
-  // Test first 100 proxies to find enough working ones
-  const proxiesToTest = allProxies.slice(0, 100);
-  console.log(`Testing ${proxiesToTest.length} proxies (concurrency: 15)...\n`);
+  // Test ALL proxies to find working ones
+  const proxiesToTest = allProxies;
+  console.log(`Testing ALL ${proxiesToTest.length} proxies (concurrency: 20, timeout: 15s)...\n`);
   
   const working = [];
   
-  // Validate in batches of 15
-  for (let i = 0; i < proxiesToTest.length; i += 15) {
-    const batch = proxiesToTest.slice(i, i + 15);
-    const results = await Promise.all(batch.map(p => validateProxy(p, 10000)));
+  // Validate in batches of 20 with longer timeout
+  for (let i = 0; i < proxiesToTest.length; i += 20) {
+    const batch = proxiesToTest.slice(i, i + 20);
+    const results = await Promise.all(batch.map(p => validateProxy(p, 15000)));
     const validInBatch = results.filter(p => p.validated);
     working.push(...validInBatch);
-    console.log(`  Batch ${Math.floor(i / 15) + 1}: ${validInBatch.length}/${batch.length} valid (Total: ${working.length} working)`);
+    console.log(`  Batch ${Math.floor(i / 20) + 1}/${Math.ceil(proxiesToTest.length / 20)}: ${validInBatch.length}/${batch.length} valid (Total: ${working.length} working)`);
     
     // Stop if we found enough working proxies
-    if (working.length >= 10) {
+    if (working.length >= 15) {
       console.log(`\n✅ Found ${working.length} working proxies! Stopping validation.\n`);
       break;
     }
