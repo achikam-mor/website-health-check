@@ -153,22 +153,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         const validatedHardcoded = await validateProxies(hardcodedProxies, 10, 10000);
         const workingHardcoded = validatedHardcoded.filter(p => p.validated);
         
-        if (workingHardcoded.length >= 7) {
-          // We have enough working proxies - use them directly
+        if (workingHardcoded.length > 0) {
+          // Use ALL working hardcoded proxies
           console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
-          workingProxies = selectDiverseProxies(workingHardcoded, 7);
+          workingProxies = workingHardcoded.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
           
-          console.log(`\n✅ Using ${workingProxies.length} validated hardcoded proxies:`);
+          console.log(`\n✅ Using ALL ${workingProxies.length} validated hardcoded proxies:`);
           for (const proxy of workingProxies) {
             console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
           }
           console.log('==================================================\n');
-          return; // Skip API fetching - we have enough proxies
-        } else if (workingHardcoded.length > 0) {
-          // Some working but not enough - supplement with API proxies
-          console.log(`⚠️  Only ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies working. Need ${7 - workingHardcoded.length} more from API...\n`);
-          workingProxies = workingHardcoded; // Start with what we have
-          // Continue to API fetching below to supplement
+          return; // Skip API fetching - use all hardcoded proxies
         } else {
           console.log('⚠️  All hardcoded proxies failed. Falling back to API proxy sources...\n');
         }
