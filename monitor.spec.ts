@@ -133,6 +133,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   
   // Fetch and validate proxies before all tests
   test.beforeAll(async () => {
+    // Increase timeout for proxy fetching and validation
+    test.setTimeout(300000); // 5 minutes for beforeAll
+    
     console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
     try {
@@ -144,15 +147,16 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         return;
       }
       
-      // Filter to get regional diversity
-      const regionalProxies = getRegionalProxies(allProxies, 5); // 5 proxies per priority region
-      console.log(`📍 Selected ${regionalProxies.length} regional proxies for validation`);
+      // Filter to get regional diversity (reduced to 15 for faster validation)
+      const regionalProxies = getRegionalProxies(allProxies, 3); // 3 proxies per priority region
+      const proxiesToValidate = regionalProxies.slice(0, 15); // Max 15 proxies
+      console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
-      // Validate proxies (concurrency: 5, timeout: 15s)
-      const validatedProxies = await validateProxies(regionalProxies, 5, 15000);
+      // Validate proxies (concurrency: 10, timeout: 8s per proxy for faster validation)
+      const validatedProxies = await validateProxies(proxiesToValidate, 10, 8000);
       
-      // Select diverse working proxies from different regions
-      workingProxies = selectDiverseProxies(validatedProxies, 5);
+      // Select diverse working proxies from different regions (max 3-5)
+      workingProxies = selectDiverseProxies(validatedProxies, 3);
       
       if (workingProxies.length === 0) {
         console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
