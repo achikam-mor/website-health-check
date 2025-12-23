@@ -19,12 +19,12 @@ export interface ProxyInfo {
  * and add them here.
  * 
  * Format: { host: 'IP', port: PORT, protocol: 'http', country: 'COUNTRY', source: 'Manual' }
+ * 
+ * Last updated: 2025-12-23
  */
 const HARDCODED_PROXIES: ProxyInfo[] = [
-  // Example (replace with actual working proxies):
-  // { host: '123.45.67.89', port: 8080, protocol: 'http', country: 'US', source: 'Manual' },
-  // { host: '98.76.54.32', port: 3128, protocol: 'http', country: 'GB', source: 'Manual' },
-  // { host: '111.22.33.44', port: 80, protocol: 'http', country: 'DE', source: 'Manual' },
+  { host: '185.176.24.226', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1118ms - Verified working
+  { host: '104.27.4.65', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1154ms - Verified working
 ];
 
 /**
