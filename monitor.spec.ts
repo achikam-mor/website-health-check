@@ -161,8 +161,36 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           for (const proxy of workingProxies) {
             console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
           }
+          
+          // ALSO fetch and log API proxies for future reference (don't skip this!)
+          console.log('\n📋 Fetching additional proxies from API for reference...');
+          try {
+            const allProxies = await fetchAllProxies();
+            if (allProxies.length > 0) {
+              const regionalProxies = getRegionalProxies(allProxies, 5);
+              const proxiesToValidate = regionalProxies.slice(0, 60);
+              console.log(`📍 Validating ${proxiesToValidate.length} API proxies...`);
+              
+              const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000);
+              const allWorking = validatedProxies.filter(p => p.validated);
+              
+              if (allWorking.length > 0) {
+                console.log(`\n✅ Found ${allWorking.length} additional working proxies from API (for future use):`);
+                console.log('📋 Copy these to add more proxies to HARDCODED_PROXIES:\n');
+                allWorking.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
+                for (const proxy of allWorking.slice(0, 15)) {
+                  console.log(`   { host: '${proxy.host}', port: ${proxy.port}, protocol: '${proxy.protocol}', country: '${proxy.country}', source: 'Manual' }, // ${proxy.responseTime}ms`);
+                }
+              } else {
+                console.log('⚠️  No additional working proxies found from API');
+              }
+            }
+          } catch (error) {
+            console.log('⚠️  Could not fetch API proxies:', error);
+          }
+          
           console.log('==================================================\n');
-          return; // Skip API fetching
+          return; // Continue with hardcoded proxies
         } else {
           console.log('⚠️  All hardcoded proxies failed. Falling back to API proxy sources...\n');
         }
