@@ -37,13 +37,13 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
     // Set a timeout for the navigation
     page.setDefaultTimeout(timeout);
     
-    // Test with a simple, fast-loading page that's less likely to block proxies
-    // Using example.com which is designed for testing and doesn't block proxies
-    await page.goto('http://example.com', { waitUntil: 'domcontentloaded' });
+    // Test with HTTPS site to ensure proxy supports SSL tunneling
+    // Using httpbin.org/get which is reliable and proxy-friendly
+    await page.goto('https://httpbin.org/get', { waitUntil: 'domcontentloaded' });
     
     // Verify the page loaded
-    const title = await page.title();
-    if (!title) {
+    const content = await page.content();
+    if (!content || content.length < 100) {
       throw new Error('Page did not load properly');
     }
     
