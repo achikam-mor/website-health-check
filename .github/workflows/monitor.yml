@@ -9,8 +9,7 @@ on:
   workflow_dispatch: # Allows manual trigger
 
 jobs:
-  # Original job - runs on GitHub (USA)
-  simulate-traffic-github:
+  simulate-traffic:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -34,30 +33,9 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-github
+          name: playwright-report
           path: playwright-report/
           retention-days: 5
-
-  # New job - runs on Fly.io (Frankfurt, Germany)
-  simulate-traffic-fly:
-    runs-on: [self-hosted, fra]
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-
-      - name: Run Traffic Simulation
-        run: npx playwright test
 
       - name: Upload Report on Failure
         if: failure()
