@@ -20,6 +20,13 @@ export interface BrowserConfig {
   };
   language?: string;
   timezone?: string;
+  hardware?: {
+    colorDepth: number;
+    cpuCores: number;
+    deviceMemory: number;
+    platform: string;
+  };
+  referrer?: string;
 }
 
 /**
@@ -66,11 +73,45 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
     };
   }
   
+  // Set referrer if provided (for first page load)
+  if (config.referrer) {
+    contextOptions.extraHTTPHeaders = contextOptions.extraHTTPHeaders || {};
+    contextOptions.extraHTTPHeaders['Referer'] = config.referrer;
+  }
+  
   if (config.timezone) {
     contextOptions.timezoneId = config.timezone;
   }
   
   const context = await browser.newContext(contextOptions);
+  
+  // Override hardware fingerprints if provided (makes each browser unique for GA)
+  if (config.hardware) {
+    await context.addInitScript((hw) => {
+      Object.defineProperty(window.screen, 'colorDepth', { get: () => hw.colorDepth });
+      Object.defineProperty(window.screen, 'pixelDepth', { get: () => hw.colorDepth });
+      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => hw.cpuCores });
+      Object.defineProperty(navigator, 'deviceMemory', { get: () => hw.deviceMemory });
+      Object.defineProperty(navigator, 'platform', { get: () => hw.platform });
+    }, config.hardware);
+  }
+  
+  // Override hardware fingerprints if provided
+  if (config.hardware) {
+    await context.addInitScript((hw) => {
+      Object.defineProperty(window.screen, 'colorDepth', { get: () => hw.colorDepth });
+      Object.defineProperty(window.screen, 'pixelDepth', { get: () => hw.colorDepth });
+      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => hw.cpuCores });
+      Object.defineProperty(navigator, 'deviceMemory', { get: () => hw.deviceMemory });
+      Object.defineProperty(navigator, 'platform', { get: () => hw.platform });
+    }, config.hardware);
+  }
+  
+  // Set referrer if provided (for first page load)
+  if (config.referrer) {
+    contextOptions.extraHTTPHeaders = contextOptions.extraHTTPHeaders || {};
+    contextOptions.extraHTTPHeaders['Referer'] = config.referrer;
+  }
   
   return { browser, context };
 }

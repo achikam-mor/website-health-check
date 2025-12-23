@@ -13,6 +13,27 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
+// Referrer sources for traffic variation (GA tracks this)
+const referrerSources = [
+  '', // Direct traffic (40%)
+  'https://www.google.com/search?q=stock+scanner', // Google search
+  'https://www.google.com/search?q=stock+market+tools',
+  'https://www.bing.com/search?q=stock+analysis',
+  'https://www.reddit.com/r/stocks/', // Social media
+  'https://twitter.com/',
+  'https://finance.yahoo.com/', // Finance sites
+  'https://www.investopedia.com/',
+];
+
+// Get random referrer (weighted towards direct traffic)
+function getRandomReferrer(): string {
+  const random = Math.random();
+  if (random < 0.4) {
+    return ''; // 40% direct traffic
+  }
+  return referrerSources[Math.floor(Math.random() * referrerSources.length)];
+}
+
 // List of realistic user agents to rotate through
 const userAgents = [
   // Chrome on Windows
@@ -196,6 +217,29 @@ function getUniqueViewport(index: number) {
   return screenResolutions[index % screenResolutions.length];
 }
 
+// Get hardware fingerprint based on user agent
+function getHardwareFingerprint(userAgent: string) {
+  const isWindows = userAgent.includes('Windows');
+  const isMac = userAgent.includes('Macintosh');
+  const isLinux = userAgent.includes('Linux');
+  
+  // Color depth varies by device (24 or 32 bit)
+  const colorDepth = Math.random() > 0.5 ? 24 : 32;
+  
+  // CPU cores vary (2, 4, 6, 8, 12, 16)
+  const cpuCores = [2, 4, 6, 8, 12, 16][Math.floor(Math.random() * 6)];
+  
+  // Device memory in GB (2, 4, 8, 16, 32)
+  const deviceMemory = [2, 4, 8, 16, 32][Math.floor(Math.random() * 5)];
+  
+  // Platform string
+  let platform = 'Win32';
+  if (isMac) platform = 'MacIntel';
+  else if (isLinux) platform = 'Linux x86_64';
+  
+  return { colorDepth, cpuCores, deviceMemory, platform };
+}
+
 // List of geolocations (USA, Canada, Western Europe)
 const geolocations = [
   // USA
@@ -228,38 +272,47 @@ function toHttpUrl(url: string): string {
   return url.replace('https://', 'http://');
 }
 
-// Function to simulate human-like scrolling
+// Function to simulate human-like scrolling with complete randomization
 async function humanScroll(page: Page) {
+  const scrollHeight = await page.evaluate(() => document.body.scrollHeight);
+  
+  // Randomize scroll behavior: some users scroll all the way, some don't
+  const scrollPercentage = Math.random() * 0.5 + 0.4; // 40-90% of page
+  const targetScroll = scrollHeight * scrollPercentage;
+  
+  // Random scroll speed (some users scroll faster than others)
+  const scrollSpeed = Math.random() * 0.5 + 0.5; // 0.5x to 1.0x speed multiplier
+  
   // 1. Scroll Down
   let currentScroll = 0;
-  let scrollHeight = await page.evaluate(() => document.body.scrollHeight);
-
-  while (currentScroll < scrollHeight) {
-    // Scroll a random small amount (between 300px and 500px)
-    const step = Math.floor(Math.random() * 200) + 300;
+  while (currentScroll < targetScroll) {
+    // Variable step size (100-400px)
+    const step = Math.floor(Math.random() * 300) + 100;
     currentScroll += step;
-    
+    if (currentScroll > targetScroll) currentScroll = targetScroll;
+
     await page.evaluate((y) => window.scrollTo(0, y), currentScroll);
     
-    // Recalculate height in case lazy-loading expanded the page
-    scrollHeight = await page.evaluate(() => document.body.scrollHeight);
-    
-    // Wait for a "reading" pause (between 200ms and 1100ms)
-    const pause = Math.floor(Math.random() * 800) + 300;
+    // Variable pause while "reading" (200ms to 2000ms, affected by scroll speed)
+    const pause = Math.floor((Math.random() * 1800 + 200) / scrollSpeed);
     await page.waitForTimeout(pause);
   }
 
-  // 2. Short pause at the bottom
-  await page.waitForTimeout(1000);
+  // 2. Random pause at reading position (1-4 seconds)
+  await page.waitForTimeout(Math.floor(Math.random() * 3000) + 1000);
 
-  // 3. Scroll Back Up
-  while (currentScroll > 0) {
-    const step = Math.floor(Math.random() * 200) + 300;
-    currentScroll -= step;
-    if (currentScroll < 0) currentScroll = 0;
+  // 3. Some users scroll back up (70% chance), others just leave
+  if (Math.random() < 0.7) {
+    const scrollUpTarget = Math.random() * currentScroll; // Scroll to random position, not always top
+    while (currentScroll > scrollUpTarget) {
+      const step = Math.floor(Math.random() * 300) + 200;
+      currentScroll -= step;
+      if (currentScroll < scrollUpTarget) currentScroll = scrollUpTarget;
 
-    await page.evaluate((y) => window.scrollTo(0, y), currentScroll);
-    await page.waitForTimeout(313); // Faster scrolling up
+      await page.evaluate((y) => window.scrollTo(0, y), currentScroll);
+      const pause = Math.floor(Math.random() * 400 + 100);
+      await page.waitForTimeout(pause);
+    }
   }
 }
 
@@ -412,10 +465,16 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (simultaneous)...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations with randomized behavior (0-20s start spread)...\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
+      // Random stagger (0-20 seconds) between each browser start
+      const randomDelay = Math.floor(Math.random() * 20000); // 0-20 seconds
+      if (index > 0) {
+        await new Promise(resolve => setTimeout(resolve, randomDelay));
+      }
+      
       const locationName = config.location;
       
       console.log(`\n${'='.repeat(60)}`);
@@ -430,6 +489,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Launch browser with proxy configuration
         const userAgent = getUniqueUserAgent(index); // Unique UA per location
         const viewport = getUniqueViewport(index); // Unique screen size per location
+        const hardware = getHardwareFingerprint(userAgent); // Hardware specs
+        const referrer = getRandomReferrer(); // Traffic source
         
         // CRITICAL: Match geolocation to proxy's actual location for consistency
         let geo, language;
@@ -454,7 +515,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           geolocation: geo,
           viewport,
           language: language,
-          timezone: config.proxy?.timezone
+          timezone: config.proxy?.timezone,
+          hardware,
+          referrer
         });
         
         browser = browserSetup.browser;
@@ -475,14 +538,34 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         }
         console.log('');
         
-        // Build final page list: homepage first, shuffled inner pages, homepage last
-        // Use HTTP URLs when using proxy for compatibility
+        // Randomize behavior: each user visits different number of pages (5-10) in random order
         const useHttp = !!config.proxy;
-        const pagesToTest = [
-          useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net',
-          ...shuffleArray(innerPages.map(url => useHttp ? toHttpUrl(url) : url)),
-          useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net'
-        ];
+        const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
+        
+        // Shuffle pages and select random subset
+        const shuffledPages = shuffleArray([...innerPages]);
+        const selectedPages = shuffledPages.slice(0, numPagesToVisit - 2); // -2 for homepage visits
+        
+        // Randomly decide homepage visit pattern
+        const homepagePattern = Math.floor(Math.random() * 3);
+        const homepage = useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net';
+        const mappedPages = selectedPages.map(url => useHttp ? toHttpUrl(url) : url);
+        
+        let pagesToTest: string[];
+        if (homepagePattern === 0) {
+          // Start with homepage, end with homepage
+          pagesToTest = [homepage, ...mappedPages, homepage];
+        } else if (homepagePattern === 1) {
+          // Start with homepage only
+          pagesToTest = [homepage, ...mappedPages];
+        } else {
+          // Homepage in random position
+          const randomPos = Math.floor(Math.random() * (mappedPages.length + 1));
+          pagesToTest = [...mappedPages.slice(0, randomPos), homepage, ...mappedPages.slice(randomPos)];
+        }
+        
+        // Random initial delay (1-5 seconds) - simulates human hesitation before starting
+        await page.waitForTimeout(Math.floor(Math.random() * 4000) + 1000);
         
         // Visit each page
         for (let pageIndex = 0; pageIndex < pagesToTest.length; pageIndex++) {
@@ -490,9 +573,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           
           console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
           
-          // Random delay between pages (1-4 seconds) to simulate human behavior
+          // Random delay between pages (3-12 seconds) - varies by user behavior
           if (pageIndex > 0) {
-            const delay = Math.floor(Math.random() * 3000) + 1000;
+            const delay = Math.floor(Math.random() * 9000) + 3000; // 3-12 seconds
             await page.waitForTimeout(delay);
           }
           
@@ -504,6 +587,27 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             
             // Perform the scrolling
             await humanScroll(page);
+            
+            // Random human behaviors (20% chance)
+            const randomBehavior = Math.random();
+            if (randomBehavior < 0.1 && pageIndex > 0) {
+              // 10% chance: Go back then forward (user reconsidering)
+              console.log(`      ↩️  Going back...`);
+              await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 });
+              await page.waitForTimeout(Math.floor(Math.random() * 2000) + 1000);
+              await page.goForward({ waitUntil: 'domcontentloaded', timeout: 10000 });
+              await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
+            } else if (randomBehavior < 0.15) {
+              // 5% chance: Reload page (checking for updates)
+              console.log(`      🔄 Reloading...`);
+              await page.reload({ waitUntil: 'domcontentloaded', timeout: 10000 });
+              await page.waitForTimeout(Math.floor(Math.random() * 2000) + 1000);
+            } else if (randomBehavior < 0.20) {
+              // 5% chance: Extra long pause (user distracted/multitasking)
+              const longPause = Math.floor(Math.random() * 8000) + 5000; // 5-13 seconds
+              console.log(`      ⏸️  Long pause (${Math.round(longPause/1000)}s)...`);
+              await page.waitForTimeout(longPause);
+            }
             
             console.log(`      ✅ Success`);
           } catch (error) {
