@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { fetchAllProxies, getRegionalProxies } from './src/proxy-providers';
+import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
 import { launchBrowserWithProxy, getLocationName } from './src/browser-factory';
 
@@ -139,7 +139,31 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
     try {
-      // Fetch proxies from all sources
+      // First, try hardcoded proxies if available
+      const hardcodedProxies = getHardcodedProxies();
+      
+      if (hardcodedProxies.length > 0) {
+        console.log('🔍 Validating hardcoded proxies...');
+        const validatedHardcoded = await validateProxies(hardcodedProxies, 10, 10000);
+        const workingHardcoded = validatedHardcoded.filter(p => p.validated);
+        
+        if (workingHardcoded.length > 0) {
+          console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
+          workingProxies = selectDiverseProxies(workingHardcoded, 3);
+          
+          console.log(`\n✅ Using ${workingProxies.length} validated hardcoded proxies:`);
+          for (const proxy of workingProxies) {
+            console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
+          }
+          console.log('==================================================\n');
+          return; // Skip API fetching
+        } else {
+          console.log('⚠️  All hardcoded proxies failed. Falling back to API proxy sources...\n');
+        }
+      }
+      
+      // Fallback: Fetch proxies from APIs
+      console.log('🔍 Fetching proxies from API sources...');
       const allProxies = await fetchAllProxies();
       
       if (allProxies.length === 0) {
@@ -147,13 +171,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         return;
       }
       
-      // Filter to get regional diversity (reduced to 15 for faster validation)
+      // Filter to get regional diversity (test more proxies to find working ones)
       const regionalProxies = getRegionalProxies(allProxies, 3); // 3 proxies per priority region
-      const proxiesToValidate = regionalProxies.slice(0, 15); // Max 15 proxies
+      const proxiesToValidate = regionalProxies.slice(0, 40); // Max 40 proxies
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
-      // Validate proxies (concurrency: 10, timeout: 8s per proxy for faster validation)
-      const validatedProxies = await validateProxies(proxiesToValidate, 10, 8000);
+      // Validate proxies (concurrency: 15, timeout: 10s per proxy)
+      const validatedProxies = await validateProxies(proxiesToValidate, 15, 10000);
       
       // Select diverse working proxies from different regions (max 3-5)
       workingProxies = selectDiverseProxies(validatedProxies, 3);

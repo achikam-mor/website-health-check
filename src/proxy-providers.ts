@@ -13,6 +13,31 @@ export interface ProxyInfo {
 }
 
 /**
+ * HARDCODED WORKING PROXIES
+ * Update this list with proxies you've verified to be working.
+ * To find working proxies, run the test once, check the logs for validated proxies,
+ * and add them here.
+ * 
+ * Format: { host: 'IP', port: PORT, protocol: 'http', country: 'COUNTRY', source: 'Manual' }
+ */
+const HARDCODED_PROXIES: ProxyInfo[] = [
+  // Example (replace with actual working proxies):
+  // { host: '123.45.67.89', port: 8080, protocol: 'http', country: 'US', source: 'Manual' },
+  // { host: '98.76.54.32', port: 3128, protocol: 'http', country: 'GB', source: 'Manual' },
+  // { host: '111.22.33.44', port: 80, protocol: 'http', country: 'DE', source: 'Manual' },
+];
+
+/**
+ * Get hardcoded proxies if available
+ */
+export function getHardcodedProxies(): ProxyInfo[] {
+  if (HARDCODED_PROXIES.length > 0) {
+    console.log(`📌 Using ${HARDCODED_PROXIES.length} hardcoded proxies`);
+  }
+  return [...HARDCODED_PROXIES];
+}
+
+/**
  * Fetch proxies from ProxyScrape API
  * https://api.proxyscrape.com/v2/
  */
