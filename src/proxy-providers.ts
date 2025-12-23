@@ -20,40 +20,22 @@ async function fetchProxyScrapeProxies(): Promise<ProxyInfo[]> {
   const proxies: ProxyInfo[] = [];
   
   try {
-    // Fetch HTTP proxies
-    const httpUrl = 'https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all&format=json';
+    // Fetch HTTP proxies in text format (more reliable than JSON)
+    const httpUrl = 'https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all';
     const httpResponse = await fetch(httpUrl);
     
     if (httpResponse.ok) {
-      const httpData = await httpResponse.json();
-      if (Array.isArray(httpData.proxies)) {
-        for (const proxy of httpData.proxies) {
+      const text = await httpResponse.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
           proxies.push({
-            host: proxy.ip || proxy.host,
-            port: parseInt(proxy.port),
-            protocol: proxy.protocol === 'https' ? 'https' : 'http',
-            country: proxy.country || 'Unknown',
-            anonymity: proxy.anonymity,
-            source: 'ProxyScrape'
-          });
-        }
-      }
-    }
-    
-    // Fetch SOCKS5 proxies
-    const socksUrl = 'https://api.proxyscrape.com/v2/?request=get&protocol=socks5&timeout=10000&country=all&format=json';
-    const socksResponse = await fetch(socksUrl);
-    
-    if (socksResponse.ok) {
-      const socksData = await socksResponse.json();
-      if (Array.isArray(socksData.proxies)) {
-        for (const proxy of socksData.proxies) {
-          proxies.push({
-            host: proxy.ip || proxy.host,
-            port: parseInt(proxy.port),
-            protocol: 'socks5',
-            country: proxy.country || 'Unknown',
-            anonymity: proxy.anonymity,
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
             source: 'ProxyScrape'
           });
         }
@@ -82,27 +64,41 @@ async function fetchPubProxyProxies(): Promise<ProxyInfo[]> {
       try {
         const response = await fetch(url);
         if (response.ok) {
-          const data = await response.json();
+          const text = await response.text();
           
-          if (data.data && Array.isArray(data.data)) {
-            for (const proxy of data.data) {
-              const [host, portStr] = proxy.ipPort.split(':');
-              proxies.push({
-                host,
-                port: parseInt(portStr),
-                protocol: proxy.type === 'socks5' ? 'socks5' : 'http',
-                country: proxy.country,
-                anonymity: proxy.support?.includes('anonymous') ? 'anonymous' : 'transparent',
-                source: 'PubProxy'
-              });
+          // Check if response is "No proxy" or other error message
+          if (text === 'No proxy' || text.startsWith('No proxy')) {
+            // Skip this country, no proxies available
+            continue;
+          }
+          
+          try {
+            const data = JSON.parse(text);
+            
+            if (data.data && Array.isArray(data.data)) {
+              for (const proxy of data.data) {
+                const [host, portStr] = proxy.ipPort.split(':');
+                proxies.push({
+                  host,
+                  port: parseInt(portStr),
+                  protocol: proxy.type === 'socks5' ? 'socks5' : 'http',
+                  country: proxy.country,
+                  anonymity: (Array.isArray(proxy.support) && proxy.support.includes('anonymous')) ? 'anonymous' : 'transparent',
+                  source: 'PubProxy'
+                });
+              }
             }
+          } catch (parseError) {
+            // JSON parse error, skip this country
+            continue;
           }
         }
         
         // Small delay to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 500));
       } catch (err) {
-        console.error(`Error fetching PubProxy for ${country}:`, err);
+        // Network error, skip this country
+        continue;
       }
     }
   } catch (error) {
@@ -229,14 +225,25 @@ export function filterProxiesByRegion(proxies: ProxyInfo[], regions: string[]): 
 /**
  * Get diverse proxy set from different regions
  * Priority regions: US, CA, GB, DE, FR, NL, ES
+ * If not enough regional proxies, include any available proxies
  */
 export function getRegionalProxies(proxies: ProxyInfo[], maxPerRegion: number = 3): ProxyInfo[] {
   const priorityRegions = ['US', 'CA', 'GB', 'DE', 'FR', 'NL', 'ES'];
   const regionalProxies: ProxyInfo[] = [];
   
+  // First pass: Get proxies from priority regions
   for (const region of priorityRegions) {
     const regionProxies = proxies.filter(p => p.country.toUpperCase() === region);
     regionalProxies.push(...regionProxies.slice(0, maxPerRegion));
+  }
+  
+  // Second pass: If we don't have enough, add any other proxies
+  const targetCount = 30; // Target at least 30 proxies for validation
+  if (regionalProxies.length < targetCount) {
+    const remainingProxies = proxies.filter(p => 
+      !regionalProxies.find(rp => rp.host === p.host && rp.port === p.port)
+    );
+    regionalProxies.push(...remainingProxies.slice(0, targetCount - regionalProxies.length));
   }
   
   return regionalProxies;
