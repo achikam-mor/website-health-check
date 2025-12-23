@@ -258,10 +258,16 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (staggered for GA tracking)...\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
+      // Stagger start times by 3 seconds per location for GA to track separately
+      const startDelay = index * 3000;
+      if (startDelay > 0) {
+        await new Promise(resolve => setTimeout(resolve, startDelay));
+      }
+      
       const locationName = config.location;
       
       console.log(`\n${'='.repeat(60)}`);
