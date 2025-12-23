@@ -40,7 +40,7 @@ jobs:
 
   # New job - runs on Fly.io (Frankfurt, Germany)
   simulate-traffic-fly:
-    runs-on: [self-hosted, fly-fra]
+    runs-on: [self-hosted, fra]
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
