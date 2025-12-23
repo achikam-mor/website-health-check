@@ -173,7 +173,7 @@ export function getProxiesByRegion(proxies: ValidatedProxy[]): Map<string, Valid
 }
 
 /**
- * Select diverse working proxies from different regions
+ * Select diverse working proxies from different CITIES (not just countries)
  */
 export function selectDiverseProxies(
   validatedProxies: ValidatedProxy[],
@@ -185,23 +185,41 @@ export function selectDiverseProxies(
     return [];
   }
   
-  const byRegion = getProxiesByRegion(workingProxies);
-  const selected: ValidatedProxy[] = [];
-  
-  // Priority regions
-  const priorityRegions = ['US', 'CA', 'GB', 'DE', 'FR', 'NL', 'ES', 'IT'];
-  
-  // First pass: Get one proxy from each priority region
-  for (const region of priorityRegions) {
-    if (selected.length >= targetCount) break;
-    
-    const regionProxies = byRegion.get(region);
-    if (regionProxies && regionProxies.length > 0) {
-      selected.push(regionProxies[0]);
+  // Group by city (or country if city unknown)
+  const byCity = new Map<string, ValidatedProxy[]>();
+  for (const proxy of workingProxies) {
+    const key = proxy.realCity ? `${proxy.realCity}, ${proxy.realCountry}` : proxy.country;
+    if (!byCity.has(key)) {
+      byCity.set(key, []);
     }
+    byCity.get(key)!.push(proxy);
   }
   
-  // Second pass: Fill remaining slots with fastest proxies from any region
+  // Sort each city's proxies by response time
+  for (const [city, cityProxies] of byCity) {
+    byCity.set(city, cityProxies.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0)));
+  }
+  
+  const selected: ValidatedProxy[] = [];
+  
+  // Strategy: Take 1-2 fastest from each unique city until we reach target
+  const cities = Array.from(byCity.keys());
+  let round = 0;
+  const maxPerCity = 2; // Max 2 proxies per city
+  
+  while (selected.length < targetCount && round < maxPerCity) {
+    for (const city of cities) {
+      if (selected.length >= targetCount) break;
+      
+      const cityProxies = byCity.get(city)!;
+      if (cityProxies.length > round) {
+        selected.push(cityProxies[round]);
+      }
+    }
+    round++;
+  }
+  
+  // If still need more, add fastest remaining
   if (selected.length < targetCount) {
     const fastest = getFastestProxies(workingProxies, targetCount * 2);
     for (const proxy of fastest) {

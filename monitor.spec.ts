@@ -294,16 +294,33 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         const workingHardcoded = validatedHardcoded.filter(p => p.validated);
         
         if (workingHardcoded.length > 0) {
-          // Use ALL working hardcoded proxies
           console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
-          workingProxies = workingHardcoded.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
           
-          console.log(`\n✅ Using ALL ${workingProxies.length} validated hardcoded proxies:`);
-          for (const proxy of workingProxies) {
-            console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
+          // Check city diversity - if too many from same city, supplement with API
+          const cityCount = new Map<string, number>();
+          for (const proxy of workingHardcoded) {
+            const city = proxy.realCity || 'Unknown';
+            cityCount.set(city, (cityCount.get(city) || 0) + 1);
           }
-          console.log('==================================================\n');
-          return; // Skip API fetching - use all hardcoded proxies
+          
+          const maxFromSameCity = Math.max(...cityCount.values());
+          console.log(`📊 Diversity check: Max ${maxFromSameCity} proxies from same city`);
+          
+          if (maxFromSameCity <= 3 && workingHardcoded.length >= 10) {
+            // Good diversity - use hardcoded proxies
+            workingProxies = workingHardcoded.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
+            console.log(`\n✅ Using ALL ${workingProxies.length} validated hardcoded proxies (good diversity):`);
+            for (const proxy of workingProxies) {
+              const location = proxy.realCity ? `${proxy.realCity}, ${proxy.realCountry}` : proxy.country;
+              console.log(`   • ${location}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
+            }
+            console.log('==================================================\n');
+            return;
+          } else {
+            // Poor diversity - fetch API proxies to supplement
+            console.log(`⚠️  Too many proxies from same city. Fetching diverse API proxies...\n`);
+            // Continue to API fetching below
+          }
         } else {
           console.log('⚠️  All hardcoded proxies failed. Falling back to API proxy sources...\n');
         }
@@ -371,16 +388,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (staggered for GA tracking)...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (simultaneous)...\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
-      // Stagger start times by 3 seconds per location for GA to track separately
-      const startDelay = index * 3000;
-      if (startDelay > 0) {
-        await new Promise(resolve => setTimeout(resolve, startDelay));
-      }
-      
       const locationName = config.location;
       
       console.log(`\n${'='.repeat(60)}`);
