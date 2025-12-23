@@ -1,4 +1,4 @@
-name: Bi-Hourly Website Traffic & Health
+name: Multi-Location Website Traffic & Health
 
 on:
   schedule:
@@ -11,7 +11,7 @@ on:
 jobs:
   simulate-traffic:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 45  # Increased timeout for multi-location testing
     steps:
       - uses: actions/checkout@v4
 
@@ -26,8 +26,12 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run Traffic Simulation
+      - name: Run Multi-Location Traffic Simulation
         run: npx playwright test
+        env:
+          # Prevent potential proxy connection issues
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
+        continue-on-error: false
         
       - name: Upload Report on Failure
         if: failure()

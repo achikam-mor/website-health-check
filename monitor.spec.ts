@@ -1,4 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
+import { fetchAllProxies, getRegionalProxies } from './src/proxy-providers';
+import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
+import { launchBrowserWithProxy, getLocationName } from './src/browser-factory';
 
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -114,76 +117,222 @@ const innerPages = [
 interface PageFailure {
   url: string;
   error: string;
+  location?: string;
 }
 
-test.describe('StockScanner Health Check', () => {
-  test('Visit and scroll all pages', async ({ page, context }) => {
-    // Build final page list: homepage first, shuffled inner pages, homepage last
-    const pagesToTest = [
-      'https://www.stockscanner.net',
-      ...shuffleArray(innerPages),
-      'https://www.stockscanner.net'
-    ];
+interface LocationTestResult {
+  location: string;
+  proxy?: ValidatedProxy;
+  success: boolean;
+  failures: PageFailure[];
+  timestamp: Date;
+}
 
-    const failures: PageFailure[] = [];
+test.describe('StockScanner Multi-Location Health Check', () => {
+  let workingProxies: ValidatedProxy[] = [];
+  
+  // Fetch and validate proxies before all tests
+  test.beforeAll(async () => {
+    console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
-    // Increased timeout to 20 mins to account for all pages with slow scrolling
-    test.setTimeout(1200000);
-
-    // Select a single random user agent for this entire execution
-    const userAgent = getRandomUserAgent();
-    await page.setExtraHTTPHeaders({ 'User-Agent': userAgent });
-
-    // Set random geolocation for this execution
-    const geo = getRandomGeolocation();
-    await context.grantPermissions(['geolocation']);
-    await context.setGeolocation({ latitude: geo.latitude, longitude: geo.longitude });
-
-    console.log(`\n🌐 User-Agent: ${userAgent}`);
-    console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})\n`);
-
-    for (let i = 0; i < pagesToTest.length; i++) {
-      const url = pagesToTest[i];
+    try {
+      // Fetch proxies from all sources
+      const allProxies = await fetchAllProxies();
       
-      await test.step(`[${i + 1}] Visit and scroll: ${url}`, async () => {
-        console.log(`Navigating to ${url}...`);
-
+      if (allProxies.length === 0) {
+        console.log('⚠️  No proxies fetched. Will run tests without proxy (default location only).');
+        return;
+      }
+      
+      // Filter to get regional diversity
+      const regionalProxies = getRegionalProxies(allProxies, 5); // 5 proxies per priority region
+      console.log(`📍 Selected ${regionalProxies.length} regional proxies for validation`);
+      
+      // Validate proxies (concurrency: 5, timeout: 15s)
+      const validatedProxies = await validateProxies(regionalProxies, 5, 15000);
+      
+      // Select diverse working proxies from different regions
+      workingProxies = selectDiverseProxies(validatedProxies, 5);
+      
+      if (workingProxies.length === 0) {
+        console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
+      } else {
+        console.log(`\n✅ Found ${workingProxies.length} working proxies:`);
+        for (const proxy of workingProxies) {
+          console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error during proxy setup:', error);
+      console.log('⚠️  Will run tests without proxy (default location only).');
+    }
+    
+    console.log('==================================================\n');
+  });
+  
+  test('Visit and scroll all pages from multiple locations', async () => {
+    // Increased timeout to 40 mins to account for multiple proxy runs
+    test.setTimeout(2400000);
+    
+    const allResults: LocationTestResult[] = [];
+    
+    // Test configurations: proxies + one default location
+    const testConfigs = [
+      // Direct connection (no proxy) as baseline
+      { proxy: undefined, location: 'Default (No Proxy)' },
+      // Working proxies
+      ...workingProxies.map(proxy => ({ 
+        proxy, 
+        location: `${proxy.country} - ${proxy.host}` 
+      }))
+    ];
+    
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations...\n`);
+    
+    // Run health check for each location
+    for (let i = 0; i < testConfigs.length; i++) {
+      const config = testConfigs[i];
+      const locationName = config.location;
+      
+      await test.step(`Location ${i + 1}/${testConfigs.length}: ${locationName}`, async () => {
+        console.log(`\n${'='.repeat(60)}`);
+        console.log(`📍 TESTING FROM: ${locationName}`);
+        console.log('='.repeat(60));
+        
+        const failures: PageFailure[] = [];
+        let browser;
+        let context;
+        
         try {
-          await page.goto(url, { waitUntil: 'domcontentloaded' });
+          // Launch browser with proxy configuration
+          const userAgent = getRandomUserAgent();
+          const geo = getRandomGeolocation();
           
-          // Verify basic element exists to confirm page load
-          await expect(page.locator('body')).toBeVisible();
-
-          // Perform the scrolling
-          await humanScroll(page);
+          const browserSetup = await launchBrowserWithProxy({
+            proxy: config.proxy,
+            userAgent,
+            geolocation: geo
+          });
           
-          console.log(`✅ Successfully checked: ${url}`);
+          browser = browserSetup.browser;
+          context = browserSetup.context;
+          const page = await context.newPage();
+          
+          console.log(`🌐 User-Agent: ${userAgent}`);
+          console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
+          if (config.proxy) {
+            console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
+          }
+          console.log('');
+          
+          // Build final page list: homepage first, shuffled inner pages, homepage last
+          const pagesToTest = [
+            'https://www.stockscanner.net',
+            ...shuffleArray(innerPages),
+            'https://www.stockscanner.net'
+          ];
+          
+          // Visit each page
+          for (let pageIndex = 0; pageIndex < pagesToTest.length; pageIndex++) {
+            const url = pagesToTest[pageIndex];
+            
+            console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
+            
+            try {
+              await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+              
+              // Verify basic element exists to confirm page load
+              await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
+              
+              // Perform the scrolling
+              await humanScroll(page);
+              
+              console.log(`      ✅ Success`);
+            } catch (error) {
+              const errorMessage = error instanceof Error ? error.message : String(error);
+              console.error(`      ❌ Failed: ${errorMessage}`);
+              failures.push({ 
+                url, 
+                error: errorMessage,
+                location: locationName 
+              });
+            }
+          }
+          
+          // Close browser
+          await browser.close();
+          
+          // Store result
+          allResults.push({
+            location: locationName,
+            proxy: config.proxy,
+            success: failures.length === 0,
+            failures,
+            timestamp: new Date()
+          });
+          
+          if (failures.length === 0) {
+            console.log(`\n✅ All pages checked successfully from ${locationName}!`);
+          } else {
+            console.log(`\n⚠️  ${failures.length} page(s) failed from ${locationName}`);
+          }
+          
         } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : String(error);
-          console.error(`❌ Failed to check: ${url} - ${errorMessage}`);
-          failures.push({ url, error: errorMessage });
+          console.error(`\n❌ Critical error testing from ${locationName}:`, error);
+          
+          if (browser) {
+            await browser.close().catch(() => {});
+          }
+          
+          allResults.push({
+            location: locationName,
+            proxy: config.proxy,
+            success: false,
+            failures: [{ 
+              url: 'N/A', 
+              error: error instanceof Error ? error.message : String(error),
+              location: locationName
+            }],
+            timestamp: new Date()
+          });
         }
       });
     }
-
-    // Final report
-    if (failures.length > 0) {
-      console.error('\n========== HEALTH CHECK FAILED ==========');
-      console.error(`${failures.length} page(s) failed:\n`);
-      
-      for (const failure of failures) {
-        console.error(`  ❌ ${failure.url}`);
-        console.error(`     Reason: ${failure.error}\n`);
+    
+    // Final comprehensive report
+    console.log('\n\n');
+    console.log('='.repeat(70));
+    console.log('📊 FINAL MULTI-LOCATION HEALTH CHECK REPORT');
+    console.log('='.repeat(70));
+    
+    const successfulLocations = allResults.filter(r => r.success);
+    const failedLocations = allResults.filter(r => !r.success);
+    
+    console.log(`\n✅ Successful: ${successfulLocations.length}/${allResults.length} locations`);
+    for (const result of successfulLocations) {
+      console.log(`   • ${result.location}`);
+    }
+    
+    if (failedLocations.length > 0) {
+      console.log(`\n❌ Failed: ${failedLocations.length}/${allResults.length} locations`);
+      for (const result of failedLocations) {
+        console.log(`\n   • ${result.location}:`);
+        for (const failure of result.failures) {
+          console.log(`     - ${failure.url}: ${failure.error}`);
+        }
       }
-      
-      console.error('==========================================\n');
-      
-      // Throw error to mark the overall action as failed
-      throw new Error(`Health check failed for ${failures.length} page(s): ${failures.map(f => f.url).join(', ')}`);
-    } else {
-      console.log('\n========== HEALTH CHECK PASSED ==========');
-      console.log('All pages checked successfully!');
-      console.log('==========================================\n');
+    }
+    
+    console.log('\n' + '='.repeat(70) + '\n');
+    
+    // Throw error if any location failed
+    if (failedLocations.length > 0) {
+      throw new Error(
+        `Health check failed for ${failedLocations.length}/${allResults.length} locations: ${
+          failedLocations.map(r => r.location).join(', ')
+        }`
+      );
     }
   });
 });
