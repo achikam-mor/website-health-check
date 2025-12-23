@@ -155,7 +155,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         
         if (workingHardcoded.length > 0) {
           console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
-          workingProxies = selectDiverseProxies(workingHardcoded, 3);
+          workingProxies = selectDiverseProxies(workingHardcoded, 7);
           
           console.log(`\n✅ Using ${workingProxies.length} validated hardcoded proxies:`);
           for (const proxy of workingProxies) {
@@ -178,15 +178,15 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
       
       // Filter to get regional diversity (test more proxies to find working ones)
-      const regionalProxies = getRegionalProxies(allProxies, 3); // 3 proxies per priority region
-      const proxiesToValidate = regionalProxies.slice(0, 40); // Max 40 proxies
+      const regionalProxies = getRegionalProxies(allProxies, 5); // 5 proxies per priority region
+      const proxiesToValidate = regionalProxies.slice(0, 60); // Max 60 proxies
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
-      // Validate proxies (concurrency: 15, timeout: 10s per proxy)
-      const validatedProxies = await validateProxies(proxiesToValidate, 15, 10000);
+      // Validate proxies (concurrency: 20, timeout: 10s per proxy)
+      const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000);
       
-      // Select diverse working proxies from different regions (max 3-5)
-      workingProxies = selectDiverseProxies(validatedProxies, 3);
+      // Select diverse working proxies from different regions (target 5-7)
+      workingProxies = selectDiverseProxies(validatedProxies, 7);
       
       if (workingProxies.length === 0) {
         console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
@@ -205,10 +205,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   });
   
   test('Visit and scroll all pages from multiple locations', async () => {
-    // Increased timeout to 40 mins to account for multiple proxy runs
+    // Increased timeout for parallel execution
     test.setTimeout(2400000);
-    
-    const allResults: LocationTestResult[] = [];
     
     // Test configurations: proxies + one default location
     const testConfigs = [
@@ -221,121 +219,122 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations...\n`);
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL...\n`);
     
-    // Run health check for each location
-    for (let i = 0; i < testConfigs.length; i++) {
-      const config = testConfigs[i];
+    // Function to test a single location
+    const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
       const locationName = config.location;
       
-      await test.step(`Location ${i + 1}/${testConfigs.length}: ${locationName}`, async () => {
-        console.log(`\n${'='.repeat(60)}`);
-        console.log(`📍 TESTING FROM: ${locationName}`);
-        console.log('='.repeat(60));
+      console.log(`\n${'='.repeat(60)}`);
+      console.log(`📍 [${index + 1}/${testConfigs.length}] TESTING FROM: ${locationName}`);
+      console.log('='.repeat(60));
+      
+      const failures: PageFailure[] = [];
+      let browser;
+      let context;
+      
+      try {
+        // Launch browser with proxy configuration
+        const userAgent = getRandomUserAgent();
+        const geo = getRandomGeolocation();
         
-        const failures: PageFailure[] = [];
-        let browser;
-        let context;
+        const browserSetup = await launchBrowserWithProxy({
+          proxy: config.proxy,
+          userAgent,
+          geolocation: geo
+        });
         
-        try {
-          // Launch browser with proxy configuration
-          const userAgent = getRandomUserAgent();
-          const geo = getRandomGeolocation();
-          
-          const browserSetup = await launchBrowserWithProxy({
-            proxy: config.proxy,
-            userAgent,
-            geolocation: geo
-          });
-          
-          browser = browserSetup.browser;
-          context = browserSetup.context;
-          const page = await context.newPage();
-          
-          console.log(`🌐 User-Agent: ${userAgent}`);
-          console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
-          if (config.proxy) {
-            console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
-            console.log(`ℹ️  Note: Using HTTP protocol with proxy (free proxies don't support HTTPS tunneling)`);
-          }
-          console.log('');
-          
-          // Build final page list: homepage first, shuffled inner pages, homepage last
-          // Use HTTP URLs when using proxy for compatibility
-          const useHttp = !!config.proxy;
-          const pagesToTest = [
-            useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net',
-            ...shuffleArray(innerPages.map(url => useHttp ? toHttpUrl(url) : url)),
-            useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net'
-          ];
-          
-          // Visit each page
-          for (let pageIndex = 0; pageIndex < pagesToTest.length; pageIndex++) {
-            const url = pagesToTest[pageIndex];
-            
-            console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
-            
-            try {
-              await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-              
-              // Verify basic element exists to confirm page load
-              await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
-              
-              // Perform the scrolling
-              await humanScroll(page);
-              
-              console.log(`      ✅ Success`);
-            } catch (error) {
-              const errorMessage = error instanceof Error ? error.message : String(error);
-              console.error(`      ❌ Failed: ${errorMessage}`);
-              failures.push({ 
-                url, 
-                error: errorMessage,
-                location: locationName 
-              });
-            }
-          }
-          
-          // Close browser
-          await browser.close();
-          
-          // Store result
-          allResults.push({
-            location: locationName,
-            proxy: config.proxy,
-            success: failures.length === 0,
-            failures,
-            timestamp: new Date()
-          });
-          
-          if (failures.length === 0) {
-            console.log(`\n✅ All pages checked successfully from ${locationName}!`);
-          } else {
-            console.log(`\n⚠️  ${failures.length} page(s) failed from ${locationName}`);
-          }
-          
-        } catch (error) {
-          console.error(`\n❌ Critical error testing from ${locationName}:`, error);
-          
-          if (browser) {
-            await browser.close().catch(() => {});
-          }
-          
-          allResults.push({
-            location: locationName,
-            proxy: config.proxy,
-            success: false,
-            failures: [{ 
-              url: 'N/A', 
-              error: error instanceof Error ? error.message : String(error),
-              location: locationName
-            }],
-            timestamp: new Date()
-          });
+        browser = browserSetup.browser;
+        context = browserSetup.context;
+        const page = await context.newPage();
+        
+        console.log(`🌐 User-Agent: ${userAgent}`);
+        console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
+        if (config.proxy) {
+          console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
+          console.log(`ℹ️  Note: Using HTTP protocol with proxy (free proxies don't support HTTPS tunneling)`);
         }
-      });
-    }
+        console.log('');
+        
+        // Build final page list: homepage first, shuffled inner pages, homepage last
+        // Use HTTP URLs when using proxy for compatibility
+        const useHttp = !!config.proxy;
+        const pagesToTest = [
+          useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net',
+          ...shuffleArray(innerPages.map(url => useHttp ? toHttpUrl(url) : url)),
+          useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net'
+        ];
+        
+        // Visit each page
+        for (let pageIndex = 0; pageIndex < pagesToTest.length; pageIndex++) {
+          const url = pagesToTest[pageIndex];
+          
+          console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
+          
+          try {
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            
+            // Verify basic element exists to confirm page load
+            await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
+            
+            // Perform the scrolling
+            await humanScroll(page);
+            
+            console.log(`      ✅ Success`);
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            console.error(`      ❌ Failed: ${errorMessage}`);
+            failures.push({ 
+              url, 
+              error: errorMessage,
+              location: locationName 
+            });
+          }
+        }
+        
+        // Close browser
+        await browser.close();
+        
+        // Log result for this location
+        if (failures.length === 0) {
+          console.log(`\n✅ All pages checked successfully from ${locationName}!`);
+        } else {
+          console.log(`\n⚠️  ${failures.length} page(s) failed from ${locationName}`);
+        }
+        
+        return {
+          location: locationName,
+          proxy: config.proxy,
+          success: failures.length === 0,
+          failures,
+          timestamp: new Date()
+        };
+        
+      } catch (error) {
+        console.error(`\n❌ Critical error testing from ${locationName}:`, error);
+        
+        if (browser) {
+          await browser.close().catch(() => {});
+        }
+        
+        return {
+          location: locationName,
+          proxy: config.proxy,
+          success: false,
+          failures: [{ 
+            url: 'N/A', 
+            error: error instanceof Error ? error.message : String(error),
+            location: locationName
+          }],
+          timestamp: new Date()
+        };
+      }
+    };
+    
+    // Run all location tests in parallel!
+    const allResults = await Promise.all(
+      testConfigs.map((config, index) => testLocation(config, index))
+    );
     
     // Final comprehensive report
     console.log('\n\n');
