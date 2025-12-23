@@ -173,7 +173,7 @@ export function getProxiesByRegion(proxies: ValidatedProxy[]): Map<string, Valid
 }
 
 /**
- * Select diverse working proxies from different CITIES (not just countries)
+ * Select diverse working proxies from different COUNTRIES (max 2 per country)
  */
 export function selectDiverseProxies(
   validatedProxies: ValidatedProxy[],
@@ -185,35 +185,35 @@ export function selectDiverseProxies(
     return [];
   }
   
-  // Group by city (or country if city unknown)
-  const byCity = new Map<string, ValidatedProxy[]>();
+  // Group by country (prioritize country-level diversity)
+  const byCountry = new Map<string, ValidatedProxy[]>();
   for (const proxy of workingProxies) {
-    const key = proxy.realCity ? `${proxy.realCity}, ${proxy.realCountry}` : proxy.country;
-    if (!byCity.has(key)) {
-      byCity.set(key, []);
+    const country = proxy.realCountry || proxy.country;
+    if (!byCountry.has(country)) {
+      byCountry.set(country, []);
     }
-    byCity.get(key)!.push(proxy);
+    byCountry.get(country)!.push(proxy);
   }
   
-  // Sort each city's proxies by response time
-  for (const [city, cityProxies] of byCity) {
-    byCity.set(city, cityProxies.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0)));
+  // Sort each country's proxies by response time
+  for (const [country, countryProxies] of byCountry) {
+    byCountry.set(country, countryProxies.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0)));
   }
   
   const selected: ValidatedProxy[] = [];
+  const maxPerCountry = 2; // Max 2 proxies per country for diversity
   
-  // Strategy: Take 1-2 fastest from each unique city until we reach target
-  const cities = Array.from(byCity.keys());
+  // Round-robin through countries, taking up to 2 from each
+  const countries = Array.from(byCountry.keys());
   let round = 0;
-  const maxPerCity = 2; // Max 2 proxies per city
   
-  while (selected.length < targetCount && round < maxPerCity) {
-    for (const city of cities) {
+  while (selected.length < targetCount && round < maxPerCountry) {
+    for (const country of countries) {
       if (selected.length >= targetCount) break;
       
-      const cityProxies = byCity.get(city)!;
-      if (cityProxies.length > round) {
-        selected.push(cityProxies[round]);
+      const countryProxies = byCountry.get(country)!;
+      if (countryProxies.length > round) {
+        selected.push(countryProxies[round]);
       }
     }
     round++;

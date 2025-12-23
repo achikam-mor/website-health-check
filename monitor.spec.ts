@@ -337,7 +337,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       
       // Filter to get regional diversity (test more proxies to find working ones)
       const regionalProxies = getRegionalProxies(allProxies, 5); // 5 proxies per priority region
-      const proxiesToValidate = regionalProxies.slice(0, 60); // Max 60 proxies
+      const proxiesToValidate = regionalProxies.slice(0, 100); // Max 100 proxies for better diversity
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
       // Validate proxies (concurrency: 20, timeout: 10s per proxy)
@@ -354,8 +354,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         console.log('');
       }
       
-      // Select diverse working proxies from different regions (target 5-7)
-      workingProxies = selectDiverseProxies(validatedProxies, 7);
+      // Select diverse working proxies from different COUNTRIES (max 2 per country, target 10-15 total)
+      workingProxies = selectDiverseProxies(validatedProxies, 15);
       
       if (workingProxies.length === 0) {
         console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
