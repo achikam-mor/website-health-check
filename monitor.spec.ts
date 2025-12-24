@@ -524,9 +524,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         context = browserSetup.context;
         const page = await context.newPage();
         
+        // Generate and log unique GA Client ID for verification
+        const gaClientId = `GA1.2.${Math.floor(Math.random() * 2147483647)}.${Math.floor(Date.now() / 1000)}`;
+        
         console.log(`🌐 User-Agent: ${userAgent}`);
         console.log(`📱 Viewport: ${viewport.width}x${viewport.height}`);
-        console.log(`�️  Hardware: ${hardware.cpuCores} cores, ${hardware.deviceMemory}GB RAM, ${hardware.colorDepth}-bit color, ${hardware.platform}`);
+        console.log(`🖥️  Hardware: ${hardware.cpuCores} cores, ${hardware.deviceMemory}GB RAM, ${hardware.colorDepth}-bit color, ${hardware.platform}`);
+        console.log(`🆔 GA Client ID: ${gaClientId}`);
         console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
         console.log(`🗣️  Language: ${language}`);
         if (referrer) {
@@ -577,6 +581,12 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         for (let pageIndex = 0; pageIndex < pagesToTest.length; pageIndex++) {
           const url = pagesToTest[pageIndex];
           
+          // Random early exit (10% chance after 3rd page) - realistic user behavior
+          if (pageIndex >= 3 && Math.random() < 0.1) {
+            console.log(`  ⚡ User left early after ${pageIndex} pages`);
+            break;
+          }
+          
           console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
           
           // Random delay between pages (3-12 seconds) - varies by user behavior
@@ -590,6 +600,83 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             
             // Verify basic element exists to confirm page load
             await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
+            
+            // Simulate realistic mouse movement (CRITICAL for bot detection)
+            const numMouseMoves = Math.floor(Math.random() * 5) + 3; // 3-8 moves
+            for (let i = 0; i < numMouseMoves; i++) {
+              const x = Math.floor(Math.random() * viewport.width);
+              const y = Math.floor(Math.random() * viewport.height);
+              await page.mouse.move(x, y, { steps: Math.floor(Math.random() * 5) + 5 });
+              await page.waitForTimeout(Math.floor(Math.random() * 300) + 100);
+            }
+            
+            // Simulate keyboard activity (20% chance - realistic browsing)
+            if (Math.random() < 0.2) {
+              // Simulate common keyboard actions
+              const actions = [
+                async () => {
+                  // Ctrl+F (search) then Escape
+                  await page.keyboard.down('Control');
+                  await page.keyboard.press('KeyF');
+                  await page.keyboard.up('Control');
+                  await page.waitForTimeout(Math.floor(Math.random() * 500) + 200);
+                  await page.keyboard.press('Escape');
+                },
+                async () => {
+                  // Arrow key scrolling
+                  const numPresses = Math.floor(Math.random() * 3) + 2;
+                  for (let i = 0; i < numPresses; i++) {
+                    await page.keyboard.press('ArrowDown');
+                    await page.waitForTimeout(Math.floor(Math.random() * 300) + 100);
+                  }
+                },
+                async () => {
+                  // Spacebar scroll
+                  await page.keyboard.press('Space');
+                  await page.waitForTimeout(Math.floor(Math.random() * 800) + 400);
+                },
+                async () => {
+                  // Home/End key
+                  await page.keyboard.press(Math.random() > 0.5 ? 'Home' : 'End');
+                  await page.waitForTimeout(Math.floor(Math.random() * 500) + 300);
+                }
+              ];
+              
+              const randomAction = actions[Math.floor(Math.random() * actions.length)];
+              try {
+                await randomAction();
+              } catch (e) {}
+            }
+            
+            // Occasionally simulate hover (50% chance)
+            if (Math.random() < 0.5) {
+              try {
+                const links = await page.locator('a').count();
+                if (links > 0) {
+                  const randomLink = Math.floor(Math.random() * Math.min(links, 10));
+                  await page.locator('a').nth(randomLink).hover({ timeout: 2000 });
+                  await page.waitForTimeout(Math.floor(Math.random() * 500) + 200);
+                }
+              } catch (e) {}
+            }
+            
+            // Random clicks on non-navigation elements (30% chance - VERY realistic)
+            if (Math.random() < 0.3) {
+              try {
+                // Click on common interactive elements that don't navigate
+                const selectors = ['button:not([type="submit"])', 'div[role="button"]', '[onclick]', '.clickable'];
+                const selector = selectors[Math.floor(Math.random() * selectors.length)];
+                const elements = await page.locator(selector).count();
+                if (elements > 0) {
+                  const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
+                  console.log(`      🖱️  Clicking interactive element...`);
+                  await page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
+                  await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
+                }
+              } catch (e) {
+                // Element might be hidden or not clickable - that's fine
+              }
+            }
             
             // Perform the scrolling
             await humanScroll(page);
@@ -613,6 +700,18 @@ test.describe('StockScanner Multi-Location Health Check', () => {
               const longPause = Math.floor(Math.random() * 8000) + 5000; // 5-13 seconds
               console.log(`      ⏸️  Long pause (${Math.round(longPause/1000)}s)...`);
               await page.waitForTimeout(longPause);
+            } else if (randomBehavior < 0.25) {
+              // 5% chance: Simulate tab switching (user left to check something)
+              console.log(`      👁️  Tab unfocused (multitasking)...`);
+              await page.evaluate(() => {
+                window.dispatchEvent(new Event('blur'));
+                document.dispatchEvent(new Event('visibilitychange'));
+              });
+              await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000);
+              await page.evaluate(() => {
+                window.dispatchEvent(new Event('focus'));
+                document.dispatchEvent(new Event('visibilitychange'));
+              });
             }
             
             console.log(`      ✅ Success`);
