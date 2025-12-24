@@ -356,11 +356,12 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     try {
       // First, try hardcoded proxies if available
       const hardcodedProxies = getHardcodedProxies();
+      let workingHardcoded: ValidatedProxy[] = [];
       
       if (hardcodedProxies.length > 0) {
         console.log('🔍 Validating hardcoded proxies...');
-        const validatedHardcoded = await validateProxies(hardcodedProxies, 10, 10000);
-        const workingHardcoded = validatedHardcoded.filter(p => p.validated);
+        const validatedHardcoded = await validateProxies(hardcodedProxies, 10, 10000, false);
+        workingHardcoded = validatedHardcoded.filter(p => p.validated);
         
         if (workingHardcoded.length > 0) {
           console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
@@ -405,32 +406,48 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
       
       // Filter to get regional diversity (test more proxies to find working ones)
-      const regionalProxies = getRegionalProxies(allProxies, 5); // 5 proxies per priority region
-      const proxiesToValidate = regionalProxies.slice(0, 100); // Max 100 proxies for better diversity
+      const regionalProxies = getRegionalProxies(allProxies, 10); // 10 proxies per priority region
+      const proxiesToValidate = regionalProxies.slice(0, 500); // Validate 500 proxies for better diversity
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
-      // Validate proxies (concurrency: 20, timeout: 10s per proxy)
-      const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000);
+      // Validate proxies with cross-reference GeoIP verification (concurrency: 20, timeout: 10s per proxy)
+      console.log('🌍 Cross-referencing proxy locations with multiple GeoIP services...');
+      const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000, true);
       
-      // Log ALL working proxies for reference
-      const allWorking = validatedProxies.filter(p => p.validated);
-      if (allWorking.length > 0) {
-        console.log(`\n✅ All ${allWorking.length} working proxies (sorted by speed):`);
-        allWorking.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
-        for (const proxy of allWorking.slice(0, 15)) {
-          console.log(`   { host: '${proxy.host}', port: ${proxy.port}, protocol: '${proxy.protocol}', country: '${proxy.country}', source: 'Manual' }, // ${proxy.responseTime}ms`);
-        }
-        console.log('');
+      // Filter for ONLY non-US proxies that are verified
+      const nonUSProxies = validatedProxies.filter(p => 
+        p.validated && 
+        p.verified && 
+        p.realCountry && 
+        !p.realCountry.toLowerCase().includes('united states') &&
+        !p.realCountry.toLowerCase().includes('usa')
+      );
+      
+      console.log(`✅ Found ${nonUSProxies.length} verified non-US proxies out of ${validatedProxies.filter(p => p.validated).length} working proxies`);
+      
+      if (nonUSProxies.length === 0) {
+        console.log('⚠️  No verified non-US proxies found. Using only hardcoded proxies.');
+        return;
       }
       
-      // Select diverse working proxies from different COUNTRIES (max 2 per country, target 10-15 total)
-      workingProxies = selectDiverseProxies(validatedProxies, 15);
+      // Select diverse working proxies from non-US pool (target 10)
+      const apiProxies = selectDiverseProxies(nonUSProxies, 10);
+      
+      // ADD non-US proxies to existing hardcoded list (don't replace)
+      if (workingHardcoded && workingHardcoded.length > 0) {
+        console.log(`\n✅ Adding ${apiProxies.length} verified non-US proxies to ${workingHardcoded.length} hardcoded proxies`);
+        workingProxies = [...workingHardcoded, ...apiProxies];
+      } else {
+        workingProxies = apiProxies;
+      }
       
       if (workingProxies.length === 0) {
         console.log('⚠️  No working proxies found. Will run tests without proxy (default location only).');
       } else {
-        console.log(`\n✅ Found ${workingProxies.length} working proxies:`);      // Log country distribution
-      const countryDist = new Map<string, number>();
+        console.log(`\n✅ Found ${workingProxies.length} working proxies:`);
+        
+        // Log country distribution
+        const countryDist = new Map<string, number>();
       for (const proxy of workingProxies) {
         const country = proxy.realCountry || proxy.country;
         countryDist.set(country, (countryDist.get(country) || 0) + 1);
@@ -438,7 +455,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       console.log('📊 Country distribution:');
       for (const [country, count] of countryDist) {
         console.log(`   ${country}: ${count} proxies`);
-      }        for (const proxy of workingProxies) {
+      }
+      console.log(`\n📌 Note: API proxies filtered for verified non-US locations only`);
+      console.log(`📌 Hardcoded proxies retained regardless of location\n`);
+      for (const proxy of workingProxies) {
           console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
         }
       }
@@ -593,6 +613,21 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           if (pageIndex > 0) {
             const delay = Math.floor(Math.random() * 9000) + 3000; // 3-12 seconds
             await page.waitForTimeout(delay);
+          }
+          
+          // Simulate variable network speed (throttle randomly)
+          if (Math.random() < 0.2) {
+            // 20% chance: simulate slower connection
+            const networkProfiles = [
+              { latency: 40, download: 1500, upload: 750 },   // Fast 3G
+              { latency: 20, download: 5000, upload: 1000 },  // 4G
+              { latency: 150, download: 400, upload: 400 },   // Slow 3G
+            ];
+            const profile = networkProfiles[Math.floor(Math.random() * networkProfiles.length)];
+            await context.route('**/*', async (route) => {
+              await new Promise(resolve => setTimeout(resolve, Math.random() * 50));
+              await route.continue();
+            });
           }
           
           try {

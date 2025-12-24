@@ -378,6 +378,105 @@ export async function launchBrowserWithProxy(config: BrowserConfig): Promise<{ b
     }
   }, { timezone: config.timezone });
   
+  // Add second init script for performance API (needs to run very early)
+  await context.addInitScript(() => {
+    // Randomize Navigation/Performance Timing (GA tracks page load performance)
+    if (performance && performance.timing) {
+      const originalGetEntriesByType = performance.getEntriesByType;
+      performance.getEntriesByType = function(type: string) {
+        const entries = originalGetEntriesByType.call(this, type);
+        // Add random variance to timing (±100ms)
+        return entries.map((entry: any) => {
+          const cloned = Object.assign({}, entry);
+          ['connectEnd', 'connectStart', 'domComplete', 'domContentLoadedEventEnd', 'domContentLoadedEventStart',
+           'domInteractive', 'domLoading', 'domainLookupEnd', 'domainLookupStart', 'fetchStart', 'loadEventEnd',
+           'loadEventStart', 'requestStart', 'responseEnd', 'responseStart', 'secureConnectionStart'].forEach(prop => {
+            if (cloned[prop]) {
+              cloned[prop] += Math.floor(Math.random() * 200) - 100;
+            }
+          });
+          return cloned;
+        });
+      };
+    }
+    
+    // Randomize CSS media queries (screen-based fingerprinting)
+    if (window.matchMedia) {
+      const originalMatchMedia = window.matchMedia;
+      window.matchMedia = function(query: string) {
+        const result = originalMatchMedia.call(this, query);
+        // For specific queries, add randomization
+        if (query.includes('prefers-color-scheme')) {
+          Object.defineProperty(result, 'matches', {
+            get: () => Math.random() > 0.5 // 50% dark, 50% light
+          });
+        }
+        if (query.includes('prefers-reduced-motion')) {
+          Object.defineProperty(result, 'matches', {
+            get: () => Math.random() > 0.8 // 20% prefer reduced motion
+          });
+        }
+        return result;
+      };
+    }
+    
+    // Randomize Gamepad API
+    if (navigator.getGamepads) {
+      navigator.getGamepads = function() {
+        // Most users don't have gamepads connected
+        return Math.random() > 0.95 ? [null] : [];
+      };
+    }
+    
+    // Randomize pointer capabilities
+    if (window.PointerEvent) {
+      Object.defineProperty(navigator, 'pointerEnabled', {
+        get: () => Math.random() > 0.3 // 70% have pointer
+      });
+    }
+    
+    // Vary document.hasFocus() behavior
+    const originalHasFocus = document.hasFocus;
+    if (originalHasFocus) {
+      let focusState = true;
+      document.hasFocus = function() {
+        // Occasionally report not focused (user in another tab)
+        if (Math.random() < 0.05) {
+          focusState = !focusState;
+        }
+        return focusState && originalHasFocus.call(this);
+      };
+    }
+    
+    // Add custom User Timing marks (GA can track these for performance)
+    if (performance && performance.mark) {
+      // Simulate user creating custom timing marks (varies by user)
+      const marks = ['app_start', 'first_render', 'user_action', 'content_load'];
+      const numMarks = Math.floor(Math.random() * 3);
+      setTimeout(() => {
+        for (let i = 0; i < numMarks; i++) {
+          try {
+            performance.mark(marks[Math.floor(Math.random() * marks.length)]);
+          } catch (e) {}
+        }
+      }, Math.random() * 1000);
+    }
+    
+    // Randomize IntersectionObserver behavior (lazy loading detection)
+    if (window.IntersectionObserver) {
+      const OriginalObserver = window.IntersectionObserver;
+      (window as any).IntersectionObserver = function(callback: any, options: any) {
+        // Add slight timing variance to intersection callbacks
+        const wrappedCallback = function(entries: any, observer: any) {
+          setTimeout(() => {
+            callback(entries, observer);
+          }, Math.random() * 20); // 0-20ms delay
+        };
+        return new OriginalObserver(wrappedCallback, options);
+      };
+    }
+  });
+  
   return { browser, context };
 }
 

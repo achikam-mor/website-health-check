@@ -13,6 +13,7 @@ export interface ValidatedProxy extends ProxyInfo {
   realCountry?: string;
   realCity?: string;
   timezone?: string;
+  verified?: boolean;
 }
 
 /**
@@ -39,9 +40,108 @@ async function getProxyLocation(ip: string): Promise<{ country?: string; city?: 
 }
 
 /**
+ * Cross-reference location using multiple GeoIP services
+ * Returns location only if at least 2 out of 3 services agree
+ */
+async function crossReferenceLocation(ip: string): Promise<{ country?: string; city?: string; timezone?: string; verified: boolean }> {
+  const services = [
+    // Service 1: ip-api.com
+    async () => {
+      try {
+        const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,city,timezone`, {
+          signal: AbortSignal.timeout(3000)
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data.status === 'success') {
+          return { country: data.country?.toLowerCase(), city: data.city, timezone: data.timezone };
+        }
+      } catch (error) {
+        return null;
+      }
+      return null;
+    },
+    // Service 2: ipapi.co
+    async () => {
+      try {
+        const response = await fetch(`https://ipapi.co/${ip}/json/`, {
+          signal: AbortSignal.timeout(3000)
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data.country_name) {
+          return { country: data.country_name?.toLowerCase(), city: data.city, timezone: data.timezone };
+        }
+      } catch (error) {
+        return null;
+      }
+      return null;
+    },
+    // Service 3: ipinfo.io
+    async () => {
+      try {
+        const response = await fetch(`https://ipinfo.io/${ip}/json`, {
+          signal: AbortSignal.timeout(3000)
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        if (data.country) {
+          return { country: data.country?.toLowerCase(), city: data.city, timezone: data.timezone };
+        }
+      } catch (error) {
+        return null;
+      }
+      return null;
+    }
+  ];
+
+  // Query all services in parallel
+  const results = await Promise.all(services.map(service => service()));
+  const validResults = results.filter((r): r is NonNullable<typeof r> => r !== null && r.country !== undefined);
+
+  if (validResults.length < 2) {
+    return { verified: false };
+  }
+
+  // Check if at least 2 services agree on the country
+  const countryCounts = new Map<string, number>();
+  for (const result of validResults) {
+    const country = result.country;
+    if (country) {
+      countryCounts.set(country, (countryCounts.get(country) || 0) + 1);
+    }
+  }
+
+  // Find the most agreed-upon country
+  let maxCount = 0;
+  let agreedCountry = '';
+  for (const [country, count] of countryCounts) {
+    if (count > maxCount) {
+      maxCount = count;
+      agreedCountry = country;
+    }
+  }
+
+  // At least 2 services must agree
+  if (maxCount >= 2) {
+    const agreedResult = validResults.find(r => r.country === agreedCountry);
+    if (agreedResult) {
+      return {
+        country: agreedResult.country,
+        city: agreedResult.city,
+        timezone: agreedResult.timezone,
+        verified: true
+      };
+    }
+  }
+
+  return { verified: false };
+}
+
+/**
  * Test a single proxy by attempting to connect and load a test page
  */
-export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): Promise<ValidatedProxy> {
+export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000, useGeoVerification: boolean = false): Promise<ValidatedProxy> {
   const proxyUrl = `${proxy.protocol}://${proxy.host}:${proxy.port}`;
   
   let browser: Browser | null = null;
@@ -77,8 +177,14 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
     
     await browser.close();
     
-    // Get real location data for the proxy
-    const location = await getProxyLocation(proxy.host);
+    // Get location data (with cross-reference if requested)
+    let location;
+    if (useGeoVerification) {
+      location = await crossReferenceLocation(proxy.host);
+    } else {
+      const basicLocation = await getProxyLocation(proxy.host);
+      location = { ...basicLocation, verified: true };
+    }
     
     return {
       ...proxy,
@@ -86,7 +192,8 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
       responseTime,
       realCountry: location.country,
       realCity: location.city,
-      timezone: location.timezone
+      timezone: location.timezone,
+      verified: location.verified
     };
     
   } catch (error) {
@@ -110,7 +217,8 @@ export async function validateProxy(proxy: ProxyInfo, timeout: number = 15000): 
 export async function validateProxies(
   proxies: ProxyInfo[],
   concurrency: number = 5,
-  timeout: number = 15000
+  timeout: number = 10000,
+  useGeoVerification: boolean = false
 ): Promise<ValidatedProxy[]> {
   console.log(`🔍 Validating ${proxies.length} proxies (concurrency: ${concurrency})...`);
   
@@ -120,7 +228,7 @@ export async function validateProxies(
   for (let i = 0; i < proxies.length; i += concurrency) {
     const batch = proxies.slice(i, i + concurrency);
     const batchResults = await Promise.all(
-      batch.map(proxy => validateProxy(proxy, timeout))
+      batch.map(proxy => validateProxy(proxy, timeout, useGeoVerification))
     );
     
     results.push(...batchResults);
