@@ -406,8 +406,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
       
       // Filter to get regional diversity (test more proxies to find working ones)
-      const regionalProxies = getRegionalProxies(allProxies, 10); // 10 proxies per priority region
-      const proxiesToValidate = regionalProxies.slice(0, 500); // Validate 500 proxies for better diversity
+      const regionalProxies = getRegionalProxies(allProxies, 15); // 15 proxies per priority region (non-US)
+      const proxiesToValidate = regionalProxies.slice(0, 500); // Validate up to 500 proxies for better diversity
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
       // Validate proxies with cross-reference GeoIP verification (concurrency: 20, timeout: 10s per proxy)

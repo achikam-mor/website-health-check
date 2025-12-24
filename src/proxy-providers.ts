@@ -263,20 +263,21 @@ export function filterProxiesByRegion(proxies: ProxyInfo[], regions: string[]): 
  * If not enough regional proxies, include any available proxies
  */
 export function getRegionalProxies(proxies: ProxyInfo[], maxPerRegion: number = 3): ProxyInfo[] {
-  const priorityRegions = ['US', 'CA', 'GB', 'DE', 'FR', 'NL', 'ES'];
+  const priorityRegions = ['GB', 'DE', 'FR', 'NL', 'ES', 'IT', 'PL', 'SE', 'CA', 'AU', 'JP', 'SG', 'BR', 'IN'];
   const regionalProxies: ProxyInfo[] = [];
   
-  // First pass: Get proxies from priority regions
+  // First pass: Get proxies from priority regions (excluding US)
   for (const region of priorityRegions) {
     const regionProxies = proxies.filter(p => p.country.toUpperCase() === region);
     regionalProxies.push(...regionProxies.slice(0, maxPerRegion));
   }
   
-  // Second pass: If we don't have enough, add any other proxies
-  const targetCount = 30; // Target at least 30 proxies for validation
+  // Second pass: If we don't have enough, add any other non-US proxies
+  const targetCount = 200; // Target at least 200 proxies for validation
   if (regionalProxies.length < targetCount) {
     const remainingProxies = proxies.filter(p => 
-      !regionalProxies.find(rp => rp.host === p.host && rp.port === p.port)
+      !regionalProxies.find(rp => rp.host === p.host && rp.port === p.port) &&
+      p.country.toUpperCase() !== 'US'
     );
     regionalProxies.push(...remainingProxies.slice(0, targetCount - regionalProxies.length));
   }
