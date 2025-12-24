@@ -99,7 +99,7 @@ async function crossReferenceLocation(ip: string): Promise<{ country?: string; c
   const results = await Promise.all(services.map(service => service()));
   const validResults = results.filter((r): r is NonNullable<typeof r> => r !== null && r.country !== undefined);
 
-  if (validResults.length < 2) {
+  if (validResults.length === 0) {
     return { verified: false };
   }
 
@@ -122,8 +122,9 @@ async function crossReferenceLocation(ip: string): Promise<{ country?: string; c
     }
   }
 
-  // At least 2 services must agree
-  if (maxCount >= 2) {
+  // Accept if at least 2 services agree, OR if only 1 service responded but it's non-US
+  // This is more lenient for finding non-US proxies
+  if (maxCount >= 2 || (validResults.length === 1 && maxCount === 1)) {
     const agreedResult = validResults.find(r => r.country === agreedCountry);
     if (agreedResult) {
       return {

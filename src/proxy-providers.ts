@@ -273,7 +273,7 @@ export function getRegionalProxies(proxies: ProxyInfo[], maxPerRegion: number = 
   }
   
   // Second pass: If we don't have enough, add any other non-US proxies
-  const targetCount = 200; // Target at least 200 proxies for validation
+  const targetCount = 1000; // Target at least 1000 proxies for validation
   if (regionalProxies.length < targetCount) {
     const remainingProxies = proxies.filter(p => 
       !regionalProxies.find(rp => rp.host === p.host && rp.port === p.port) &&

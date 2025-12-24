@@ -406,8 +406,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
       
       // Filter to get regional diversity (test more proxies to find working ones)
-      const regionalProxies = getRegionalProxies(allProxies, 15); // 15 proxies per priority region (non-US)
-      const proxiesToValidate = regionalProxies.slice(0, 500); // Validate up to 500 proxies for better diversity
+      const regionalProxies = getRegionalProxies(allProxies, 50); // 50 proxies per priority region (non-US)
+      const proxiesToValidate = regionalProxies.slice(0, 1000); // Validate up to 1000 proxies for comprehensive discovery
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
       // Validate proxies with cross-reference GeoIP verification (concurrency: 20, timeout: 10s per proxy)
@@ -459,7 +459,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       console.log(`\n📌 Note: API proxies filtered for verified non-US locations only`);
       console.log(`📌 Hardcoded proxies retained regardless of location\n`);
       for (const proxy of workingProxies) {
-          console.log(`   • ${proxy.country}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
+          const location = proxy.realCity && proxy.realCountry 
+            ? `${proxy.realCity}, ${proxy.realCountry}` 
+            : (proxy.realCountry || proxy.country);
+          console.log(`   • ${location}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
         }
       }
     } catch (error) {
