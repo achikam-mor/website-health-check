@@ -20,21 +20,31 @@ export interface ProxyInfo {
  * 
  * Format: { host: 'IP', port: PORT, protocol: 'http', country: 'COUNTRY', source: 'Manual' }
  * 
- * Last updated: 2025-12-23 (27 working proxies discovered)
+ * Last updated: 2025-12-24 (19 working proxies - added 7 verified non-US from 1000-proxy scan)
  */
 const HARDCODED_PROXIES: ProxyInfo[] = [
-  { host: '23.227.60.224', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 574ms
-  { host: '104.16.0.167', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 648ms
-  { host: '185.146.173.210', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 670ms
-  { host: '104.25.121.229', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 728ms
-  { host: '104.17.52.129', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 819ms
-  { host: '198.41.218.95', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 826ms
-  { host: '172.67.80.120', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 848ms
-  { host: '104.27.202.46', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 853ms
-  { host: '154.194.12.191', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 855ms
-  { host: '185.162.230.248', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 914ms
-  { host: '185.176.24.226', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1194ms - Previously verified
-  { host: '104.27.4.65', port: 80, protocol: 'http', country: 'Unknown', source: 'Manual' }, // 1195ms - Previously verified
+  // Original working proxies
+  { host: '23.227.60.224', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '104.16.0.167', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '185.146.173.210', port: 80, protocol: 'http', country: 'SE', source: 'Manual' }, // Stockholm, Sweden
+  { host: '104.25.121.229', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '104.17.52.129', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '198.41.218.95', port: 80, protocol: 'http', country: 'US', source: 'Manual' }, // Los Angeles, USA
+  { host: '172.67.80.120', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '104.27.202.46', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  { host: '154.194.12.191', port: 80, protocol: 'http', country: 'SG', source: 'Manual' }, // Singapore
+  { host: '185.162.230.248', port: 80, protocol: 'http', country: 'GB', source: 'Manual' }, // Southport, UK
+  { host: '185.176.24.226', port: 80, protocol: 'http', country: 'NL', source: 'Manual' }, // Amsterdam, Netherlands
+  { host: '104.27.4.65', port: 80, protocol: 'http', country: 'CA', source: 'Manual' }, // Toronto, Canada
+  
+  // New verified non-US proxies from 1000-proxy scan (2025-12-24)
+  { host: '181.214.1.39', port: 80, protocol: 'http', country: 'DE', source: 'Manual' }, // Frankfurt, Germany (1555ms)
+  { host: '206.238.236.115', port: 80, protocol: 'http', country: 'HK', source: 'Manual' }, // Hong Kong (1489ms)
+  { host: '185.170.166.107', port: 80, protocol: 'http', country: 'NL', source: 'Manual' }, // Willemstad, Netherlands (1477ms)
+  { host: '194.152.44.214', port: 80, protocol: 'http', country: 'UA', source: 'Manual' }, // Kyiv, Ukraine (1641ms)
+  { host: '89.116.250.245', port: 80, protocol: 'http', country: 'LT', source: 'Manual' }, // Vilnius, Lithuania (1518ms)
+  { host: '185.162.230.178', port: 80, protocol: 'http', country: 'IM', source: 'Manual' }, // Douglas, Isle of Man (1616ms)
+  { host: '45.80.110.20', port: 80, protocol: 'http', country: 'EE', source: 'Manual' }, // Tallinn, Estonia (1620ms)
 ];
 
 /**

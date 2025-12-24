@@ -377,9 +377,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           console.log(`📊 Diversity check: Max ${maxFromSameCity} proxies from same city`);
           
           if (maxFromSameCity <= 3 && workingHardcoded.length >= 10) {
-            // Good diversity - use hardcoded proxies
-            workingProxies = workingHardcoded.sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
-            console.log(`\n✅ Using ALL ${workingProxies.length} validated hardcoded proxies (good diversity):`);
+            // Good diversity - randomize and select 19 proxies (total 20 with default location)
+            const shuffledHardcoded = shuffleArray(workingHardcoded);
+            workingProxies = shuffledHardcoded.slice(0, 19).sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
+            console.log(`\n✅ Using ${workingProxies.length} randomly selected hardcoded proxies (from ${workingHardcoded.length} available):`);
             for (const proxy of workingProxies) {
               const location = proxy.realCity ? `${proxy.realCity}, ${proxy.realCountry}` : proxy.country;
               console.log(`   • ${location}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
@@ -430,8 +431,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         return;
       }
       
-      // Select diverse working proxies from non-US pool (target 10)
-      const apiProxies = selectDiverseProxies(nonUSProxies, 10);
+      // Calculate how many API proxies to add (target 19 total, minus hardcoded)
+      const targetTotal = 19;
+      const neededFromAPI = Math.max(0, targetTotal - (workingHardcoded?.length || 0));
+      
+      // Randomize and select diverse working proxies from non-US pool
+      const shuffledNonUS = shuffleArray(nonUSProxies);
+      const apiProxies = selectDiverseProxies(shuffledNonUS, neededFromAPI);
       
       // ADD non-US proxies to existing hardcoded list (don't replace)
       if (workingHardcoded && workingHardcoded.length > 0) {
