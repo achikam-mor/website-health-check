@@ -1,0 +1,13 @@
+app = "gh-runner-achikam"
+primary_region = "fra"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  GITHUB_REPO = "achikam-mor/website-health-check"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
