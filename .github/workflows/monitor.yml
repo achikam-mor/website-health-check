@@ -22,7 +22,11 @@ jobs:
         run: npm ci
 
       - name: Compile TypeScript files
-        run: npx tsc
+        run: |
+          npx tsc src/proxy-providers.ts --outDir src --module esnext --target es2020 --skipLibCheck --esModuleInterop
+          npx tsc src/proxy-validator.ts --outDir src --module esnext --target es2020 --skipLibCheck --esModuleInterop
+          npx tsc src/browser-factory.ts --outDir src --module esnext --target es2020 --skipLibCheck --esModuleInterop
+          npx tsc src/proxyium-accessor.ts --outDir src --module esnext --target es2020 --skipLibCheck --esModuleInterop
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium

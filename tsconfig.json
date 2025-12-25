@@ -11,7 +11,11 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": false
+    "noEmit": false,
+    "allowJs": true
+  },
+  "ts-node": {
+    "esm": true
   },
   "include": ["src/**/*", "monitor.spec.ts"],
   "exclude": ["node_modules"]
