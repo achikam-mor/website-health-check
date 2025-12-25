@@ -20,31 +20,26 @@ export interface ProxyInfo {
  */
 function loadProxiesFromFile(): ProxyInfo[] {
   try {
-    // Try multiple possible locations
-    const possiblePaths = [
-      path.join(process.cwd(), 'working-proxies.json'),
-      path.join(__dirname, '..', 'working-proxies.json'),
-      './working-proxies.json',
-      '../working-proxies.json'
-    ];
+    // In GitHub Actions, working directory is the repo root
+    const filePath = path.join(process.cwd(), 'working-proxies.json');
     
-    for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath)) {
+      const data = fs.readFileSync(filePath, 'utf8');
+      const proxies = JSON.parse(data);
+      console.log(`📂 Loaded ${proxies.length} proxies from working-proxies.json`);
+      return proxies;
+    } else {
+      console.log(`❌ working-proxies.json not found at: ${filePath}`);
+      console.log(`Current working directory: ${process.cwd()}`);
+      // List files in current directory for debugging
       try {
-        if (fs.existsSync(filePath)) {
-          const data = fs.readFileSync(filePath, 'utf8');
-          const proxies = JSON.parse(data);
-          console.log(`📂 Loaded ${proxies.length} proxies from ${filePath}`);
-          return proxies;
-        }
-      } catch (err) {
-        // Try next path
-        continue;
+        const files = fs.readdirSync(process.cwd());
+        console.log(`Files in working directory: ${files.join(', ')}`);
+      } catch (e) {
+        console.log('Could not list directory contents');
       }
+      return [];
     }
-    
-    console.log(`❌ working-proxies.json not found! Tried paths: ${possiblePaths.join(', ')}`);
-    console.log(`Current working directory: ${process.cwd()}`);
-    return [];
   } catch (error) {
     console.log(`❌ Error loading working-proxies.json: ${error}`);
     return [];
