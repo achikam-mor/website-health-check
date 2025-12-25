@@ -132,6 +132,102 @@ export class ProxyiumAccessor {
   }
 
   /**
+   * Simulate human-like delay
+   */
+  private async simulateDelay(minMs: number, maxMs: number): Promise<void> {
+    const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+    await this.page?.waitForTimeout(delay);
+  }
+
+  /**
+   * Handle Google consent popup specifically
+   */
+  private async handleGoogleConsentPopup(): Promise<void> {
+    if (!this.page) return;
+
+    try {
+      console.log('  → Checking for Google consent popup...');
+      
+      // Multiple selectors to find "Do not consent" button
+      const doNotConsentSelectors = [
+        'button:has-text("Do not consent")',
+        'button:has-text("Do Not Consent")',
+        'button:has-text("Reject all")',
+        'button:has-text("Reject All")',
+        'button[aria-label*="not consent"]',
+        'button[aria-label*="reject"]',
+        'form[action*="consent"] button:has-text("Do not")',
+        '[role="button"]:has-text("Do not consent")'
+      ];
+
+      let clicked = false;
+      for (const selector of doNotConsentSelectors) {
+        try {
+          const button = this.page.locator(selector).first();
+          if (await button.isVisible({ timeout: 1000 })) {
+            console.log('  → Found "Do not consent" button, clicking...');
+            await button.click();
+            clicked = true;
+            console.log('  ✓ Clicked "Do not consent" successfully');
+            
+            // Wait 2-3 seconds after clicking as requested
+            await this.simulateDelay(2000, 3000);
+            break;
+          }
+        } catch (error) {
+          // Continue trying other selectors
+        }
+      }
+
+      if (!clicked) {
+        console.log('  → No Google consent popup detected');
+      }
+    } catch (error) {
+      console.log('  → Error handling Google consent popup:', error);
+      // Continue execution - popup might not exist
+    }
+  }
+
+  /**
+   * Handle popups and close unwanted dialogs
+   */
+  private async handlePopups(): Promise<void> {
+    if (!this.page) return;
+
+    try {
+      // Try to close any visible popups, modals, or overlays
+      const popupSelectors = [
+        'button:has-text("Close")',
+        'button:has-text("X")',
+        'button[aria-label="Close"]',
+        'button.close',
+        '.modal button.close',
+        '[class*="close"]',
+        '[class*="dismiss"]'
+      ];
+
+      for (const selector of popupSelectors) {
+        const elements = await this.page.locator(selector).all();
+        for (const element of elements) {
+          if (await element.isVisible()) {
+            await element.click().catch(() => {});
+            await this.simulateDelay(300, 500);
+          }
+        }
+      }
+    } catch (error) {
+      // Ignore errors - popups might not exist
+    }
+  }
+   * @returns The URL of the proxied page
+   */
+  async accessSite(url: string): Promise<string> {
+    await this.initialize();
+    const resultUrl = await this.searchWebsite(url);
+    return resultUrl;
+  }
+
+  /**
    * Take a screenshot of the current page
    * @param path Path to save the screenshot
    */
