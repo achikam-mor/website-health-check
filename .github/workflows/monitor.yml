@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Compile TypeScript files
+        run: npx tsc
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
