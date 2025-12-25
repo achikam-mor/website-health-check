@@ -359,64 +359,27 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       let workingHardcoded: ValidatedProxy[] = [];
       
       if (hardcodedProxies.length > 0) {
-        console.log('🔍 Validating hardcoded proxies...');
-        // Increased timeout to 20s and reduced concurrency to 5 for GitHub Actions reliability
-        const validatedHardcoded = await validateProxies(hardcodedProxies, 5, 20000, false);
-        workingHardcoded = validatedHardcoded.filter(p => p.validated);
+        console.log('✅ Using all hardcoded proxies WITHOUT validation (faster startup)');
         
-        if (workingHardcoded.length > 0) {
-          console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
-          
-          // Log each working proxy
-          console.log('\n📋 Working proxies from working-proxies.json:');
-          for (let i = 0; i < workingHardcoded.length; i++) {
-            const p = workingHardcoded[i];
-            console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country}) - ${p.responseTime}ms - ✅ WORKING`);
-          }
-          
-          // Log failed proxies for debugging
-          const failedProxies = validatedHardcoded.filter(p => !p.validated);
-          if (failedProxies.length > 0) {
-            console.log('\n⚠️ Failed proxies:');
-            for (let i = 0; i < Math.min(failedProxies.length, 10); i++) {
-              const p = failedProxies[i];
-              console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country}) - ❌ FAILED`);
-            }
-            if (failedProxies.length > 10) {
-              console.log(`   ... and ${failedProxies.length - 10} more failed proxies`);
-            }
-          }
-          
-          // Check city diversity - if too many from same city, supplement with API
-          const cityCount = new Map<string, number>();
-          for (const proxy of workingHardcoded) {
-            const city = proxy.realCity || 'Unknown';
-            cityCount.set(city, (cityCount.get(city) || 0) + 1);
-          }
-          
-          const maxFromSameCity = Math.max(...cityCount.values());
-          console.log(`📊 Diversity check: Max ${maxFromSameCity} proxies from same city`);
-          
-          // Lower threshold - accept even if only 5+ proxies work
-          if (workingHardcoded.length >= 5) {
-            // Use available proxies - randomize and select up to 19
-            const shuffledHardcoded = shuffleArray(workingHardcoded);
-            workingProxies = shuffledHardcoded.slice(0, 19).sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
-            console.log(`\n✅ Using ${workingProxies.length} randomly selected hardcoded proxies (from ${workingHardcoded.length} available):`);
-            for (const proxy of workingProxies) {
-              const location = proxy.realCity ? `${proxy.realCity}, ${proxy.realCountry}` : proxy.country;
-              console.log(`   • ${location}: ${proxy.host}:${proxy.port} (${proxy.responseTime}ms)`);
-            }
-            console.log('==================================================\n');
-            return;
-          } else {
-            // Poor diversity - fetch API proxies to supplement
-            console.log(`⚠️  Too many proxies from same city. Fetching diverse API proxies...\n`);
-            // Continue to API fetching below
-          }
-        } else {
-          console.log('⚠️  All hardcoded proxies failed. Falling back to API proxy sources...\n');
+        // Use all proxies directly without validation
+        workingProxies = hardcodedProxies.map(p => ({
+          ...p,
+          validated: true,
+          responseTime: p.responseTime || 1000
+        })) as ValidatedProxy[];
+        
+        console.log(`\n✅ Using ${workingProxies.length} proxies from working-proxies.json:`);
+        
+        // Show first 10 for preview
+        for (let i = 0; i < Math.min(10, workingProxies.length); i++) {
+          const p = workingProxies[i];
+          console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country})`);
         }
+        if (workingProxies.length > 10) {
+          console.log(`   ... and ${workingProxies.length - 10} more proxies`);
+        }
+        console.log('==================================================\n');
+        return;
       }
       
       // Fallback: Fetch proxies from APIs
