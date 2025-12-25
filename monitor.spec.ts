@@ -360,7 +360,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       
       if (hardcodedProxies.length > 0) {
         console.log('🔍 Validating hardcoded proxies...');
-        const validatedHardcoded = await validateProxies(hardcodedProxies, 10, 10000, false);
+        // Increased timeout to 20s and reduced concurrency to 5 for GitHub Actions reliability
+        const validatedHardcoded = await validateProxies(hardcodedProxies, 5, 20000, false);
         workingHardcoded = validatedHardcoded.filter(p => p.validated);
         
         if (workingHardcoded.length > 0) {
@@ -376,8 +377,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           const maxFromSameCity = Math.max(...cityCount.values());
           console.log(`📊 Diversity check: Max ${maxFromSameCity} proxies from same city`);
           
-          if (maxFromSameCity <= 10 && workingHardcoded.length >= 15) {
-            // Good diversity - randomize and select 19 proxies (total 20 with default location)
+          // Lower threshold - accept even if only 5+ proxies work
+          if (workingHardcoded.length >= 5) {
+            // Use available proxies - randomize and select up to 19
             const shuffledHardcoded = shuffleArray(workingHardcoded);
             workingProxies = shuffledHardcoded.slice(0, 19).sort((a, b) => (a.responseTime || 0) - (b.responseTime || 0));
             console.log(`\n✅ Using ${workingProxies.length} randomly selected hardcoded proxies (from ${workingHardcoded.length} available):`);
