@@ -124,7 +124,14 @@ export class ProxyiumAccessor {
 
   /**
    * Simulate human-like delay
-   */Google consent popup specifically
+   */
+  private async simulateDelay(minMs: number, maxMs: number): Promise<void> {
+    const delay = Math.floor(Math.random() * (maxMs - minMs + 1)) + minMs;
+    await this.page?.waitForTimeout(delay);
+  }
+
+  /**
+   * Handle Google consent popup specifically
    */
   private async handleGoogleConsentPopup(): Promise<void> {
     if (!this.page) return;
