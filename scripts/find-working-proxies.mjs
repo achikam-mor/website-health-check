@@ -88,9 +88,9 @@ async function findWorkingProxies() {
     return;
   }
   
-  // Test ALL proxies to find working ones
-  const proxiesToTest = allProxies;
-  console.log(`Testing ALL ${proxiesToTest.length} proxies (concurrency: 20, timeout: 15s)...\n`);
+  // Test up to 3000 proxies to find working ones
+  const proxiesToTest = allProxies.slice(0, 3000);
+  console.log(`Testing ${proxiesToTest.length} proxies (concurrency: 20, timeout: 15s)...\n`);
   
   const working = [];
   
@@ -103,7 +103,7 @@ async function findWorkingProxies() {
     console.log(`  Batch ${Math.floor(i / 20) + 1}/${Math.ceil(proxiesToTest.length / 20)}: ${validInBatch.length}/${batch.length} valid (Total: ${working.length} working)`);
     
     // Stop if we found enough working proxies
-    if (working.length >= 15) {
+    if (working.length >= 20) {
       console.log(`\n✅ Found ${working.length} working proxies! Stopping validation.\n`);
       break;
     }
@@ -135,6 +135,20 @@ async function findWorkingProxies() {
   console.log('');
   console.log('═'.repeat(80));
   console.log('');
+  
+  // Save to JSON file for reuse
+  const fs = await import('fs');
+  const proxiesData = working.slice(0, 20).map(p => ({
+    host: p.host,
+    port: p.port,
+    protocol: p.protocol,
+    country: p.country,
+    source: 'Manual',
+    responseTime: p.responseTime
+  }));
+  
+  fs.writeFileSync('working-proxies.json', JSON.stringify(proxiesData, null, 2));
+  console.log('💾 Saved working proxies to working-proxies.json\n');
   
   // Summary table
   console.log('\n📊 Working Proxies Summary:');

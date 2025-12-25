@@ -4,6 +4,8 @@ on:
   schedule:
     # Run 3 times per hour: at 8, 23, and 41 minutes past each hour
     - cron: '8,23,41 * * * *'
+    # Run proxy discovery every Monday at 00:08 UTC
+    - cron: '8 0 * * 1'
   workflow_dispatch: # Allows manual trigger
 
 jobs:
@@ -23,6 +25,21 @@ jobs:
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
+
+      - name: Find Working Proxies (Weekly)
+        if: github.event.schedule == '8 0 * * 1' || github.event_name == 'workflow_dispatch'
+        run: npm run find-proxies
+        continue-on-error: true
+
+      - name: Commit Updated Proxies
+        if: github.event.schedule == '8 0 * * 1' || github.event_name == 'workflow_dispatch'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add working-proxies.json
+          git diff --staged --quiet || git commit -m "Update working proxies [automated]"
+          git push
+        continue-on-error: true
 
       - name: Run Multi-Location Traffic Simulation
         run: npx playwright test
