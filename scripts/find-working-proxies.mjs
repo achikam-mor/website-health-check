@@ -194,7 +194,7 @@ async function findWorkingProxies() {
     console.log(`  Batch ${Math.floor(i / 20) + 1}/${Math.ceil(proxiesToTest.length / 20)}: ${validInBatch.length}/${batch.length} valid (Total: ${working.length} working)`);
     
     // Stop if we found enough working proxies
-    if (working.length >= 20) {
+    if (working.length >= 100) {
       console.log(`\n✅ Found ${working.length} working proxies! Stopping validation.\n`);
       break;
     }
@@ -212,13 +212,15 @@ async function findWorkingProxies() {
   
   // Generate code - ready to paste
   console.log('═'.repeat(80));
-  console.log('📋 COPY THIS CODE AND PASTE INTO src/proxy-providers.ts');
-  console.log('   Replace the HARDCODED_PROXIES array with this:');
+  console.log('📋 All working proxies have been saved to working-proxies.json');
+  console.log('   The workflow will automatically use them.')
   console.log('═'.repeat(80));
   console.log('');
+  console.log(`💾 Saved ${working.length} working proxies`);
+  console.log('\nTop 20 fastest proxies:');
   console.log('const HARDCODED_PROXIES: ProxyInfo[] = [');
   
-  for (const proxy of working.slice(0, 10)) {
+  for (const proxy of working.slice(0, 20)) {
     console.log(`  { host: '${proxy.host}', port: ${proxy.port}, protocol: '${proxy.protocol}', country: '${proxy.country}', source: 'Manual' }, // ${proxy.responseTime}ms`);
   }
   
@@ -227,9 +229,9 @@ async function findWorkingProxies() {
   console.log('═'.repeat(80));
   console.log('');
   
-  // Save to JSON file for reuse
+  // Save to JSON file for reuse (all working proxies)
   const fs = await import('fs');
-  const proxiesData = working.slice(0, 20).map(p => ({
+  const proxiesData = working.map(p => ({
     host: p.host,
     port: p.port,
     protocol: p.protocol,
@@ -239,14 +241,14 @@ async function findWorkingProxies() {
   }));
   
   fs.writeFileSync('working-proxies.json', JSON.stringify(proxiesData, null, 2));
-  console.log('💾 Saved working proxies to working-proxies.json\n');
+  console.log(`💾 Saved ${proxiesData.length} working proxies to working-proxies.json\n`);
   
   // Summary table
-  console.log('\n📊 Working Proxies Summary:');
+  console.log('\n📊 Working Proxies Summary (Top 20):');
   console.log('─'.repeat(80));
   console.log('  #  | Country    | Host              | Port  | Protocol | Speed');
   console.log('─'.repeat(80));
-  for (let i = 0; i < Math.min(working.length, 10); i++) {
+  for (let i = 0; i < Math.min(working.length, 20); i++) {
     const proxy = working[i];
     const num = String(i + 1).padStart(3);
     const country = String(proxy.country).padEnd(10);
@@ -256,7 +258,7 @@ async function findWorkingProxies() {
     console.log(`  ${num} | ${country} | ${host} | ${port} | ${protocol} | ${proxy.responseTime}ms`);
   }
   console.log('─'.repeat(80));
-  console.log(`\n✅ Top ${Math.min(working.length, 10)} fastest proxies selected for hardcoded list\n`);
+  console.log(`\n✅ Total ${working.length} working proxies saved to working-proxies.json\n`);
 }
 
 findWorkingProxies().catch(console.error);
