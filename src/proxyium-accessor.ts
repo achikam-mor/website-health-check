@@ -249,150 +249,197 @@ export class ProxyiumAccessor {
       throw new Error('Browser not initialized.');
     }
 
-    console.log('✓ Starting realistic browsing simulation...');
+    console.log('✓ Starting realistic multi-page browsing simulation...');
 
     try {
-      // Get viewport dimensions
-      const viewport = this.page.viewportSize() || { width: 1280, height: 720 };
+      // Define pages to visit on stockscanner.net
+      const pages = [
+        '/',
+        '/screener',
+        '/charts',
+        '/watchlist',
+        '/portfolio',
+        '/news',
+        '/market-overview',
+        '/scanner',
+        '/settings',
+        '/help'
+      ];
 
-      // Realistic mouse movements (5-10 moves with smooth animation)
-      console.log('  → Simulating mouse movements...');
-      const numMouseMoves = Math.floor(Math.random() * 6) + 5; // 5-10 moves
-      for (let i = 0; i < numMouseMoves; i++) {
-        const x = Math.floor(Math.random() * viewport.width);
-        const y = Math.floor(Math.random() * viewport.height);
-        await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 5) + 5 });
-        await this.simulateDelay(100, 400);
-      }
+      // Visit 5-10 random pages
+      const numPages = Math.floor(Math.random() * 6) + 5; // 5-10 pages
+      const shuffledPages = pages.sort(() => Math.random() - 0.5).slice(0, numPages);
+      
+      console.log(`  → Will visit ${numPages} pages on stockscanner.net`);
 
-      // Keyboard interactions (30% chance)
-      if (Math.random() < 0.3) {
-        console.log('  → Simulating keyboard interactions...');
-        const keyActions = [
-          async () => {
-            // Arrow key scrolling
-            const numPresses = Math.floor(Math.random() * 3) + 2;
-            for (let i = 0; i < numPresses; i++) {
-              await this.page!.keyboard.press('ArrowDown');
-              await this.simulateDelay(200, 400);
-            }
-          },
-          async () => {
-            // Spacebar scroll
-            await this.page!.keyboard.press('Space');
-            await this.simulateDelay(400, 800);
-          },
-          async () => {
-            // Home/End key
-            await this.page!.keyboard.press(Math.random() > 0.5 ? 'Home' : 'End');
-            await this.simulateDelay(300, 500);
-          }
-        ];
-        
-        const randomAction = keyActions[Math.floor(Math.random() * keyActions.length)];
+      for (let i = 0; i < shuffledPages.length; i++) {
+        const pageUrl = shuffledPages[i];
+        console.log(`\n  [${i + 1}/${numPages}] Browsing page: ${pageUrl}`);
+
         try {
-          await randomAction();
-        } catch (e) {
-          // Ignore keyboard errors
-        }
-      }
-
-      // Hover over links (50% chance)
-      if (Math.random() < 0.5) {
-        console.log('  → Hovering over links...');
-        try {
-          const links = await this.page.locator('a').count();
-          if (links > 0) {
-            const randomLink = Math.floor(Math.random() * Math.min(links, 10));
-            await this.page.locator('a').nth(randomLink).hover({ timeout: 2000 });
-            await this.simulateDelay(200, 500);
-          }
-        } catch (e) {
-          // Ignore hover errors
-        }
-      }
-
-      // Progressive scrolling down
-      console.log('  → Scrolling through page...');
-      const scrollSteps = Math.floor(Math.random() * 5) + 4; // 4-8 scrolls
-      for (let i = 0; i < scrollSteps; i++) {
-        const scrollAmount = Math.floor(Math.random() * 400) + 200; // 200-600px
-        await this.page.evaluate((amount) => {
-          window.scrollBy({
-            top: amount,
-            behavior: 'smooth'
+          // Navigate to the page
+          const currentUrl = this.page.url();
+          const baseUrl = new URL(currentUrl).origin;
+          await this.page.goto(baseUrl + pageUrl, { 
+            waitUntil: 'domcontentloaded',
+            timeout: 30000 
+          }).catch(() => {
+            console.log(`    → Could not navigate to ${pageUrl}, staying on current page`);
           });
-        }, scrollAmount);
-        await this.simulateDelay(800, 1800);
-      }
 
-      // Random click on non-navigation elements (30% chance)
-      if (Math.random() < 0.3) {
-        console.log('  → Clicking interactive elements...');
-        try {
-          const selectors = ['button:not([type="submit"])', 'div[role="button"]', '[onclick]'];
-          const selector = selectors[Math.floor(Math.random() * selectors.length)];
-          const elements = await this.page.locator(selector).count();
-          if (elements > 0) {
-            const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
-            await this.page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
-            await this.simulateDelay(500, 1000);
+          await this.simulateDelay(1000, 2000);
+
+          // Perform realistic browsing on this page
+          await this.browseCurrentPage();
+
+          // Random chance to leave early (10%)
+          if (Math.random() < 0.1 && i > 2) {
+            console.log(`    → User left after ${i + 1} pages`);
+            break;
           }
-        } catch (e) {
-          // Element might not be clickable - that's fine
+
+        } catch (error) {
+          console.log(`    → Error on page ${pageUrl}, continuing...`);
         }
       }
 
-      // Scroll back up (simulate reading something again)
-      console.log('  → Scrolling back up...');
-      const scrollUp = Math.floor(Math.random() * 300) + 150;
-      await this.page.evaluate((amount) => {
-        window.scrollBy({
-          top: -amount,
-          behavior: 'smooth'
-        });
-      }, scrollUp);
-      await this.simulateDelay(1000, 2000);
-
-      // Random human behaviors (25% chance)
-      const randomBehavior = Math.random();
-      if (randomBehavior < 0.10) {
-        // Reload page (checking for updates)
-        console.log('  → Reloading page...');
-        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 10000 });
-        await this.simulateDelay(1500, 2500);
-      } else if (randomBehavior < 0.20) {
-        // Extra long pause (user distracted)
-        const longPause = Math.floor(Math.random() * 5000) + 3000; // 3-8 seconds
-        console.log(`  → Long pause (${Math.round(longPause/1000)}s - user distracted)...`);
-        await this.simulateDelay(longPause, longPause);
-      } else if (randomBehavior < 0.25) {
-        // Simulate tab unfocus/focus (multitasking)
-        console.log('  → Simulating tab switch (multitasking)...');
-        await this.page.evaluate(() => {
-          window.dispatchEvent(new Event('blur'));
-          document.dispatchEvent(new Event('visibilitychange'));
-        });
-        await this.simulateDelay(2000, 4000);
-        await this.page.evaluate(() => {
-          window.dispatchEvent(new Event('focus'));
-          document.dispatchEvent(new Event('visibilitychange'));
-        });
-      }
-
-      // Final random mouse movements
-      console.log('  → Final mouse movements...');
-      for (let i = 0; i < 3; i++) {
-        const x = Math.floor(Math.random() * viewport.width);
-        const y = Math.floor(Math.random() * viewport.height);
-        await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 3) + 3 });
-        await this.simulateDelay(200, 500);
-      }
-
-      console.log('✓ Browsing simulation complete');
+      console.log('\n✓ Multi-page browsing simulation complete');
     } catch (error) {
       console.error('✗ Error during browsing simulation:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Perform realistic browsing behavior on the current page
+   */
+  private async browseCurrentPage(): Promise<void> {
+    if (!this.page) return;
+
+    const viewport = this.page.viewportSize() || { width: 1280, height: 720 };
+
+    // Realistic mouse movements (5-10 moves with smooth animation)
+    const numMouseMoves = Math.floor(Math.random() * 6) + 5; // 5-10 moves
+    for (let i = 0; i < numMouseMoves; i++) {
+      const x = Math.floor(Math.random() * viewport.width);
+      const y = Math.floor(Math.random() * viewport.height);
+      await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 5) + 5 });
+      await this.simulateDelay(100, 400);
+    }
+
+    // Keyboard interactions (30% chance)
+    if (Math.random() < 0.3) {
+      const keyActions = [
+        async () => {
+          // Arrow key scrolling
+          const numPresses = Math.floor(Math.random() * 3) + 2;
+          for (let i = 0; i < numPresses; i++) {
+            await this.page!.keyboard.press('ArrowDown');
+            await this.simulateDelay(200, 400);
+          }
+        },
+        async () => {
+          // Spacebar scroll
+          await this.page!.keyboard.press('Space');
+          await this.simulateDelay(400, 800);
+        },
+        async () => {
+          // Home/End key
+          await this.page!.keyboard.press(Math.random() > 0.5 ? 'Home' : 'End');
+          await this.simulateDelay(300, 500);
+        }
+      ];
+      
+      const randomAction = keyActions[Math.floor(Math.random() * keyActions.length)];
+      try {
+        await randomAction();
+      } catch (e) {
+        // Ignore keyboard errors
+      }
+    }
+
+    // Hover over links (50% chance)
+    if (Math.random() < 0.5) {
+      try {
+        const links = await this.page.locator('a').count();
+        if (links > 0) {
+          const randomLink = Math.floor(Math.random() * Math.min(links, 10));
+          await this.page.locator('a').nth(randomLink).hover({ timeout: 2000 });
+          await this.simulateDelay(200, 500);
+        }
+      } catch (e) {
+        // Ignore hover errors
+      }
+    }
+
+    // Progressive scrolling down
+    const scrollSteps = Math.floor(Math.random() * 5) + 4; // 4-8 scrolls
+    for (let i = 0; i < scrollSteps; i++) {
+      const scrollAmount = Math.floor(Math.random() * 400) + 200; // 200-600px
+      await this.page.evaluate((amount) => {
+        window.scrollBy({
+          top: amount,
+          behavior: 'smooth'
+        });
+      }, scrollAmount);
+      await this.simulateDelay(800, 1800);
+    }
+
+    // Random click on non-navigation elements (30% chance)
+    if (Math.random() < 0.3) {
+      try {
+        const selectors = ['button:not([type="submit"])', 'div[role="button"]', '[onclick]'];
+        const selector = selectors[Math.floor(Math.random() * selectors.length)];
+        const elements = await this.page.locator(selector).count();
+        if (elements > 0) {
+          const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
+          await this.page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
+          await this.simulateDelay(500, 1000);
+        }
+      } catch (e) {
+        // Element might not be clickable - that's fine
+      }
+    }
+
+    // Scroll back up (simulate reading something again)
+    const scrollUp = Math.floor(Math.random() * 300) + 150;
+    await this.page.evaluate((amount) => {
+      window.scrollBy({
+        top: -amount,
+        behavior: 'smooth'
+      });
+    }, scrollUp);
+    await this.simulateDelay(1000, 2000);
+
+    // Random human behaviors (25% chance)
+    const randomBehavior = Math.random();
+    if (randomBehavior < 0.10) {
+      // Reload page (checking for updates)
+      await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 10000 });
+      await this.simulateDelay(1500, 2500);
+    } else if (randomBehavior < 0.20) {
+      // Extra long pause (user distracted)
+      const longPause = Math.floor(Math.random() * 5000) + 3000; // 3-8 seconds
+      await this.simulateDelay(longPause, longPause);
+    } else if (randomBehavior < 0.25) {
+      // Simulate tab unfocus/focus (multitasking)
+      await this.page.evaluate(() => {
+        window.dispatchEvent(new Event('blur'));
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      await this.simulateDelay(2000, 4000);
+      await this.page.evaluate(() => {
+        window.dispatchEvent(new Event('focus'));
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+    }
+
+    // Final random mouse movements
+    for (let i = 0; i < 3; i++) {
+      const x = Math.floor(Math.random() * viewport.width);
+      const y = Math.floor(Math.random() * viewport.height);
+      await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 3) + 3 });
+      await this.simulateDelay(200, 500);
     }
   }
 
