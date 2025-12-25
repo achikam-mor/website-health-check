@@ -9,8 +9,8 @@ import { chromium } from '@playwright/test';
 async function fetchProxies() {
   const proxies = [];
   
+  // Source 1: proxy-list.download
   try {
-    // Try proxy-list.download
     console.log('Fetching from proxy-list.download...');
     const url = 'https://www.proxy-list.download/api/v1/get?type=http';
     const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
@@ -31,13 +31,104 @@ async function fetchProxies() {
           });
         }
       }
-      console.log(`✓ Fetched ${proxies.length} proxies`);
+      console.log(`✓ Fetched ${proxies.length} proxies from proxy-list.download`);
     }
   } catch (error) {
-    console.error('Error fetching proxies:', error.message);
+    console.error('Error fetching from proxy-list.download:', error.message);
   }
   
-  return proxies;
+  // Source 2: ProxyScrape
+  try {
+    console.log('Fetching from ProxyScrape...');
+    const url = 'https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=all&ssl=all&anonymity=all';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyScrape'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyScrape)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxyScrape:', error.message);
+  }
+  
+  // Source 3: Geonode (multiple pages)
+  try {
+    console.log('Fetching from Geonode (pages 1-5)...');
+    for (let page = 1; page <= 5; page++) {
+      const url = `https://proxylist.geonode.com/api/proxy-list?limit=500&page=${page}&sort_by=lastChecked&sort_type=desc&protocols=http`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data && Array.isArray(data.data)) {
+          for (const proxy of data.data) {
+            proxies.push({
+              host: proxy.ip,
+              port: parseInt(proxy.port),
+              protocol: 'http',
+              country: proxy.country || 'Unknown',
+              source: 'Geonode'
+            });
+          }
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Rate limit
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added Geonode)`);
+  } catch (error) {
+    console.error('Error fetching from Geonode:', error.message);
+  }
+  
+  // Source 4: Free Proxy List (HTTPS)
+  try {
+    console.log('Fetching from free-proxy-list (HTTPS)...');
+    const url = 'https://www.proxy-list.download/api/v1/get?type=https';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'proxy-list-https'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added HTTPS list)`);
+    }
+  } catch (error) {
+    console.error('Error fetching HTTPS list:', error.message);
+  }
+  
+  // Remove duplicates
+  const uniqueProxies = Array.from(
+    new Map(proxies.map(p => [`${p.host}:${p.port}`, p])).values()
+  );
+  
+  console.log(`✓ Total unique proxies: ${uniqueProxies.length}\n`);
+  
+  return uniqueProxies;
 }
 
 // Validate a single proxy
