@@ -29,18 +29,24 @@ export class ProxyiumAccessor {
       this.page = await context.newPage();
       
       // Setup popup handler
+      this.page.on('dialog', async dialog => {
+        console.log(`  → Dialog detected: ${dialog.type()} - ${dialog.message()}`);
+        await dialog.accept();
       });
       
       console.log('  → Navigating to proxyium.com...');
-      await this.page.goto('https://www.proxyium.com', { waitUntil: 'networkidle' });
+      await this.page.goto('https://www.proxyium.com', { 
+        waitUntil: 'domcontentloaded',
+        timeout: 60000
+      });
+      
+      // Wait a bit for any dynamic content to load
+      await this.simulateDelay(2000, 3000);
       console.log('✓ Browser initialized and ready');
     } catch (error) {
       console.error('✗ Failed to initialize browser:', error);
       throw error;
     }
-    });
-    
-    await this.page.goto('https://www.proxyium.com', { waitUntil: 'networkidle' });
   }
 
   /**
