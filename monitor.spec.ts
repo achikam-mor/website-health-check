@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
-import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
-import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
-import { launchBrowserWithProxy, getLocationName } from './src/browser-factory';
+import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers.js';
+import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator.js';
+import { launchBrowserWithProxy, getLocationName } from './src/browser-factory.js';
 
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
