@@ -9,7 +9,7 @@ on:
 jobs:
   simulate-traffic:
     runs-on: ubuntu-latest
-    timeout-minutes: 45  # Increased timeout for multi-location testing
+    timeout-minutes: 90  # Increased for sequential execution (26 browsers × ~2min each + proxyium)
     steps:
       - uses: actions/checkout@v4
 
@@ -32,6 +32,8 @@ jobs:
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
         continue-on-error: false
       
+      # INDEPENDENT TEST: Proxyium runs separately, unrelated to proxy list
+      # This test accesses stockscanner.net through proxyium.com with multi-page browsing
       - name: Access StockScanner via Proxyium
         run: node test-proxyium.mjs
         env:

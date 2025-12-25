@@ -359,7 +359,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       let workingHardcoded: ValidatedProxy[] = [];
       
       if (hardcodedProxies.length > 0) {
-        console.log('✅ Using all hardcoded proxies WITHOUT validation (faster startup)');
+        console.log(`✅ Using top ${hardcodedProxies.length} proxies WITHOUT validation (faster startup)`);
         
         // Use all proxies directly without validation
         workingProxies = hardcodedProxies.map(p => ({
@@ -368,15 +368,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           responseTime: p.responseTime || 1000
         })) as ValidatedProxy[];
         
-        console.log(`\n✅ Using ${workingProxies.length} proxies from working-proxies.json:`);
+        // Count proxies with known countries
+        const knownCountryCount = workingProxies.filter(p => p.country !== 'Unknown').length;
         
-        // Show first 10 for preview
-        for (let i = 0; i < Math.min(10, workingProxies.length); i++) {
+        console.log(`\n✅ Using ${workingProxies.length} proxies from working-proxies.json:`);
+        console.log(`   📍 ${knownCountryCount} proxies with known countries (prioritized)`);
+        console.log(`   ⚡ ${workingProxies.length - knownCountryCount} fastest proxies (by response time)\n`);
+        
+        // Show all proxies
+        for (let i = 0; i < workingProxies.length; i++) {
           const p = workingProxies[i];
-          console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country})`);
-        }
-        if (workingProxies.length > 10) {
-          console.log(`   ... and ${workingProxies.length - 10} more proxies`);
+          console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country}) - ${p.responseTime}ms`);
         }
         console.log('==================================================\n');
         return;
@@ -465,8 +467,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   });
   
   test('Visit and scroll all pages from multiple locations', async () => {
-    // Increased timeout for parallel execution
-    test.setTimeout(2400000);
+    // Increased timeout for SEQUENTIAL execution (not parallel anymore)
+    // With 26 locations × ~60s per location + delays = ~30-40 minutes minimum
+    test.setTimeout(3600000); // 60 minutes
     
     // Test configurations: proxies + one default location
     const testConfigs = [
@@ -479,16 +482,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations with randomized behavior (0-60s start spread)...\n`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations SEQUENTIALLY (2-3s delays)...`);
+    console.log(`   📍 1 Direct GitHub connection (no proxy)`);
+    console.log(`   📍 ${workingProxies.length} Proxy locations`);
+    console.log(`   📍 Plus 1 Proxyium access (runs separately after this test)\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
-      // Random stagger (0-60 seconds) between each browser start for better GA separation
-      const randomDelay = Math.floor(Math.random() * 60000); // 0-60 seconds
-      if (index > 0) {
-        await new Promise(resolve => setTimeout(resolve, randomDelay));
-      }
-      
       const locationName = config.location;
       
       console.log(`\n${'='.repeat(60)}`);
@@ -775,10 +775,22 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
     };
     
-    // Run all location tests in parallel!
-    const allResults = await Promise.all(
-      testConfigs.map((config, index) => testLocation(config, index))
-    );
+    // Run all location tests SEQUENTIALLY with delays (not in parallel!)
+    // This ensures each browser instance opens with at least 2 seconds between them
+    console.log('⏱️  Running tests sequentially with 2-3 second delays between browser launches...\n');
+    
+    const allResults: LocationTestResult[] = [];
+    for (let i = 0; i < testConfigs.length; i++) {
+      // Add delay before each test (except the first one)
+      if (i > 0) {
+        const delay = Math.floor(Math.random() * 1000) + 2000; // 2-3 seconds
+        console.log(`⏳ Waiting ${(delay/1000).toFixed(1)}s before launching next browser...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+      
+      const result = await testLocation(testConfigs[i], i);
+      allResults.push(result);
+    }
     
     // Final comprehensive report
     console.log('\n\n');
