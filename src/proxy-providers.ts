@@ -48,7 +48,13 @@ const HARDCODED_PROXIES: ProxyInfo[] = loadProxiesFromFile();
  */
 export function getHardcodedProxies(): ProxyInfo[] {
   if (HARDCODED_PROXIES.length > 0) {
-    console.log(`📌 Using ${HARDCODED_PROXIES.length} hardcoded proxies`);
+    console.log(`📌 Using ${HARDCODED_PROXIES.length} hardcoded proxies from working-proxies.json`);
+    // Log first 5 proxies for verification
+    console.log('📍 First 5 proxies to be tested:');
+    for (let i = 0; i < Math.min(5, HARDCODED_PROXIES.length); i++) {
+      const p = HARDCODED_PROXIES[i];
+      console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country})`);
+    }
   }
   return [...HARDCODED_PROXIES];
 }

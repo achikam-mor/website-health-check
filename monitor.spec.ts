@@ -367,6 +367,26 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         if (workingHardcoded.length > 0) {
           console.log(`✅ ${workingHardcoded.length}/${hardcodedProxies.length} hardcoded proxies are working`);
           
+          // Log each working proxy
+          console.log('\n📋 Working proxies from working-proxies.json:');
+          for (let i = 0; i < workingHardcoded.length; i++) {
+            const p = workingHardcoded[i];
+            console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country}) - ${p.responseTime}ms - ✅ WORKING`);
+          }
+          
+          // Log failed proxies for debugging
+          const failedProxies = validatedHardcoded.filter(p => !p.validated);
+          if (failedProxies.length > 0) {
+            console.log('\n⚠️ Failed proxies:');
+            for (let i = 0; i < Math.min(failedProxies.length, 10); i++) {
+              const p = failedProxies[i];
+              console.log(`   ${i+1}. ${p.host}:${p.port} (${p.country}) - ❌ FAILED`);
+            }
+            if (failedProxies.length > 10) {
+              console.log(`   ... and ${failedProxies.length - 10} more failed proxies`);
+            }
+          }
+          
           // Check city diversity - if too many from same city, supplement with API
           const cityCount = new Map<string, number>();
           for (const proxy of workingHardcoded) {
