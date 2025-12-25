@@ -19,26 +19,36 @@ function loadProxiesFromFile(): ProxyInfo[] {
   try {
     const fs = require('fs');
     const path = require('path');
-    const filePath = path.join(process.cwd(), 'working-proxies.json');
     
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf8');
-      const proxies = JSON.parse(data);
-      console.log(`📂 Loaded ${proxies.length} proxies from working-proxies.json`);
-      return proxies;
+    // Try multiple possible locations
+    const possiblePaths = [
+      path.join(process.cwd(), 'working-proxies.json'),
+      path.join(__dirname, '..', 'working-proxies.json'),
+      './working-proxies.json',
+      '../working-proxies.json'
+    ];
+    
+    for (const filePath of possiblePaths) {
+      try {
+        if (fs.existsSync(filePath)) {
+          const data = fs.readFileSync(filePath, 'utf8');
+          const proxies = JSON.parse(data);
+          console.log(`📂 Loaded ${proxies.length} proxies from ${filePath}`);
+          return proxies;
+        }
+      } catch (err) {
+        // Try next path
+        continue;
+      }
     }
+    
+    console.log(`❌ working-proxies.json not found! Tried paths: ${possiblePaths.join(', ')}`);
+    console.log(`Current working directory: ${process.cwd()}`);
+    return [];
   } catch (error) {
-    console.log('⚠️  Could not load working-proxies.json, using fallback proxies');
+    console.log(`❌ Error loading working-proxies.json: ${error}`);
+    return [];
   }
-  
-  // Fallback proxies if file doesn't exist
-  return [
-    { host: '23.227.60.224', port: 80, protocol: 'http', country: 'CA', source: 'Manual' },
-    { host: '104.16.0.167', port: 80, protocol: 'http', country: 'CA', source: 'Manual' },
-    { host: '185.146.173.210', port: 80, protocol: 'http', country: 'SE', source: 'Manual' },
-    { host: '104.25.121.229', port: 80, protocol: 'http', country: 'CA', source: 'Manual' },
-    { host: '104.17.52.129', port: 80, protocol: 'http', country: 'CA', source: 'Manual' },
-  ];
 }
 
 const HARDCODED_PROXIES: ProxyInfo[] = loadProxiesFromFile();
