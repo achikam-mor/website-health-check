@@ -3,6 +3,9 @@
  * Fetches free proxy lists from multiple sources with geographic data
  */
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 export interface ProxyInfo {
   host: string;
   port: number;
@@ -17,9 +20,6 @@ export interface ProxyInfo {
  */
 function loadProxiesFromFile(): ProxyInfo[] {
   try {
-    const fs = require('fs');
-    const path = require('path');
-    
     // Try multiple possible locations
     const possiblePaths = [
       path.join(process.cwd(), 'working-proxies.json'),
