@@ -30,6 +30,12 @@ jobs:
           # Prevent potential proxy connection issues
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
         continue-on-error: false
+      
+      - name: Access StockScanner via Proxyium
+        run: node test-proxyium.mjs
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: '0'
+        continue-on-error: true
         
       - name: Upload Report on Failure
         if: failure()

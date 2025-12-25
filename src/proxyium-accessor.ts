@@ -13,22 +13,31 @@ export class ProxyiumAccessor {
    * Initialize the browser and navigate to proxyium.com
    */
   async initialize(): Promise<void> {
-    this.browser = await chromium.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
+    try {
+      console.log('✓ Step 1: Initializing browser...');
+      
+      this.browser = await chromium.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
 
-    const context = await this.browser.newContext({
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      viewport: { width: 1280, height: 720 }
-    });
+      const context = await this.browser.newContext({
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        viewport: { width: 1280, height: 720 }
+      });
 
-    this.page = await context.newPage();
-    
-    // Setup popup handler
-    this.page.on('dialog', async dialog => {
-      console.log(`Dialog detected: ${dialog.type()} - ${dialog.message()}`);
-      await dialog.accept();
+      this.page = await context.newPage();
+      
+      // Setup popup handler
+      });
+      
+      console.log('  → Navigating to proxyium.com...');
+      await this.page.goto('https://www.proxyium.com', { waitUntil: 'networkidle' });
+      console.log('✓ Browser initialized and ready');
+    } catch (error) {
+      console.error('✗ Failed to initialize browser:', error);
+      throw error;
+    }
     });
     
     await this.page.goto('https://www.proxyium.com', { waitUntil: 'networkidle' });
@@ -44,50 +53,65 @@ export class ProxyiumAccessor {
       throw new Error('Browser not initialized. Call initialize() first.');
     }
 
-    // Find the search input box
-    const searchInput = await this.page.locator('input[type="text"], input[name="url"], input[placeholder*="URL"], input[placeholder*="url"], input[placeholder*="address"]').first();
-    
-    if (!await searchInput.isVisible()) {
-      throw new Error('Search input box not found on proxyium.com');
+    try {
+      console.log(`✓ Step 2: Searching for ${url}...`);
+      
+      // Find the search input box
+      const searchInput = await this.page.locator('input[type="text"], input[name="url"], input[placeholder*="URL"], input[placeholder*="url"], input[placeholder*="address"]').first();
+      
+      if (!await searchInput.isVisible()) {
+        throw new Error('✗ Search input box not found on proxyium.com');
+      }
+      console.log('  → Found search input box');
+
+      // Simulate human typing with delays
+      await searchInput.click();
+      await this.simulateDelay(300, 500);
+      console.log('  → Typing URL...');
+      await searchInput.type(url, { delay: 100 });
+      await this.simulateDelay(500, 800);
+      
+      // Find and click the Go button
+      console.log('  → Looking for Go button...');
+      const goButton = await this.page.locator(
+        'button:has-text("Go"), button:has-text("GO"), button[type="submit"], input[type="submit"], button:has-text("Browse")'
+      ).first();
+
+      if (!await goButton.isVisible()) {
+        throw new Error('✗ Go button not found on proxyium.com');
+      }
+      console.log('  → Found Go button, clicking...');
+
+      // Click the button and wait for navigation
+      await Promise.all([
+        this.page.waitForLoadState('domcontentloaded', { timeout: 60000 }),
+        goButton.click()
+      ]);
+      
+      // Wait for page to settle
+      await this.simulateDelay(3000, 4000);
+      console.log('✓ Step 3: Navigation complete');
+
+      // IMPORTANT: Wait 2-4 seconds for Google consent popup to appear
+      console.log('✓ Step 4: Waiting for potential popups...');
+      await this.simulateDelay(2000, 4000);
+      
+      // Handle Google consent popup specifically
+      await this.handleGoogleConsentPopup();
+      
+      // Handle other potential popups
+      await this.handlePopups();
+      
+      // Wait a bit for the page to settle after popup handling
+      await this.simulateDelay(2000, 3000);
+      console.log('✓ Step 5: Popups handled, page ready');
+
+      // Return the current URL after navigation
+      return this.page.url();
+    } catch (error) {
+      console.error('✗ Failed during website search:', error);
+      throw error;
     }
-
-    // Simulate human typing with delays
-    await searchInput.click();
-    await this.simulateDelay(300, 500);
-    await searchInput.type(url, { delay: 100 });
-    await this.simulateDelay(500, 800);
-    
-    // Find and click the Go button
-    // Try multiple selectors to find the submit button
-    const goButton = await this.page.locator(
-      'button:has-text("Go"), button:has-text("GO"), button[type="submit"], input[type="submit"], button:has-text("Browse")'
-    ).first();
-
-    if (!await goButton.isVisible()) {
-      throw new Error('Go button not found on proxyium.com');
-    }
-
-    // Click the button and wait for navigation
-    await Promise.all([
-      this.page.waitForLoadState('networkidle'),
-      goButton.click()
-    ]);
-
-    // IMPORTANT: Wait 2-4 seconds for Google consent popup to appear
-    console.log('Waiting for potential Google consent popup...');
-    await this.simulateDelay(2000, 4000);
-    
-    // Handle Google consent popup specifically
-    await this.handleGoogleConsentPopup();
-    
-    // Handle other potential popups
-    await this.handlePopups();
-    
-    // Wait a bit for the page to settle after popup handling
-    await this.simulateDelay(2000, 3000);
-
-    // Return the current URL after navigation
-    return this.page.url();
   }
 
   /**
@@ -131,13 +155,7 @@ export class ProxyiumAccessor {
   }
 
   /**
-   * Handle Google consent popup specifically
-   */
-  private async handleGoogleConsentPopup(): Promise<void> {
-    if (!this.page) return;
-
-    try {
-      console.log('Looking for Google consent popup...');
+   * Handle Google   → Checking for Google consent popup...');
       
       // Multiple selectors to find "Do not consent" button
       const doNotConsentSelectors = [
@@ -156,10 +174,10 @@ export class ProxyiumAccessor {
         try {
           const button = this.page.locator(selector).first();
           if (await button.isVisible({ timeout: 1000 })) {
-            console.log('Found "Do not consent" button, clicking...');
+            console.log('  → Found "Do not consent" button, clicking...');
             await button.click();
             clicked = true;
-            console.log('Successfully clicked "Do not consent"');
+            console.log('  ✓ Clicked "Do not consent" successfully');
             
             // Wait 2-3 seconds after clicking as requested
             await this.simulateDelay(2000, 3000);
@@ -169,6 +187,12 @@ export class ProxyiumAccessor {
           // Continue trying other selectors
         }
       }
+
+      if (!clicked) {
+        console.log('  → No Google consent popup detected');
+      }
+    } catch (error) {
+      console.log('  → 
 
       if (!clicked) {
         console.log('No Google consent popup detected or already handled.');
@@ -226,35 +250,151 @@ export class ProxyiumAccessor {
       throw new Error('Browser not initialized.');
     }
 
-    console.log('Simulating real user browsing behavior...');
+    console.log('✓ Starting realistic browsing simulation...');
 
-    // Random mouse movements
-    await this.page.mouse.move(200, 300);
-    await this.simulateDelay(500, 1000);
-    
-    await this.page.mouse.move(600, 400);
-    await this.simulateDelay(300, 700);
+    try {
+      // Get viewport dimensions
+      const viewport = this.page.viewportSize() || { width: 1280, height: 720 };
 
-    // Scroll down slowly like a real user
-    const scrollSteps = 3 + Math.floor(Math.random() * 3); // 3-5 scrolls
-    for (let i = 0; i < scrollSteps; i++) {
-      await this.page.evaluate(() => {
-        window.scrollBy(0, 200 + Math.random() * 300);
-      });
-      await this.simulateDelay(800, 1500);
+      // Realistic mouse movements (5-10 moves with smooth animation)
+      console.log('  → Simulating mouse movements...');
+      const numMouseMoves = Math.floor(Math.random() * 6) + 5; // 5-10 moves
+      for (let i = 0; i < numMouseMoves; i++) {
+        const x = Math.floor(Math.random() * viewport.width);
+        const y = Math.floor(Math.random() * viewport.height);
+        await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 5) + 5 });
+        await this.simulateDelay(100, 400);
+      }
+
+      // Keyboard interactions (30% chance)
+      if (Math.random() < 0.3) {
+        console.log('  → Simulating keyboard interactions...');
+        const keyActions = [
+          async () => {
+            // Arrow key scrolling
+            const numPresses = Math.floor(Math.random() * 3) + 2;
+            for (let i = 0; i < numPresses; i++) {
+              await this.page!.keyboard.press('ArrowDown');
+              await this.simulateDelay(200, 400);
+            }
+          },
+          async () => {
+            // Spacebar scroll
+            await this.page!.keyboard.press('Space');
+            await this.simulateDelay(400, 800);
+          },
+          async () => {
+            // Home/End key
+            await this.page!.keyboard.press(Math.random() > 0.5 ? 'Home' : 'End');
+            await this.simulateDelay(300, 500);
+          }
+        ];
+        
+        const randomAction = keyActions[Math.floor(Math.random() * keyActions.length)];
+        try {
+          await randomAction();
+        } catch (e) {
+          // Ignore keyboard errors
+        }
+      }
+
+      // Hover over links (50% chance)
+      if (Math.random() < 0.5) {
+        console.log('  → Hovering over links...');
+        try {
+          const links = await this.page.locator('a').count();
+          if (links > 0) {
+            const randomLink = Math.floor(Math.random() * Math.min(links, 10));
+            await this.page.locator('a').nth(randomLink).hover({ timeout: 2000 });
+            await this.simulateDelay(200, 500);
+          }
+        } catch (e) {
+          // Ignore hover errors
+        }
+      }
+
+      // Progressive scrolling down
+      console.log('  → Scrolling through page...');
+      const scrollSteps = Math.floor(Math.random() * 5) + 4; // 4-8 scrolls
+      for (let i = 0; i < scrollSteps; i++) {
+        const scrollAmount = Math.floor(Math.random() * 400) + 200; // 200-600px
+        await this.page.evaluate((amount) => {
+          window.scrollBy({
+            top: amount,
+            behavior: 'smooth'
+          });
+        }, scrollAmount);
+        await this.simulateDelay(800, 1800);
+      }
+
+      // Random click on non-navigation elements (30% chance)
+      if (Math.random() < 0.3) {
+        console.log('  → Clicking interactive elements...');
+        try {
+          const selectors = ['button:not([type="submit"])', 'div[role="button"]', '[onclick]'];
+          const selector = selectors[Math.floor(Math.random() * selectors.length)];
+          const elements = await this.page.locator(selector).count();
+          if (elements > 0) {
+            const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
+            await this.page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
+            await this.simulateDelay(500, 1000);
+          }
+        } catch (e) {
+          // Element might not be clickable - that's fine
+        }
+      }
+
+      // Scroll back up (simulate reading something again)
+      console.log('  → Scrolling back up...');
+      const scrollUp = Math.floor(Math.random() * 300) + 150;
+      await this.page.evaluate((amount) => {
+        window.scrollBy({
+          top: -amount,
+          behavior: 'smooth'
+        });
+      }, scrollUp);
+      await this.simulateDelay(1000, 2000);
+
+      // Random human behaviors (25% chance)
+      const randomBehavior = Math.random();
+      if (randomBehavior < 0.10) {
+        // Reload page (checking for updates)
+        console.log('  → Reloading page...');
+        await this.page.reload({ waitUntil: 'domcontentloaded', timeout: 10000 });
+        await this.simulateDelay(1500, 2500);
+      } else if (randomBehavior < 0.20) {
+        // Extra long pause (user distracted)
+        const longPause = Math.floor(Math.random() * 5000) + 3000; // 3-8 seconds
+        console.log(`  → Long pause (${Math.round(longPause/1000)}s - user distracted)...`);
+        await this.simulateDelay(longPause, longPause);
+      } else if (randomBehavior < 0.25) {
+        // Simulate tab unfocus/focus (multitasking)
+        console.log('  → Simulating tab switch (multitasking)...');
+        await this.page.evaluate(() => {
+          window.dispatchEvent(new Event('blur'));
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+        await this.simulateDelay(2000, 4000);
+        await this.page.evaluate(() => {
+          window.dispatchEvent(new Event('focus'));
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+      }
+
+      // Final random mouse movements
+      console.log('  → Final mouse movements...');
+      for (let i = 0; i < 3; i++) {
+        const x = Math.floor(Math.random() * viewport.width);
+        const y = Math.floor(Math.random() * viewport.height);
+        await this.page.mouse.move(x, y, { steps: Math.floor(Math.random() * 3) + 3 });
+        await this.simulateDelay(200, 500);
+      }
+
+      console.log('✓ Browsing simulation complete');
+    } catch (error) {
+      console.error('✗ Error during browsing simulation:', error);
+      throw error;
     }
-
-    // Move mouse around
-    await this.page.mouse.move(400, 500);
-    await this.simulateDelay(500, 1000);
-
-    // Scroll back up a bit
-    await this.page.evaluate(() => {
-      window.scrollBy(0, -150);
-    });
-    await this.simulateDelay(1000, 1500);
-
-    console.log('Browsing simulation complete.');
   }
 
   /**
@@ -288,30 +428,25 @@ export async function runProxyiumAccess(targetUrl: string = 'www.stockscanner.ne
   const accessor = new ProxyiumAccessor();
   
   try {
-    console.log(`Initializing browser and navigating to proxyium.com...`);
     await accessor.initialize();
     
-    console.log(`Searching for: ${targetUrl}`);
     const resultUrl = await accessor.searchWebsite(targetUrl);
-    
-    console.log(`Successfully navigated. Result URL: ${resultUrl}`);
+    console.log(`  → Result URL: ${resultUrl}`);
     
     const pageTitle = await accessor.getPageTitle();
-    console.log(`Page title: ${pageTitle}`);
+    console.log(`  → Page title: ${pageTitle}`);
     
-    // Simulate real user browsing behavior
+    console.log('\n✓ Step 6: Simulating realistic user browsing...');
     await accessor.simulateRealUserBrowsing();
     
-    // Optional: Take a screenshot for verification
-    // await accessor.takeScreenshot('stockscanner-result.png');
-    
-    console.log('Browser remains open for further interactions...');
+    console.log('\n✓ All steps completed successfully');
+    console.log('  → Browser remains open for further interactions\n');
     
     // Return accessor so browser stays open
     return accessor;
     
   } catch (error) {
-    console.error('Error accessing proxyium:', error);
+    console.error('\n✗ Error during execution:', error);
     await accessor.close();
     throw error;
   }

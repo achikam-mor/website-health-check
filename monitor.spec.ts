@@ -556,26 +556,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Generate and log unique GA Client ID for verification
         const gaClientId = `GA1.2.${Math.floor(Math.random() * 2147483647)}.${Math.floor(Date.now() / 1000)}`;
         
-        console.log(`🌐 User-Agent: ${userAgent}`);
-        console.log(`📱 Viewport: ${viewport.width}x${viewport.height}`);
-        console.log(`🖥️  Hardware: ${hardware.cpuCores} cores, ${hardware.deviceMemory}GB RAM, ${hardware.colorDepth}-bit color, ${hardware.platform}`);
-        console.log(`🆔 GA Client ID: ${gaClientId}`);
-        console.log(`📍 Geolocation: ${geo.name} (${geo.latitude}, ${geo.longitude})`);
-        console.log(`🗣️  Language: ${language}`);
-        if (referrer) {
-          console.log(`🔗 Referrer: ${referrer}`);
-        } else {
-          console.log(`🔗 Referrer: Direct traffic`);
-        }
-        if (config.proxy) {
-          const location = config.proxy.realCity && config.proxy.realCountry 
-            ? `${config.proxy.realCity}, ${config.proxy.realCountry}` 
-            : config.proxy.country;
-          console.log(`🔒 Proxy: ${config.proxy.protocol}://${config.proxy.host}:${config.proxy.port} (${config.proxy.responseTime}ms)`);
-          console.log(`🌍 Proxy Location: ${location}${config.proxy.timezone ? ' (' + config.proxy.timezone + ')' : ''}`);
-          console.log(`ℹ️  Note: Using HTTP protocol with proxy (free proxies don't support HTTPS tunneling)`);
-        }
-        console.log('');
+        // Config ready (detailed logs removed for cleaner output)
         
         // Randomize behavior: each user visits different number of pages (5-10) in random order
         const useHttp = !!config.proxy;
@@ -612,11 +593,11 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           
           // Random early exit (10% chance after 3rd page) - realistic user behavior
           if (pageIndex >= 3 && Math.random() < 0.1) {
-            console.log(`  ⚡ User left early after ${pageIndex} pages`);
+            // User left early
             break;
           }
           
-          console.log(`  [${pageIndex + 1}/${pagesToTest.length}] ${url}...`);
+          // Visiting page silently
           
           // Random delay between pages (3-12 seconds) - varies by user behavior
           if (pageIndex > 0) {
@@ -713,7 +694,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 const elements = await page.locator(selector).count();
                 if (elements > 0) {
                   const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
-                  console.log(`      🖱️  Clicking interactive element...`);
+                  // Clicking interactive element
                   await page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
                   await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
                 }
@@ -729,24 +710,24 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             const randomBehavior = Math.random();
             if (randomBehavior < 0.1 && pageIndex > 0) {
               // 10% chance: Go back then forward (user reconsidering)
-              console.log(`      ↩️  Going back...`);
+              // Going back
               await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 });
               await page.waitForTimeout(Math.floor(Math.random() * 2000) + 1000);
               await page.goForward({ waitUntil: 'domcontentloaded', timeout: 10000 });
               await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
             } else if (randomBehavior < 0.15) {
               // 5% chance: Reload page (checking for updates)
-              console.log(`      🔄 Reloading...`);
+              // Reloading
               await page.reload({ waitUntil: 'domcontentloaded', timeout: 10000 });
               await page.waitForTimeout(Math.floor(Math.random() * 2000) + 1000);
             } else if (randomBehavior < 0.20) {
               // 5% chance: Extra long pause (user distracted/multitasking)
               const longPause = Math.floor(Math.random() * 8000) + 5000; // 5-13 seconds
-              console.log(`      ⏸️  Long pause (${Math.round(longPause/1000)}s)...`);
+              // Long pause
               await page.waitForTimeout(longPause);
             } else if (randomBehavior < 0.25) {
               // 5% chance: Simulate tab switching (user left to check something)
-              console.log(`      👁️  Tab unfocused (multitasking)...`);
+              // Tab unfocused
               await page.evaluate(() => {
                 window.dispatchEvent(new Event('blur'));
                 document.dispatchEvent(new Event('visibilitychange'));
@@ -758,7 +739,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
               });
             }
             
-            console.log(`      ✅ Success`);
+            // Success
           } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error(`      ❌ Failed: ${errorMessage}`);
