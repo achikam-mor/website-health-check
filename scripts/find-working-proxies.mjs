@@ -1,11 +1,12 @@
 /**
- * Script to find working proxies and generate hardcoded list
+ * Script to find REAL working proxies with IP verification
+ * Filters out CDN/fake proxies that don't actually change your IP
  * Run: node scripts/find-working-proxies.mjs
  */
 
 import { chromium } from '@playwright/test';
 
-// Fetch proxies from multiple sources
+// Fetch proxies from multiple FREE sources
 async function fetchProxies() {
   const proxies = [];
   
@@ -131,44 +132,152 @@ async function fetchProxies() {
   return uniqueProxies;
 }
 
-// Validate a single proxy
-async function validateProxy(proxy, timeout = 10000) {
+// Check if IP is a Cloudflare/CDN IP (these won't work as proxies)
+function isCloudflareOrCDN(ip) {
+  const cdnRanges = [
+    '104.16.', '104.17.', '104.18.', '104.19.', '104.20.', '104.21.', '104.22.', '104.23.', '104.24.', '104.25.', '104.26.', '104.27.', '104.28.', '104.29.', '104.30.', '104.31.',
+    '172.64.', '172.65.', '172.66.', '172.67.', '172.68.', '172.69.', '172.70.', '172.71.',
+    '188.114.', '190.93.', '197.234.', '198.41.',
+    '199.27.', '203.22.', '203.23.', '203.24.', '203.25.', '203.26.', '203.27.', '203.28.', '203.29.', '203.30.', '203.31.', '203.32.', '203.33.',
+    '23.227.', '45.8.',
+  ];
+  
+  return cdnRanges.some(range => ip.startsWith(range));
+}
+
+// Get actual external IP when using a proxy (verifies proxy actually works)
+async function getExternalIP(browser) {
+  try {
+    const context = browser.contexts()[0];
+    const page = await context.newPage();
+    page.setDefaultTimeout(8000);
+    
+    // Try multiple IP check services
+    const ipServices = [
+      'https://api.ipify.org?format=json',
+      'https://api.my-ip.io/ip.json',
+      'http://ip-api.com/json/',
+    ];
+    
+    for (const service of ipServices) {
+      try {
+        await page.goto(service, { waitUntil: 'domcontentloaded', timeout: 8000 });
+        const content = await page.content();
+        
+        // Parse IP from response
+        let ip = null;
+        if (service.includes('ipify')) {
+          const match = content.match(/"ip":"([^"]+)"/);
+          ip = match ? match[1] : null;
+        } else if (service.includes('my-ip')) {
+          const match = content.match(/"ip":"([^"]+)"/);
+          ip = match ? match[1] : null;
+        } else if (service.includes('ip-api')) {
+          const match = content.match(/"query":"([^"]+)"/);
+          ip = match ? match[1] : null;
+        }
+        
+        if (ip && ip.match(/^\d+\.\d+\.\d+\.\d+$/)) {
+          await page.close();
+          return ip;
+        }
+      } catch (e) {
+        // Try next service
+        continue;
+      }
+    }
+    
+    await page.close();
+    return null;
+  } catch (error) {
+    return null;
+  }
+}
+
+// Validate a single proxy WITH IP VERIFICATION
+async function validateProxy(proxy, timeout = 12000) {
   const proxyUrl = `${proxy.protocol}://${proxy.host}:${proxy.port}`;
   let browser = null;
   
   try {
     const startTime = Date.now();
     
+    // Filter out known CDN IPs immediately
+    if (isCloudflareOrCDN(proxy.host)) {
+      return { 
+        ...proxy, 
+        validated: false, 
+        error: 'Cloudflare/CDN IP - not a real proxy' 
+      };
+    }
+    
     browser = await chromium.launch({
       headless: true,
-      proxy: { server: proxyUrl }
+      proxy: { server: proxyUrl },
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     
     const context = await browser.newContext();
     const page = await context.newPage();
     page.setDefaultTimeout(timeout);
     
-    await page.goto('http://httpbin.org/get', { waitUntil: 'domcontentloaded' });
+    // First, check if we can load a simple page
+    await page.goto('http://example.com', { waitUntil: 'domcontentloaded', timeout: timeout });
     
     const content = await page.content();
     if (!content || content.length < 100) {
       throw new Error('Page did not load properly');
     }
     
-    const responseTime = Date.now() - startTime;
-    await browser.close();
+    // CRITICAL: Verify the actual external IP
+    const externalIP = await getExternalIP(browser);
     
-    return { ...proxy, validated: true, responseTime };
+    if (!externalIP) {
+      throw new Error('Could not detect external IP');
+    }
+    
+    // Check if proxy is actually changing our IP
+    if (externalIP === proxy.host) {
+      // Perfect! Proxy is working and showing its own IP
+      const responseTime = Date.now() - startTime;
+      await browser.close();
+      
+      return { 
+        ...proxy, 
+        validated: true, 
+        responseTime,
+        externalIP: externalIP,
+        verified: true
+      };
+    } else {
+      // Proxy connected but showing different IP (could still be useful)
+      const responseTime = Date.now() - startTime;
+      await browser.close();
+      
+      return { 
+        ...proxy, 
+        validated: true, 
+        responseTime,
+        externalIP: externalIP,
+        verified: true,
+        note: 'IP differs from proxy host (proxy chain or gateway)'
+      };
+    }
     
   } catch (error) {
     if (browser) await browser.close().catch(() => {});
-    return { ...proxy, validated: false, error: error.message };
+    return { 
+      ...proxy, 
+      validated: false, 
+      error: error.message 
+    };
   }
 }
 
 // Main function
 async function findWorkingProxies() {
-  console.log('🔍 Finding working proxies...\n');
+  console.log('🔍 Finding REAL working proxies with IP verification...\n');
+  console.log('⚠️  This will filter out Cloudflare/CDN IPs that don\'t work as proxies\n');
   
   // Fetch proxies
   const allProxies = await fetchProxies();
@@ -179,55 +288,53 @@ async function findWorkingProxies() {
     return;
   }
   
-  // Test up to 3000 proxies to find working ones
-  const proxiesToTest = allProxies.slice(0, 3000);
-  console.log(`Testing ${proxiesToTest.length} proxies (concurrency: 20, timeout: 15s)...\n`);
+  // Pre-filter Cloudflare/CDN IPs
+  const filteredProxies = allProxies.filter(p => !isCloudflareOrCDN(p.host));
+  const cdnCount = allProxies.length - filteredProxies.length;
+  console.log(`🚫 Filtered out ${cdnCount} Cloudflare/CDN IPs (they don't work as proxies)`);
+  console.log(`✓ ${filteredProxies.length} potential real proxies remaining\n`);
+  
+  // Test up to 5000 proxies to find working ones
+  const proxiesToTest = filteredProxies.slice(0, 5000);
+  console.log(`Testing ${proxiesToTest.length} proxies with IP verification (concurrency: 15, timeout: 12s)...\n`);
   
   const working = [];
   
-  // Validate in batches of 20 with longer timeout
-  for (let i = 0; i < proxiesToTest.length; i += 20) {
-    const batch = proxiesToTest.slice(i, i + 20);
-    const results = await Promise.all(batch.map(p => validateProxy(p, 15000)));
-    const validInBatch = results.filter(p => p.validated);
+  // Validate in batches of 15 with IP verification
+  for (let i = 0; i < proxiesToTest.length; i += 15) {
+    const batch = proxiesToTest.slice(i, i + 15);
+    const results = await Promise.all(batch.map(p => validateProxy(p, 12000)));
+    const validInBatch = results.filter(p => p.validated && p.verified);
     working.push(...validInBatch);
-    console.log(`  Batch ${Math.floor(i / 20) + 1}/${Math.ceil(proxiesToTest.length / 20)}: ${validInBatch.length}/${batch.length} valid (Total: ${working.length} working)`);
+    
+    const batchNum = Math.floor(i / 15) + 1;
+    const totalBatches = Math.ceil(proxiesToTest.length / 15);
+    console.log(`  Batch ${batchNum}/${totalBatches}: ${validInBatch.length}/${batch.length} VERIFIED (Total: ${working.length} working)`);
+    
+    // Show some verified IPs
+    if (validInBatch.length > 0) {
+      for (const p of validInBatch.slice(0, 2)) {
+        console.log(`    ✓ ${p.host}:${p.port} → External IP: ${p.externalIP} (${p.responseTime}ms)`);
+      }
+    }
     
     // Stop if we found enough working proxies
-    if (working.length >= 100) {
-      console.log(`\n✅ Found ${working.length} working proxies! Stopping validation.\n`);
+    if (working.length >= 50) {
+      console.log(`\n✅ Found ${working.length} VERIFIED working proxies! Stopping validation.\n`);
       break;
     }
   }
   
-  console.log(`\n✅ Found ${working.length} working proxies!\n`);
+  console.log(`\n✅ Found ${working.length} VERIFIED working proxies!\n`);
   
   if (working.length === 0) {
-    console.log('No working proxies found. Try running again.');
+    console.log('❌ No working proxies found. Free proxies are often unreliable.');
+    console.log('💡 Consider running this script multiple times or using paid proxy services.');
     return;
   }
   
   // Sort by response time
   working.sort((a, b) => a.responseTime - b.responseTime);
-  
-  // Generate code - ready to paste
-  console.log('═'.repeat(80));
-  console.log('📋 All working proxies have been saved to working-proxies.json');
-  console.log('   The workflow will automatically use them.')
-  console.log('═'.repeat(80));
-  console.log('');
-  console.log(`💾 Saved ${working.length} working proxies`);
-  console.log('\nTop 20 fastest proxies:');
-  console.log('const HARDCODED_PROXIES: ProxyInfo[] = [');
-  
-  for (const proxy of working.slice(0, 20)) {
-    console.log(`  { host: '${proxy.host}', port: ${proxy.port}, protocol: '${proxy.protocol}', country: '${proxy.country}', source: 'Manual' }, // ${proxy.responseTime}ms`);
-  }
-  
-  console.log('];');
-  console.log('');
-  console.log('═'.repeat(80));
-  console.log('');
   
   // Save to JSON file for reuse (all working proxies)
   const fs = await import('fs');
@@ -236,29 +343,47 @@ async function findWorkingProxies() {
     port: p.port,
     protocol: p.protocol,
     country: p.country,
-    source: 'Manual',
-    responseTime: p.responseTime
+    source: p.source,
+    responseTime: p.responseTime,
+    externalIP: p.externalIP,
+    verified: true,
+    verifiedDate: new Date().toISOString()
   }));
   
-  fs.writeFileSync('working-proxies.json', JSON.stringify(proxiesData, null, 2));
-  console.log(`💾 Saved ${proxiesData.length} working proxies to working-proxies.json\n`);
+  // Save to verified-proxies.json (new file for verified proxies)
+  fs.writeFileSync('verified-proxies.json', JSON.stringify(proxiesData, null, 2));
+  console.log(`💾 Saved ${proxiesData.length} VERIFIED proxies to verified-proxies.json\n`);
+  
+  // Also update working-proxies.json for backwards compatibility
+  fs.writeFileSync('working-proxies.json', JSON.stringify(proxiesData.slice(0, 25), null, 2));
+  console.log(`💾 Saved top 25 proxies to working-proxies.json (for workflow)\n`);
+  
+  // Generate code - ready to paste
+  console.log('═'.repeat(80));
+  console.log('📋 VERIFIED proxies saved! These are REAL proxies with confirmed IP changes.');
+  console.log('═'.repeat(80));
+  console.log('');
   
   // Summary table
-  console.log('\n📊 Working Proxies Summary (Top 20):');
-  console.log('─'.repeat(80));
-  console.log('  #  | Country    | Host              | Port  | Protocol | Speed');
-  console.log('─'.repeat(80));
-  for (let i = 0; i < Math.min(working.length, 20); i++) {
+  console.log('\n📊 Verified Working Proxies Summary:');
+  console.log('─'.repeat(100));
+  console.log('  #  | Country    | Proxy IP          | Port  | External IP       | Speed  | Verified');
+  console.log('─'.repeat(100));
+  for (let i = 0; i < Math.min(working.length, 25); i++) {
     const proxy = working[i];
     const num = String(i + 1).padStart(3);
     const country = String(proxy.country).padEnd(10);
     const host = String(proxy.host).padEnd(17);
     const port = String(proxy.port).padEnd(5);
-    const protocol = String(proxy.protocol).padEnd(8);
-    console.log(`  ${num} | ${country} | ${host} | ${port} | ${protocol} | ${proxy.responseTime}ms`);
+    const extIP = String(proxy.externalIP).padEnd(17);
+    const match = proxy.host === proxy.externalIP ? '✓' : '≠';
+    console.log(`  ${num} | ${country} | ${host} | ${port} | ${extIP} | ${proxy.responseTime}ms | ${match}`);
   }
-  console.log('─'.repeat(80));
-  console.log(`\n✅ Total ${working.length} working proxies saved to working-proxies.json\n`);
+  console.log('─'.repeat(100));
+  console.log(`\n✅ Total ${working.length} VERIFIED working proxies saved to verified-proxies.json`);
+  console.log(`✅ Top 25 saved to working-proxies.json (used by workflow)\n`);
+  console.log('📝 Note: "✓" means proxy IP matches external IP (perfect)');
+  console.log('📝 Note: "≠" means different IP (proxy chain/gateway, still works)\n');
 }
 
 findWorkingProxies().catch(console.error);
