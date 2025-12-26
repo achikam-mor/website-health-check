@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
-import { launchBrowserWithProxy, getLocationName } from './src/browser-factory';
+import { launchBrowserWithProxy, launchBrowserWithProxyium, getLocationName } from './src/browser-factory';
 
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -467,40 +467,50 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   });
   
   test('Visit and scroll all pages from multiple locations', async () => {
-    // Increased timeout for SEQUENTIAL execution (not parallel anymore)
-    // With 26 locations × ~60s per location + delays = ~30-40 minutes minimum
-    test.setTimeout(3600000); // 60 minutes
+    // Timeout for PARALLEL execution with staggered starts
+    // 27 sessions × ~60-120s per session + ~27s stagger = ~3-5 minutes total
+    test.setTimeout(600000); // 10 minutes
     
-    // Test configurations: proxies + one default location
+    // Test configurations: 1 direct + 1 proxyium + 25 proxies = 27 total
     const testConfigs = [
       // Direct connection (no proxy) as baseline
-      { proxy: undefined, location: 'Default (No Proxy)' },
-      // Working proxies
-      ...workingProxies.map(proxy => ({ 
+      { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
+      // Proxyium web proxy
+      { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
+      // Working proxies (top 25 from working-proxies.json)
+      ...workingProxies.slice(0, 25).map(proxy => ({ 
         proxy, 
-        location: `${proxy.country} - ${proxy.host}` 
+        location: `${proxy.country} - ${proxy.host}`,
+        type: 'proxy'
       }))
     ];
     
-    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations SEQUENTIALLY (2-3s delays)...`);
+    console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (1-3s stagger)...`);
     console.log(`   📍 1 Direct GitHub connection (no proxy)`);
-    console.log(`   📍 ${workingProxies.length} Proxy locations`);
-    console.log(`   📍 Plus 1 Proxyium access (runs separately after this test)\n`);
+    console.log(`   📍 1 Proxyium web proxy`);
+    console.log(`   📍 ${Math.min(workingProxies.length, 25)} Proxy locations\n`);
     
     // Function to test a single location
-    const testLocation = async (config: typeof testConfigs[0], index: number): Promise<LocationTestResult> => {
+    const testLocation = async (config: typeof testConfigs[0], index: number, startDelay: number): Promise<LocationTestResult> => {
+      // Stagger the start with random delay
+      if (startDelay > 0) {
+        console.log(`⏳ [${index + 1}/${testConfigs.length}] Waiting ${(startDelay/1000).toFixed(1)}s before launching: ${config.location}`);
+        await new Promise(resolve => setTimeout(resolve, startDelay));
+      }
+      
       const locationName = config.location;
       
       console.log(`\n${'='.repeat(60)}`);
-      console.log(`📍 [${index + 1}/${testConfigs.length}] TESTING FROM: ${locationName}`);
+      console.log(`📍 [${index + 1}/${testConfigs.length}] STARTING: ${locationName}`);
       console.log('='.repeat(60));
       
       const failures: PageFailure[] = [];
       let browser;
       let context;
+      let isProxyium = false;
       
       try {
-        // Launch browser with proxy configuration
+        // Launch browser based on type
         const userAgent = getUniqueUserAgent(index); // Unique UA per location
         const viewport = getUniqueViewport(index); // Unique screen size per location
         const hardware = getHardwareFingerprint(userAgent); // Hardware specs
@@ -523,20 +533,45 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           language = getLanguageHeader(geo.name);
         }
         
-        const browserSetup = await launchBrowserWithProxy({
-          proxy: config.proxy,
-          userAgent,
-          geolocation: geo,
-          viewport,
-          language: language,
-          timezone: config.proxy?.timezone,
-          hardware,
-          referrer
-        });
+        // Choose launcher based on type
+        let browserSetup;
+        if (config.type === 'proxyium') {
+          // Use proxyium launcher (handles popups internally)
+          browserSetup = await launchBrowserWithProxyium({
+            userAgent,
+            geolocation: geo,
+            viewport,
+            language: language,
+            hardware,
+            referrer
+          });
+          isProxyium = true;
+        } else {
+          // Use standard proxy launcher
+          browserSetup = await launchBrowserWithProxy({
+            proxy: config.proxy,
+            userAgent,
+            geolocation: geo,
+            viewport,
+            language: language,
+            timezone: config.proxy?.timezone,
+            hardware,
+            referrer
+          });
+        }
         
         browser = browserSetup.browser;
         context = browserSetup.context;
-        const page = await context.newPage();
+        
+        // Get or create page
+        let page;
+        if (isProxyium) {
+          // Proxyium already has a page open on the target site
+          const pages = context.pages();
+          page = pages[0] || await context.newPage();
+        } else {
+          page = await context.newPage();
+        }
         
         // Generate and log unique GA Client ID for verification
         const gaClientId = `GA1.2.${Math.floor(Math.random() * 2147483647)}.${Math.floor(Date.now() / 1000)}`;
@@ -544,7 +579,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Config ready (detailed logs removed for cleaner output)
         
         // Randomize behavior: each user visits different number of pages (5-10) in random order
-        const useHttp = !!config.proxy;
+        const useHttp = !!config.proxy && config.type !== 'proxyium';
         const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
         
         // Shuffle pages and select random subset
@@ -775,22 +810,39 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       }
     };
     
-    // Run all location tests SEQUENTIALLY with delays (not in parallel!)
-    // This ensures each browser instance opens with at least 2 seconds between them
-    console.log('⏱️  Running tests sequentially with 2-3 second delays between browser launches...\n');
+    // Run all location tests IN PARALLEL with staggered starts (1-3s between each)
+    // This allows browsers to run simultaneously while starting with realistic delays
+    console.log('⏱️  Launching all 27 sessions in parallel with staggered starts (1-3s between each)...\n');
     
-    const allResults: LocationTestResult[] = [];
-    for (let i = 0; i < testConfigs.length; i++) {
-      // Add delay before each test (except the first one)
-      if (i > 0) {
-        const delay = Math.floor(Math.random() * 1000) + 2000; // 2-3 seconds
-        console.log(`⏳ Waiting ${(delay/1000).toFixed(1)}s before launching next browser...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
+    // Create promises with staggered delays
+    const testPromises = testConfigs.map((config, index) => {
+      // Calculate stagger delay: 0s for first, then 1-3s random for each subsequent
+      const startDelay = index === 0 ? 0 : Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
+      return testLocation(config, index, startDelay);
+    });
+    
+    // Wait for all tests to complete (or fail)
+    const results = await Promise.allSettled(testPromises);
+    
+    // Extract actual results from Promise.allSettled
+    const allResults: LocationTestResult[] = results.map((result, index) => {
+      if (result.status === 'fulfilled') {
+        return result.value;
+      } else {
+        // Promise was rejected
+        return {
+          location: testConfigs[index].location,
+          proxy: testConfigs[index].proxy,
+          success: false,
+          failures: [{ 
+            url: 'N/A', 
+            error: result.reason instanceof Error ? result.reason.message : String(result.reason),
+            location: testConfigs[index].location
+          }],
+          timestamp: new Date()
+        };
       }
-      
-      const result = await testLocation(testConfigs[i], i);
-      allResults.push(result);
-    }
+    });
     
     // Final comprehensive report
     console.log('\n\n');
@@ -818,19 +870,19 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     
     console.log('\n' + '='.repeat(70) + '\n');
     
-    // Fail only if default location (no proxy) failed
-    const defaultLocationFailed = failedLocations.find(loc => loc.location === 'Default (No Proxy)');
+    // Fail only if direct GitHub connection failed
+    const directLocationFailed = failedLocations.find(loc => loc.location === 'Direct (GitHub Runner)');
     
-    if (defaultLocationFailed) {
+    if (directLocationFailed) {
       throw new Error(
-        `Health check failed for default location (no proxy). This indicates the website is down or unreachable.`
+        `Health check failed for direct GitHub connection. This indicates the website is down or unreachable.`
       );
     }
     
     // If only proxy locations failed, warn but don't fail the test
     if (failedLocations.length > 0) {
-      console.log('⚠️  Note: Some proxy locations failed, but the website is reachable (default location passed).');
-      console.log('    This is expected with free proxies that may not support HTTPS tunneling.');
+      console.log('⚠️  Note: Some proxy locations failed, but the website is reachable (direct connection passed).');
+      console.log('    This is expected with proxies that may be temporarily unavailable.');
     }
   });
 });
