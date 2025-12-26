@@ -17,32 +17,55 @@ export interface ProxyInfo {
 }
 
 /**
- * Load proxies from working-proxies.json if it exists
+ * Load proxies from verified-proxies.json (preferred) or temp-verified-proxies.json (fallback)
+ * Falls back to working-proxies.json for backwards compatibility
  */
 function loadProxiesFromFile(): ProxyInfo[] {
   try {
-    // In GitHub Actions, working directory is the repo root
-    const filePath = path.join(process.cwd(), 'working-proxies.json');
-    
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, 'utf8');
+    // Priority 1: Try verified-proxies.json (from completed find-working-proxies.mjs)
+    const verifiedPath = path.join(process.cwd(), 'verified-proxies.json');
+    if (fs.existsSync(verifiedPath)) {
+      const data = fs.readFileSync(verifiedPath, 'utf8');
       const proxies = JSON.parse(data);
-      console.log(`📂 Loaded ${proxies.length} proxies from working-proxies.json`);
+      console.log(`📂 Loaded ${proxies.length} proxies from verified-proxies.json (VERIFIED with IP checks)`);
       return proxies;
-    } else {
-      console.log(`❌ working-proxies.json not found at: ${filePath}`);
-      console.log(`Current working directory: ${process.cwd()}`);
-      // List files in current directory for debugging
-      try {
-        const files = fs.readdirSync(process.cwd());
-        console.log(`Files in working directory: ${files.join(', ')}`);
-      } catch (e) {
-        console.log('Could not list directory contents');
-      }
-      return [];
     }
+    
+    // Priority 2: Try temp-verified-proxies.json (temporary file while script is running)
+    const tempPath = path.join(process.cwd(), 'temp-verified-proxies.json');
+    if (fs.existsSync(tempPath)) {
+      const data = fs.readFileSync(tempPath, 'utf8');
+      const proxies = JSON.parse(data);
+      console.log(`📂 Loaded ${proxies.length} proxies from temp-verified-proxies.json (TEMPORARY - waiting for full verification)`);
+      return proxies;
+    }
+    
+    // Priority 3: Fall back to working-proxies.json (legacy)
+    const legacyPath = path.join(process.cwd(), 'working-proxies.json');
+    if (fs.existsSync(legacyPath)) {
+      const data = fs.readFileSync(legacyPath, 'utf8');
+      const proxies = JSON.parse(data);
+      console.log(`📂 Loaded ${proxies.length} proxies from working-proxies.json (legacy file)`);
+      return proxies;
+    }
+    
+    // No proxy files found
+    console.log(`❌ No proxy files found. Tried:`);
+    console.log(`   1. verified-proxies.json (not found)`);
+    console.log(`   2. temp-verified-proxies.json (not found)`);
+    console.log(`   3. working-proxies.json (not found)`);
+    console.log(`Current working directory: ${process.cwd()}`);
+    
+    // List files in current directory for debugging
+    try {
+      const files = fs.readdirSync(process.cwd());
+      console.log(`Files in working directory: ${files.join(', ')}`);
+    } catch (e) {
+      console.log('Could not list directory contents');
+    }
+    return [];
   } catch (error) {
-    console.log(`❌ Error loading working-proxies.json: ${error}`);
+    console.log(`❌ Error loading proxy files: ${error}`);
     return [];
   }
 }
@@ -54,7 +77,7 @@ const HARDCODED_PROXIES: ProxyInfo[] = loadProxiesFromFile();
  */
 export function getHardcodedProxies(): ProxyInfo[] {
   if (HARDCODED_PROXIES.length > 0) {
-    console.log(`📌 Using ${HARDCODED_PROXIES.length} hardcoded proxies from working-proxies.json`);
+    console.log(`📌 Using ${HARDCODED_PROXIES.length} verified proxies (IP-checked, real proxies)`);
     // Log first 5 proxies for verification
     console.log('📍 First 5 proxies to be tested:');
     for (let i = 0; i < Math.min(5, HARDCODED_PROXIES.length); i++) {
