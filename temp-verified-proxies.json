@@ -60,6 +60,26 @@
     "verified": true
   },
   {
+    "host": "212.114.194.76",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 6143,
+    "externalIP": "213.179.156.18",
+    "verified": true
+  },
+  {
+    "host": "36.110.143.55",
+    "port": 8080,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 7090,
+    "externalIP": "202.76.141.233",
+    "verified": true
+  },
+  {
     "host": "154.65.39.7",
     "port": 80,
     "protocol": "http",
@@ -110,6 +130,16 @@
     "verified": true
   },
   {
+    "host": "45.59.186.60",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 8613,
+    "externalIP": "45.59.186.60",
+    "verified": true
+  },
+  {
     "host": "144.125.164.158",
     "port": 8081,
     "protocol": "http",
@@ -117,6 +147,16 @@
     "source": "Manual",
     "responseTime": 8646,
     "externalIP": "140.209.193.27",
+    "verified": true
+  },
+  {
+    "host": "120.92.88.147",
+    "port": 7890,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 9686,
+    "externalIP": "104.250.55.63",
     "verified": true
   },
   {
@@ -150,6 +190,16 @@
     "verified": true
   },
   {
+    "host": "36.138.53.26",
+    "port": 10017,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 10982,
+    "externalIP": "36.138.53.26",
+    "verified": true
+  },
+  {
     "host": "4.213.167.178",
     "port": 80,
     "protocol": "http",
@@ -177,6 +227,16 @@
     "source": "Manual",
     "responseTime": 11843,
     "externalIP": "213.179.156.18",
+    "verified": true
+  },
+  {
+    "host": "183.110.216.159",
+    "port": 8090,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 12205,
+    "externalIP": "221.153.190.28",
     "verified": true
   },
   {
@@ -217,6 +277,16 @@
     "source": "Manual",
     "responseTime": 12726,
     "externalIP": "120.28.198.202",
+    "verified": true
+  },
+  {
+    "host": "200.59.186.176",
+    "port": 999,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "Manual",
+    "responseTime": 12870,
+    "externalIP": "200.59.191.234",
     "verified": true
   },
   {
