@@ -398,9 +398,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       const proxiesToValidate = regionalProxies.slice(0, 1000); // Validate up to 1000 proxies for comprehensive discovery
       console.log(`📍 Selected ${proxiesToValidate.length} regional proxies for validation`);
       
-      // Validate proxies with cross-reference GeoIP verification (concurrency: 20, timeout: 10s per proxy)
+      // Validate proxies with cross-reference GeoIP verification
       console.log('🌍 Cross-referencing proxy locations with multiple GeoIP services...');
-      const validatedProxies = await validateProxies(proxiesToValidate, 20, 10000, true);
+      const validatedProxies = await validateProxies(proxiesToValidate);
       
       // Filter for ONLY non-US proxies that are verified
       const nonUSProxies = validatedProxies.filter(p => 

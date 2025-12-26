@@ -13,6 +13,7 @@ export interface ProxyInfo {
   country: string;
   anonymity?: string;
   source: string;
+  responseTime?: number;
 }
 
 /**

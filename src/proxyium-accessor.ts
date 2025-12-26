@@ -153,20 +153,6 @@ export class ProxyiumAccessor {
   }
 
   /**
-   * Get the browser instance
-   */
-  getBrowser(): Browser | null {
-    return this.browser;
-  }
-
-  /**
-   * Get the page instance
-   */
-  getPage(): Page | null {
-    return this.page;
-  }
-
-  /**
    * Simulate human-like delay
    */
   private async simulateDelay(minMs: number, maxMs: number): Promise<void> {
