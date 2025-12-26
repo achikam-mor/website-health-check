@@ -294,22 +294,24 @@ async function findWorkingProxies() {
   console.log(`🚫 Filtered out ${cdnCount} Cloudflare/CDN IPs (they don't work as proxies)`);
   console.log(`✓ ${filteredProxies.length} potential real proxies remaining\n`);
   
-  // Test up to 5000 proxies to find working ones
-  const proxiesToTest = filteredProxies.slice(0, 5000);
-  console.log(`Testing ${proxiesToTest.length} proxies with IP verification (concurrency: 15, timeout: 12s)...\n`);
+  // Test ALL filtered proxies until we find 100 working ones
+  const proxiesToTest = filteredProxies; // Test all, no limit
+  console.log(`Testing ${proxiesToTest.length} proxies with IP verification (concurrency: 30, timeout: 12s)...\n`);
+  console.log(`⚠️  Will stop after finding 100 verified working proxies\n`);
   
   const working = [];
   
-  // Validate in batches of 15 with IP verification
-  for (let i = 0; i < proxiesToTest.length; i += 15) {
-    const batch = proxiesToTest.slice(i, i + 15);
+  // Validate in batches of 30 with IP verification
+  for (let i = 0; i < proxiesToTest.length; i += 30) {
+    const batch = proxiesToTest.slice(i, i + 30);
     const results = await Promise.all(batch.map(p => validateProxy(p, 12000)));
     const validInBatch = results.filter(p => p.validated && p.verified);
     working.push(...validInBatch);
     
-    const batchNum = Math.floor(i / 15) + 1;
-    const totalBatches = Math.ceil(proxiesToTest.length / 15);
-    console.log(`  Batch ${batchNum}/${totalBatches}: ${validInBatch.length}/${batch.length} VERIFIED (Total: ${working.length} working)`);
+    const batchNum = Math.floor(i / 30) + 1;
+    const totalBatches = Math.ceil(proxiesToTest.length / 30);
+    const progress = ((i + 30) / proxiesToTest.length * 100).toFixed(1);
+    console.log(`  Batch ${batchNum}/${totalBatches} (${progress}%): ${validInBatch.length}/${batch.length} VERIFIED (Total: ${working.length} working)`);
     
     // Show some verified IPs
     if (validInBatch.length > 0) {
@@ -318,8 +320,8 @@ async function findWorkingProxies() {
       }
     }
     
-    // Stop if we found enough working proxies
-    if (working.length >= 50) {
+    // Stop if we found 100 working proxies
+    if (working.length >= 100) {
       console.log(`\n✅ Found ${working.length} VERIFIED working proxies! Stopping validation.\n`);
       break;
     }
