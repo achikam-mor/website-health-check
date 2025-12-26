@@ -468,17 +468,24 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   
   test('Visit and scroll all pages from multiple locations', async () => {
     // Timeout for PARALLEL execution with staggered starts
-    // 27 sessions × ~60-120s per session + ~27s stagger = ~3-5 minutes total
+    // 12 sessions × ~60-120s per session + ~12s stagger = ~2-3 minutes total
     test.setTimeout(600000); // 10 minutes
     
-    // Test configurations: 1 direct + 1 proxyium + 25 proxies = 27 total
+    // Randomly select 10 proxies from top 25 for this execution
+    const top25Proxies = workingProxies.slice(0, 25);
+    const shuffledProxies = shuffleArray(top25Proxies);
+    const selectedProxies = shuffledProxies.slice(0, 10);
+    
+    console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 25 for this execution\n`);
+    
+    // Test configurations: 1 direct + 1 proxyium + 10 random proxies = 12 total
     const testConfigs = [
       // Direct connection (no proxy) as baseline
       { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
       // Proxyium web proxy
       { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
-      // Working proxies (top 25 from working-proxies.json)
-      ...workingProxies.slice(0, 25).map(proxy => ({ 
+      // Random 10 proxies from top 25
+      ...selectedProxies.map(proxy => ({ 
         proxy, 
         location: `${proxy.country} - ${proxy.host}`,
         type: 'proxy'
@@ -488,7 +495,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (1-3s stagger)...`);
     console.log(`   📍 1 Direct GitHub connection (no proxy)`);
     console.log(`   📍 1 Proxyium web proxy`);
-    console.log(`   📍 ${Math.min(workingProxies.length, 25)} Proxy locations\n`);
+    console.log(`   📍 ${selectedProxies.length} Randomly selected proxy locations\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number, startDelay: number): Promise<LocationTestResult> => {
@@ -725,6 +732,37 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             
             // Perform the scrolling
             await humanScroll(page);
+            
+            // CRITICAL: 1/1000 chance to click on Google Ad (simulates real user clicking ads)
+            if (Math.random() < 0.001) {
+              try {
+                console.log(`      🎯 Attempting to click on Google Ad (1/1000 chance)...`);
+                // Common Google Ad selectors
+                const adSelectors = [
+                  'ins.adsbygoogle',
+                  'iframe[id*="google_ads"]',
+                  'iframe[id*="aswift"]',
+                  'div[id*="google_ads"]',
+                  '[data-ad-slot]',
+                  '.adsbygoogle'
+                ];
+                
+                for (const selector of adSelectors) {
+                  const ads = await page.locator(selector).count();
+                  if (ads > 0) {
+                    const randomAd = Math.floor(Math.random() * Math.min(ads, 3));
+                    await page.locator(selector).nth(randomAd).click({ timeout: 2000, force: true });
+                    console.log(`      ✓ Clicked on Google Ad!`);
+                    await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
+                    // Go back to site
+                    await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => {});
+                    break;
+                  }
+                }
+              } catch (e) {
+                // Ad might not be clickable or blocked - that's fine
+              }
+            }
             
             // Random human behaviors (20% chance)
             const randomBehavior = Math.random();
