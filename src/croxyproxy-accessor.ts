@@ -452,7 +452,7 @@ export async function runCroxyProxyAccess(targetUrl: string = 'www.stockscanner.
     console.log(`✓ CroxyProxy Access Complete!`);
     console.log(`   Final URL: ${resultUrl}`);
     console.log(`   Page Title: ${await accessor.getPageTitle()}`);
-    console.log('='.repeat(60)}\n`);
+    console.log(`${'='.repeat(60)}\n`);
     
     return accessor;
   } catch (error) {
