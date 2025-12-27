@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
-import { launchBrowserWithProxy, launchBrowserWithProxyium, getLocationName } from './src/browser-factory';
+import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy, getLocationName } from './src/browser-factory';
 
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -474,17 +474,19 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     // Randomly select 10 proxies from top 25 for this execution
     const top25Proxies = workingProxies.slice(0, 25);
     const shuffledProxies = shuffleArray(top25Proxies);
-    const selectedProxies = shuffledProxies.slice(0, 10);
+    const selectedProxies = shuffledProxies.slice(0, 13);
     
     console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 25 for this execution\n`);
     
-    // Test configurations: 1 direct + 1 proxyium + 10 random proxies = 12 total
+    // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 13 random proxies = 16 total
     const testConfigs = [
       // Direct connection (no proxy) as baseline
       { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
       // Proxyium web proxy
       { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
-      // Random 10 proxies from top 25
+      // CroxyProxy web proxy
+      { proxy: undefined, location: 'CroxyProxy Web Proxy', type: 'croxyproxy' },
+      // Random 13 proxies from top 25
       ...selectedProxies.map(proxy => ({ 
         proxy, 
         location: `${proxy.country} - ${proxy.host}`,
@@ -495,6 +497,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (1-3s stagger)...`);
     console.log(`   📍 1 Direct GitHub connection (no proxy)`);
     console.log(`   📍 1 Proxyium web proxy`);
+    console.log(`   📍 1 CroxyProxy web proxy`);
     console.log(`   📍 ${selectedProxies.length} Randomly selected proxy locations\n`);
     
     // Function to test a single location
@@ -553,6 +556,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             referrer
           });
           isProxyium = true;
+        } else if (config.type === 'croxyproxy') {
+          // Use croxyproxy launcher (handles popups internally)
+          browserSetup = await launchBrowserWithCroxyProxy({
+            userAgent,
+            geolocation: geo,
+            viewport,
+            language: language,
+            hardware,
+            referrer
+          });
+          isProxyium = true; // Reusing same flag for web proxy behavior
         } else {
           // Use standard proxy launcher
           browserSetup = await launchBrowserWithProxy({
@@ -586,7 +600,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Config ready (detailed logs removed for cleaner output)
         
         // Randomize behavior: each user visits different number of pages (5-10) in random order
-        const useHttp = !!config.proxy && config.type !== 'proxyium';
+        const useHttp = !!config.proxy && config.type !== 'proxyium' && config.type !== 'croxyproxy';
         const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
         
         // Shuffle pages and select random subset
@@ -733,10 +747,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             // Perform the scrolling
             await humanScroll(page);
             
-            // CRITICAL: 1/1000 chance to click on Google Ad (simulates real user clicking ads)
-            if (Math.random() < 0.001) {
+            // CRITICAL: 1/600 chance to click on Google Ad (simulates real user clicking ads)
+            if (Math.random() < (1/600)) {
               try {
-                console.log(`      🎯 Attempting to click on Google Ad (1/1000 chance)...`);
+                console.log(`      🎯 Attempting to click on Google Ad (1/600 chance)...`);
                 // Common Google Ad selectors
                 const adSelectors = [
                   'ins.adsbygoogle',
