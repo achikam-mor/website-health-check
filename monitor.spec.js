@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies } from './src/proxy-validator';
-import { launchBrowserWithProxy, launchBrowserWithProxyium } from './src/browser-factory';
+import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy } from './src/browser-factory';
 // Fisher-Yates shuffle algorithm
 function shuffleArray(array) {
     const shuffled = [...array];
@@ -425,16 +425,23 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     });
     test('Visit and scroll all pages from multiple locations', async () => {
         // Timeout for PARALLEL execution with staggered starts
-        // 27 sessions × ~60-120s per session + ~27s stagger = ~3-5 minutes total
+        // 12 sessions × ~60-120s per session + ~12s stagger = ~2-3 minutes total
         test.setTimeout(600000); // 10 minutes
-        // Test configurations: 1 direct + 1 proxyium + 25 proxies = 27 total
+        // Randomly select 10 proxies from top 25 for this execution
+        const top25Proxies = workingProxies.slice(0, 25);
+        const shuffledProxies = shuffleArray(top25Proxies);
+        const selectedProxies = shuffledProxies.slice(0, 13);
+        console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 25 for this execution\n`);
+        // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 13 random proxies = 16 total
         const testConfigs = [
             // Direct connection (no proxy) as baseline
             { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
             // Proxyium web proxy
             { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
-            // Working proxies (top 25 from working-proxies.json)
-            ...workingProxies.slice(0, 25).map(proxy => ({
+            // CroxyProxy web proxy
+            { proxy: undefined, location: 'CroxyProxy Web Proxy', type: 'croxyproxy' },
+            // Random 13 proxies from top 25
+            ...selectedProxies.map(proxy => ({
                 proxy,
                 location: `${proxy.country} - ${proxy.host}`,
                 type: 'proxy'
@@ -443,7 +450,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         console.log(`\n🚀 Starting health checks from ${testConfigs.length} locations IN PARALLEL (1-3s stagger)...`);
         console.log(`   📍 1 Direct GitHub connection (no proxy)`);
         console.log(`   📍 1 Proxyium web proxy`);
-        console.log(`   📍 ${Math.min(workingProxies.length, 25)} Proxy locations\n`);
+        console.log(`   📍 1 CroxyProxy web proxy`);
+        console.log(`   📍 ${selectedProxies.length} Randomly selected proxy locations\n`);
         // Function to test a single location
         const testLocation = async (config, index, startDelay) => {
             // Stagger the start with random delay
@@ -496,6 +504,18 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                     });
                     isProxyium = true;
                 }
+                else if (config.type === 'croxyproxy') {
+                    // Use croxyproxy launcher (handles popups internally)
+                    browserSetup = await launchBrowserWithCroxyProxy({
+                        userAgent,
+                        geolocation: geo,
+                        viewport,
+                        language: language,
+                        hardware,
+                        referrer
+                    });
+                    isProxyium = true; // Reusing same flag for web proxy behavior
+                }
                 else {
                     // Use standard proxy launcher
                     browserSetup = await launchBrowserWithProxy({
@@ -525,7 +545,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 const gaClientId = `GA1.2.${Math.floor(Math.random() * 2147483647)}.${Math.floor(Date.now() / 1000)}`;
                 // Config ready (detailed logs removed for cleaner output)
                 // Randomize behavior: each user visits different number of pages (5-10) in random order
-                const useHttp = !!config.proxy && config.type !== 'proxyium';
+                const useHttp = !!config.proxy && config.type !== 'proxyium' && config.type !== 'croxyproxy';
                 const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
                 // Shuffle pages and select random subset
                 const shuffledPages = shuffleArray([...innerPages]);
@@ -659,6 +679,36 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                         }
                         // Perform the scrolling
                         await humanScroll(page);
+                        // CRITICAL: 1/600 chance to click on Google Ad (simulates real user clicking ads)
+                        if (Math.random() < (1 / 600)) {
+                            try {
+                                console.log(`      🎯 Attempting to click on Google Ad (1/600 chance)...`);
+                                // Common Google Ad selectors
+                                const adSelectors = [
+                                    'ins.adsbygoogle',
+                                    'iframe[id*="google_ads"]',
+                                    'iframe[id*="aswift"]',
+                                    'div[id*="google_ads"]',
+                                    '[data-ad-slot]',
+                                    '.adsbygoogle'
+                                ];
+                                for (const selector of adSelectors) {
+                                    const ads = await page.locator(selector).count();
+                                    if (ads > 0) {
+                                        const randomAd = Math.floor(Math.random() * Math.min(ads, 3));
+                                        await page.locator(selector).nth(randomAd).click({ timeout: 2000, force: true });
+                                        console.log(`      ✓ Clicked on Google Ad!`);
+                                        await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
+                                        // Go back to site
+                                        await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => { });
+                                        break;
+                                    }
+                                }
+                            }
+                            catch (e) {
+                                // Ad might not be clickable or blocked - that's fine
+                            }
+                        }
                         // Random human behaviors (20% chance)
                         const randomBehavior = Math.random();
                         if (randomBehavior < 0.1 && pageIndex > 0) {

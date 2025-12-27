@@ -1,6 +1,7 @@
 // Browser Factory Module - Launches browsers with proxy and proxyium support
 import { chromium } from '@playwright/test';
 import { ProxyiumAccessor } from './proxyium-accessor';
+import { CroxyProxyAccessor } from './croxyproxy-accessor';
 /**
  * Launch browser with proxy configuration
  * Includes comprehensive error handling and logging
@@ -81,6 +82,34 @@ export async function launchBrowserWithProxyium(config) {
     catch (error) {
         const errorMsg = error instanceof Error ? error.message : String(error);
         console.error(`✗ Proxyium failed: ${errorMsg}`);
+        throw error;
+    }
+}
+/**
+ * Launch browser with CroxyProxy web proxy
+ * Handles croxyproxy-specific popup closing, then returns browser ready for standard behavior
+ */
+export async function launchBrowserWithCroxyProxy(config) {
+    try {
+        console.log(`🔄 Attempting CroxyProxy web proxy...`);
+        const croxyProxyAccessor = new CroxyProxyAccessor();
+        await croxyProxyAccessor.initialize();
+        // Navigate to target site through croxyproxy
+        await croxyProxyAccessor.searchWebsite('www.stockscanner.net');
+        // Get the browser and page from croxyproxy accessor
+        const browser = croxyProxyAccessor.getBrowser();
+        const page = croxyProxyAccessor.getPage();
+        if (!browser || !page) {
+            throw new Error('Failed to get browser or page from CroxyProxy');
+        }
+        // Get the context from the page
+        const context = page.context();
+        console.log(`✓ CroxyProxy successful: Web proxy established`);
+        return { browser, context };
+    }
+    catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        console.error(`✗ CroxyProxy failed: ${errorMsg}`);
         throw error;
     }
 }
