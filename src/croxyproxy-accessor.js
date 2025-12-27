@@ -415,19 +415,21 @@ export async function runCroxyProxyAccess(targetUrl = 'www.stockscanner.net') {
         throw error;
     }
 }
-// Main execution function (for standalone testing)
-if (require.main === module) {
+// Allow running as standalone script
+if (import.meta.url === `file://${process.argv[1]}`) {
     runCroxyProxyAccess('www.stockscanner.net')
-        .then(async (accessor) => {
-        // Keep browser open for a few seconds to observe
-        console.log('\n⏳ Keeping browser open for 5 seconds...');
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        // Close the browser
-        await accessor.close();
-        console.log('✓ Done!');
+        .then((accessor) => {
+        console.log('Done! Browser is still open.');
+        console.log('You can now interact with the page or call accessor.close() when done.');
+        // Keep the process alive for a while to inspect
+        setTimeout(async () => {
+            console.log('Closing browser after 30 seconds...');
+            await accessor.close();
+            console.log('Browser closed.');
+        }, 30000);
     })
-        .catch((error) => {
-        console.error('✗ Error:', error);
+        .catch(error => {
+        console.error('Failed:', error);
         process.exit(1);
     });
 }
