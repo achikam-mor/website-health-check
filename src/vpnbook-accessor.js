@@ -28,7 +28,6 @@ export class VPNBookAccessor {
                 console.log(`  → Dialog detected: ${dialog.type()} - ${dialog.message()}`);
                 await dialog.accept();
             });
-            console.log('  → Navigating to vpnbook.com/webproxy...');
             await this.page.goto('https://www.vpnbook.com/webproxy', {
                 waitUntil: 'domcontentloaded',
                 timeout: 60000

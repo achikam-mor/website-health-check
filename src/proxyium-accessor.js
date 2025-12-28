@@ -28,7 +28,7 @@ export class ProxyiumAccessor {
                 console.log(`  → Dialog detected: ${dialog.type()} - ${dialog.message()}`);
                 await dialog.accept();
             });
-            console.log('  → Navigating to proxyium.com...');
+
             await this.page.goto('https://www.proxyium.com', {
                 waitUntil: 'domcontentloaded',
                 timeout: 60000

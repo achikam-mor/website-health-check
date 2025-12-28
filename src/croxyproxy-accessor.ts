@@ -34,7 +34,6 @@ export class CroxyProxyAccessor {
         await dialog.accept();
       });
       
-      console.log('  → Navigating to croxyproxy.com...');
       await this.page.goto('https://www.croxyproxy.com', { 
         waitUntil: 'domcontentloaded',
         timeout: 60000

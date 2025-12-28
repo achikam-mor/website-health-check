@@ -28,7 +28,6 @@ export class CroxyProxyAccessor {
                 console.log(`  → Dialog detected: ${dialog.type()} - ${dialog.message()}`);
                 await dialog.accept();
             });
-            console.log('  → Navigating to croxyproxy.com...');
             await this.page.goto('https://www.croxyproxy.com', {
                 waitUntil: 'domcontentloaded',
                 timeout: 60000

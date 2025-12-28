@@ -34,8 +34,7 @@ export class BlockawayAccessor {
         await dialog.accept();
       });
       
-      console.log('  → Navigating to cdn.blockaway.net...');
-      await this.page.goto('https://www.cdn.blockaway.net', { 
+      await this.page.goto('https://blockaway.net', { 
         waitUntil: 'domcontentloaded',
         timeout: 60000
       });
