@@ -21,7 +21,7 @@ function loadProxiesFromFile() {
                 .sort((a, b) => a.responseTime - b.responseTime)
                 .slice(0, 50);
             console.log(`📂 Loaded top 50 fastest proxies from verified-proxies.json (sorted by response time)`);
-            console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length-1]?.responseTime}ms`);
+            console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length - 1]?.responseTime}ms`);
             return sortedProxies;
         }
         // Priority 2: Try temp-verified-proxies.json (temporary file while script is running)
@@ -35,7 +35,7 @@ function loadProxiesFromFile() {
                 .sort((a, b) => a.responseTime - b.responseTime)
                 .slice(0, 50);
             console.log(`📂 Loaded top 50 fastest proxies from temp-verified-proxies.json (sorted by response time)`);
-            console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length-1]?.responseTime}ms`);
+            console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length - 1]?.responseTime}ms`);
             return sortedProxies;
         }
         // Priority 3: Fall back to working-proxies.json (legacy)
