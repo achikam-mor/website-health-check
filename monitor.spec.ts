@@ -612,6 +612,14 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         browser = browserSetup.browser;
         context = browserSetup.context;
         
+        // Log if this user can click on ads
+        if (isProxyium) {
+          console.log('\n' + '='.repeat(80));
+          console.log('🎯 AD-CLICKING ENABLED FOR THIS USER: ' + config.type.toUpperCase());
+          console.log('   Probability: 1/100 chance to click on ads');
+          console.log('='.repeat(80) + '\n');
+        }
+        
         // Get or create page
         let page;
         if (isProxyium) {
