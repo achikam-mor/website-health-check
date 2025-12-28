@@ -26,18 +26,30 @@ function loadProxiesFromFile(): ProxyInfo[] {
     const verifiedPath = path.join(process.cwd(), 'verified-proxies.json');
     if (fs.existsSync(verifiedPath)) {
       const data = fs.readFileSync(verifiedPath, 'utf8');
-      const proxies = JSON.parse(data);
-      console.log(`📂 Loaded ${proxies.length} proxies from verified-proxies.json (VERIFIED with IP checks)`);
-      return proxies;
+      const allProxies = JSON.parse(data);
+      // Sort by responseTime (ascending) and take top 50
+      const sortedProxies = allProxies
+        .filter((p: any) => p.responseTime)
+        .sort((a: any, b: any) => a.responseTime - b.responseTime)
+        .slice(0, 50);
+      console.log(`📂 Loaded top 50 fastest proxies from verified-proxies.json (sorted by response time)`);
+      console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length-1]?.responseTime}ms`);
+      return sortedProxies;
     }
     
     // Priority 2: Try temp-verified-proxies.json (temporary file while script is running)
     const tempPath = path.join(process.cwd(), 'temp-verified-proxies.json');
     if (fs.existsSync(tempPath)) {
       const data = fs.readFileSync(tempPath, 'utf8');
-      const proxies = JSON.parse(data);
-      console.log(`📂 Loaded ${proxies.length} proxies from temp-verified-proxies.json (TEMPORARY - waiting for full verification)`);
-      return proxies;
+      const allProxies = JSON.parse(data);
+      // Sort by responseTime (ascending) and take top 50
+      const sortedProxies = allProxies
+        .filter((p: any) => p.responseTime)
+        .sort((a: any, b: any) => a.responseTime - b.responseTime)
+        .slice(0, 50);
+      console.log(`📂 Loaded top 50 fastest proxies from temp-verified-proxies.json (sorted by response time)`);
+      console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length-1]?.responseTime}ms`);
+      return sortedProxies;
     }
     
     // Priority 3: Fall back to working-proxies.json (legacy)

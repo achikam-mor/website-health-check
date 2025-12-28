@@ -468,17 +468,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   
   test('Visit and scroll all pages from multiple locations', async () => {
     // Timeout for PARALLEL execution with staggered starts
-    // 12 sessions × ~60-120s per session + ~12s stagger = ~2-3 minutes total
-    test.setTimeout(600000); // 10 minutes
+    // 20 sessions × ~60-120s per session + ~20s stagger = ~3-5 minutes total
+    test.setTimeout(900000); // 15 minutes
     
-    // Randomly select 10 proxies from top 25 for this execution
-    const top25Proxies = workingProxies.slice(0, 25);
-    const shuffledProxies = shuffleArray(top25Proxies);
-    const selectedProxies = shuffledProxies.slice(0, 13);
+    // Randomly select 17 proxies from top 50 for this execution
+    const top50Proxies = workingProxies.slice(0, 50);
+    const shuffledProxies = shuffleArray(top50Proxies);
+    const selectedProxies = shuffledProxies.slice(0, 17);
     
-    console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 25 for this execution\n`);
+    console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 50 for this execution\n`);
     
-    // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 13 random proxies = 16 total
+    // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 17 random proxies = 20 total
     const testConfigs = [
       // Direct connection (no proxy) as baseline
       { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
@@ -486,7 +486,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
       // CroxyProxy web proxy
       { proxy: undefined, location: 'CroxyProxy Web Proxy', type: 'croxyproxy' },
-      // Random 13 proxies from top 25
+      // Random 17 proxies from top 50
       ...selectedProxies.map(proxy => ({ 
         proxy, 
         location: `${proxy.country} - ${proxy.host}`,
@@ -747,10 +747,11 @@ test.describe('StockScanner Multi-Location Health Check', () => {
             // Perform the scrolling
             await humanScroll(page);
             
-            // CRITICAL: 1/600 chance to click on Google Ad (simulates real user clicking ads)
-            if (Math.random() < (1/600)) {
+            // CRITICAL: Only croxyproxy/proxyium users can click on Google Ads (1/100 chance)
+            // Regular proxy users and direct connections do NOT click ads
+            if (isProxyium && Math.random() < (1/100)) {
               try {
-                console.log(`      🎯 Attempting to click on Google Ad (1/600 chance)...`);
+                console.log(`      🎯 Attempting to click on Google Ad (1/100 chance for web proxy users)...`);
                 // Common Google Ad selectors
                 const adSelectors = [
                   'ins.adsbygoogle',
