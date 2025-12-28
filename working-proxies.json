@@ -1,16 +1,5 @@
 [
   {
-    "host": "209.97.150.167",
-    "port": 8080,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "ProxyScrape",
-    "responseTime": 4003,
-    "externalIP": "209.97.150.167",
-    "verified": true,
-    "verifiedDate": "2025-12-28T10:28:12.905Z"
-  },
-  {
     "host": "23.190.168.41",
     "port": 80,
     "protocol": "http",
@@ -66,17 +55,6 @@
     "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "5.180.172.130",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "ProxyScrape",
-    "responseTime": 5640,
-    "externalIP": "5.180.172.130",
-    "verified": true,
-    "verifiedDate": "2025-12-28T10:28:12.906Z"
-  },
-  {
     "host": "154.31.115.210",
     "port": 80,
     "protocol": "http",
@@ -84,17 +62,6 @@
     "source": "ProxyScrape",
     "responseTime": 5727,
     "externalIP": "154.31.115.210",
-    "verified": true,
-    "verifiedDate": "2025-12-28T10:28:12.906Z"
-  },
-  {
-    "host": "200.59.191.233",
-    "port": 999,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "ProxyScrape",
-    "responseTime": 5787,
-    "externalIP": "200.59.191.234",
     "verified": true,
     "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
@@ -154,17 +121,6 @@
     "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "89.116.88.19",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "ProxyScrape",
-    "responseTime": 6442,
-    "externalIP": "118.238.9.204",
-    "verified": true,
-    "verifiedDate": "2025-12-28T10:28:12.906Z"
-  },
-  {
     "host": "117.18.20.102",
     "port": 8081,
     "protocol": "http",
@@ -216,17 +172,6 @@
     "source": "ProxyScrape",
     "responseTime": 6753,
     "externalIP": "104.250.55.63",
-    "verified": true,
-    "verifiedDate": "2025-12-28T10:28:12.906Z"
-  },
-  {
-    "host": "12.50.107.217",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "ProxyScrape",
-    "responseTime": 6793,
-    "externalIP": "12.50.107.222",
     "verified": true,
     "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
