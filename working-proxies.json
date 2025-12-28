@@ -1,202 +1,277 @@
 [
   {
-    "host": "104.27.81.160",
-    "port": 80,
+    "host": "209.97.150.167",
+    "port": 8080,
     "protocol": "http",
-    "country": "CA",
-    "source": "Manual",
-    "responseTime": 1465
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 4003,
+    "externalIP": "209.97.150.167",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.905Z"
   },
   {
-    "host": "104.17.70.223",
+    "host": "23.190.168.41",
     "port": 80,
     "protocol": "http",
-    "country": "CA",
-    "source": "Manual",
-    "responseTime": 1741
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 4089,
+    "externalIP": "23.190.168.41",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "104.16.133.224",
+    "host": "139.59.1.14",
     "port": 80,
     "protocol": "http",
-    "country": "CA",
-    "source": "Manual",
-    "responseTime": 1840
+    "country": "IN",
+    "source": "Geonode",
+    "responseTime": 4894,
+    "externalIP": "139.59.1.14",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "199.34.228.232",
+    "host": "85.220.141.220",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5123,
+    "externalIP": "85.220.141.221",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "212.47.232.28",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5214,
+    "externalIP": "212.47.232.28",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "85.214.204.79",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5234,
+    "externalIP": "85.214.204.79",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "5.180.172.130",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5640,
+    "externalIP": "5.180.172.130",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "154.31.115.210",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5727,
+    "externalIP": "154.31.115.210",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "200.59.191.233",
+    "port": 999,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5787,
+    "externalIP": "200.59.191.234",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "176.126.164.213",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5850,
+    "externalIP": "176.126.164.213",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "185.36.193.29",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5899,
+    "externalIP": "185.36.193.29",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "188.245.218.56",
+    "port": 80,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 5935,
+    "externalIP": "188.245.218.56",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "200.59.191.235",
+    "port": 999,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6068,
+    "externalIP": "200.59.191.234",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "45.59.186.60",
     "port": 80,
     "protocol": "http",
     "country": "US",
-    "source": "Manual",
-    "responseTime": 1865
+    "source": "Geonode",
+    "responseTime": 6167,
+    "externalIP": "45.59.186.60",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "104.254.140.93",
-    "port": 80,
-    "protocol": "http",
-    "country": "US",
-    "source": "Manual",
-    "responseTime": 1866
-  },
-  {
-    "host": "104.18.164.83",
-    "port": 80,
-    "protocol": "http",
-    "country": "CA",
-    "source": "Manual",
-    "responseTime": 1960
-  },
-  {
-    "host": "45.8.211.93",
-    "port": 80,
-    "protocol": "http",
-    "country": "SG",
-    "source": "Manual",
-    "responseTime": 1995
-  },
-  {
-    "host": "45.131.6.144",
-    "port": 80,
-    "protocol": "http",
-    "country": "BZ",
-    "source": "Manual",
-    "responseTime": 2125
-  },
-  {
-    "host": "104.18.236.237",
-    "port": 80,
-    "protocol": "http",
-    "country": "CA",
-    "source": "Manual",
-    "responseTime": 2227
-  },
-  {
-    "host": "154.194.12.190",
+    "host": "89.116.88.19",
     "port": 80,
     "protocol": "http",
     "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 769
+    "source": "ProxyScrape",
+    "responseTime": 6442,
+    "externalIP": "118.238.9.204",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "185.18.250.238",
+    "host": "117.18.20.102",
+    "port": 8081,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6471,
+    "externalIP": "202.58.78.190",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "123.30.154.171",
+    "port": 7777,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6514,
+    "externalIP": "123.30.154.171",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "119.18.144.131",
+    "port": 8585,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6570,
+    "externalIP": "119.18.144.12",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "212.34.146.152",
+    "port": 5555,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6669,
+    "externalIP": "23.129.64.180",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "120.92.88.147",
+    "port": 7890,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6753,
+    "externalIP": "104.250.55.63",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "12.50.107.217",
     "port": 80,
     "protocol": "http",
     "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1031
+    "source": "ProxyScrape",
+    "responseTime": 6793,
+    "externalIP": "12.50.107.222",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "46.254.93.52",
+    "host": "183.80.114.3",
+    "port": 8080,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 6986,
+    "externalIP": "183.80.114.3",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "8.243.68.11",
+    "port": 8080,
+    "protocol": "http",
+    "country": "Unknown",
+    "source": "ProxyScrape",
+    "responseTime": 7041,
+    "externalIP": "8.243.68.11",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
+  },
+  {
+    "host": "43.200.30.144",
     "port": 80,
     "protocol": "http",
     "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1046
+    "source": "ProxyScrape",
+    "responseTime": 7087,
+    "externalIP": "15.164.240.22",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   },
   {
-    "host": "172.64.146.215",
+    "host": "35.202.49.74",
     "port": 80,
     "protocol": "http",
     "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1071
-  },
-  {
-    "host": "170.114.46.14",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1154
-  },
-  {
-    "host": "192.200.160.190",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1239
-  },
-  {
-    "host": "185.193.31.144",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1300
-  },
-  {
-    "host": "45.8.211.87",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1326
-  },
-  {
-    "host": "216.24.57.168",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1353
-  },
-  {
-    "host": "141.101.123.192",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1354
-  },
-  {
-    "host": "104.18.35.85",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1375
-  },
-  {
-    "host": "172.67.130.208",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1404
-  },
-  {
-    "host": "216.24.57.209",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1420
-  },
-  {
-    "host": "185.18.250.117",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1422
-  },
-  {
-    "host": "185.176.24.72",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1427
-  },
-  {
-    "host": "104.18.174.50",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 1446
+    "source": "ProxyScrape",
+    "responseTime": 7127,
+    "externalIP": "35.202.32.234",
+    "verified": true,
+    "verifiedDate": "2025-12-28T10:28:12.906Z"
   }
 ]
