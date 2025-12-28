@@ -756,7 +756,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 const links = await page.locator('a').count();
                 if (links > 0) {
                   const randomLink = Math.floor(Math.random() * Math.min(links, 10));
-                  await page.locator('a').nth(randomLink).hover({ timeout: 10000 });
+                  await page.locator('a').nth(randomLink).hover({ timeout: 4000 });
                   await page.waitForTimeout(Math.floor(Math.random() * 500) + 200);
                 }
               } catch (e) {}
@@ -772,7 +772,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 if (elements > 0) {
                   const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
                   // Clicking interactive element
-                  await page.locator(selector).nth(randomEl).click({ timeout: 10000, force: true });
+                  await page.locator(selector).nth(randomEl).click({ timeout: 4000, force: true });
                   await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
                 }
               } catch (e) {
@@ -802,7 +802,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                   const ads = await page.locator(selector).count();
                   if (ads > 0) {
                     const randomAd = Math.floor(Math.random() * Math.min(ads, 3));
-                    await page.locator(selector).nth(randomAd).click({ timeout: 10000, force: true });
+                    await page.locator(selector).nth(randomAd).click({ timeout: 4000, force: true });
                     console.log(`      ✓ Clicked on Google Ad!`);
                     await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
                     // Go back to site

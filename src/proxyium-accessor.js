@@ -30,7 +30,7 @@ export class ProxyiumAccessor {
             });
             await this.page.goto('https://www.proxyium.com', {
                 waitUntil: 'domcontentloaded',
-                timeout: 120000
+                timeout: 75000
             });
             // Wait a bit for any dynamic content to load
             await this.simulateDelay(2000, 3000);
