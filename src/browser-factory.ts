@@ -2,6 +2,8 @@
 import { chromium, Browser, BrowserContext } from '@playwright/test';
 import { ProxyiumAccessor } from './proxyium-accessor';
 import { CroxyProxyAccessor } from './croxyproxy-accessor';
+import { VPNBookAccessor } from './vpnbook-accessor';
+import { BlockawayAccessor } from './blockaway-accessor';
 
 interface ProxyConfig {
   host: string;
@@ -155,6 +157,76 @@ export async function launchBrowserWithCroxyProxy(config: BrowserConfig): Promis
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     console.error(`✗ CroxyProxy failed: ${errorMsg}`);
+    throw error;
+  }
+}
+
+/**
+ * Launch browser with VPNBook web proxy
+ * Handles vpnbook-specific popup closing, then returns browser ready for standard behavior
+ */
+export async function launchBrowserWithVPNBook(config: BrowserConfig): Promise<BrowserSetup> {
+  try {
+    console.log(`🔄 Attempting VPNBook web proxy...`);
+    
+    const vpnbookAccessor = new VPNBookAccessor();
+    await vpnbookAccessor.initialize();
+    
+    // Navigate to target site through vpnbook
+    await vpnbookAccessor.searchWebsite('www.stockscanner.net');
+    
+    // Get the browser and page from vpnbook accessor
+    const browser = vpnbookAccessor.getBrowser();
+    const page = vpnbookAccessor.getPage();
+    
+    if (!browser || !page) {
+      throw new Error('Failed to get browser or page from VPNBook');
+    }
+    
+    // Get the context from the page
+    const context = page.context();
+    
+    console.log(`✓ VPNBook successful: Web proxy established`);
+    
+    return { browser, context };
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error(`✗ VPNBook failed: ${errorMsg}`);
+    throw error;
+  }
+}
+
+/**
+ * Launch browser with Blockaway web proxy
+ * Handles blockaway-specific popup closing, then returns browser ready for standard behavior
+ */
+export async function launchBrowserWithBlockaway(config: BrowserConfig): Promise<BrowserSetup> {
+  try {
+    console.log(`🔄 Attempting Blockaway web proxy...`);
+    
+    const blockawayAccessor = new BlockawayAccessor();
+    await blockawayAccessor.initialize();
+    
+    // Navigate to target site through blockaway
+    await blockawayAccessor.searchWebsite('www.stockscanner.net');
+    
+    // Get the browser and page from blockaway accessor
+    const browser = blockawayAccessor.getBrowser();
+    const page = blockawayAccessor.getPage();
+    
+    if (!browser || !page) {
+      throw new Error('Failed to get browser or page from Blockaway');
+    }
+    
+    // Get the context from the page
+    const context = page.context();
+    
+    console.log(`✓ Blockaway successful: Web proxy established`);
+    
+    return { browser, context };
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    console.error(`✗ Blockaway failed: ${errorMsg}`);
     throw error;
   }
 }

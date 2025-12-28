@@ -1,7 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
-import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy, getLocationName } from './src/browser-factory';
+import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy, launchBrowserWithVPNBook, launchBrowserWithBlockaway, getLocationName } from './src/browser-factory';
 
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
@@ -478,7 +478,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     
     console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 50 for this execution\n`);
     
-    // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 17 random proxies = 20 total
+    // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 1 vpnbook + 1 blockaway + 17 random proxies = 22 total
     const testConfigs = [
       // Direct connection (no proxy) as baseline
       { proxy: undefined, location: 'Direct (GitHub Runner)', type: 'direct' },
@@ -486,6 +486,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
       // CroxyProxy web proxy
       { proxy: undefined, location: 'CroxyProxy Web Proxy', type: 'croxyproxy' },
+      // VPNBook web proxy
+      { proxy: undefined, location: 'VPNBook Web Proxy', type: 'vpnbook' },
+      // Blockaway web proxy
+      { proxy: undefined, location: 'Blockaway Web Proxy', type: 'blockaway' },
       // Random 17 proxies from top 50
       ...selectedProxies.map(proxy => ({ 
         proxy, 
@@ -498,6 +502,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log(`   📍 1 Direct GitHub connection (no proxy)`);
     console.log(`   📍 1 Proxyium web proxy`);
     console.log(`   📍 1 CroxyProxy web proxy`);
+    console.log(`   📍 1 VPNBook web proxy`);
+    console.log(`   📍 1 Blockaway web proxy`);
     console.log(`   📍 ${selectedProxies.length} Randomly selected proxy locations\n`);
     
     // Function to test a single location
@@ -559,6 +565,28 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         } else if (config.type === 'croxyproxy') {
           // Use croxyproxy launcher (handles popups internally)
           browserSetup = await launchBrowserWithCroxyProxy({
+            userAgent,
+            geolocation: geo,
+            viewport,
+            language: language,
+            hardware,
+            referrer
+          });
+          isProxyium = true; // Reusing same flag for web proxy behavior
+        } else if (config.type === 'vpnbook') {
+          // Use vpnbook launcher (handles popups internally)
+          browserSetup = await launchBrowserWithVPNBook({
+            userAgent,
+            geolocation: geo,
+            viewport,
+            language: language,
+            hardware,
+            referrer
+          });
+          isProxyium = true; // Reusing same flag for web proxy behavior
+        } else if (config.type === 'blockaway') {
+          // Use blockaway launcher (handles popups internally)
+          browserSetup = await launchBrowserWithBlockaway({
             userAgent,
             geolocation: geo,
             viewport,
