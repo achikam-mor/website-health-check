@@ -30,7 +30,7 @@ export class CroxyProxyAccessor {
             });
             await this.page.goto('https://www.croxyproxy.com', {
                 waitUntil: 'domcontentloaded',
-                timeout: 60000
+                timeout: 120000
             });
             // Wait a bit for any dynamic content to load
             await this.simulateDelay(2000, 3000);
@@ -73,7 +73,7 @@ export class CroxyProxyAccessor {
             console.log('  → Found Go button, clicking...');
             // Click the button and wait for navigation
             await Promise.all([
-                this.page.waitForLoadState('domcontentloaded', { timeout: 60000 }),
+                this.page.waitForLoadState('domcontentloaded', { timeout: 30000 }),
                 goButton.click()
             ]);
             // Wait for page to settle
@@ -156,7 +156,7 @@ export class CroxyProxyAccessor {
             for (const selector of doNotConsentSelectors) {
                 try {
                     const button = this.page.locator(selector).first();
-                    if (await button.isVisible({ timeout: 1000 })) {
+                    if (await button.isVisible({ timeout: 5000 })) {
                         console.log('  → Found "Do not consent" button, clicking...');
                         await button.click();
                         clicked = true;
@@ -207,7 +207,7 @@ export class CroxyProxyAccessor {
             for (const selector of popupCloseSelectors) {
                 try {
                     const closeButton = this.page.locator(selector).first();
-                    if (await closeButton.isVisible({ timeout: 500 })) {
+                    if (await closeButton.isVisible({ timeout: 2500 })) {
                         console.log(`  → Found popup close button: ${selector}`);
                         await closeButton.click();
                         popupsFound++;

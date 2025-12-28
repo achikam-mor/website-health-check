@@ -468,8 +468,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
   
   test('Visit and scroll all pages from multiple locations', async () => {
     // Timeout for PARALLEL execution with staggered starts
-    // 20 sessions × ~60-120s per session + ~20s stagger = ~3-5 minutes total
-    test.setTimeout(900000); // 15 minutes
+    // 22 sessions × increased timeouts for slow proxies
+    test.setTimeout(1080000); // 18 minutes
     
     // Randomly select 17 proxies from top 50 for this execution
     const top50Proxies = workingProxies.slice(0, 50);
@@ -698,10 +698,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           }
           
           try {
-            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
             
             // Verify basic element exists to confirm page load
-            await expect(page.locator('body')).toBeVisible({ timeout: 10000 });
+            await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
             
             // Simulate realistic mouse movement (CRITICAL for bot detection)
             const numMouseMoves = Math.floor(Math.random() * 5) + 3; // 3-8 moves
@@ -756,7 +756,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 const links = await page.locator('a').count();
                 if (links > 0) {
                   const randomLink = Math.floor(Math.random() * Math.min(links, 10));
-                  await page.locator('a').nth(randomLink).hover({ timeout: 2000 });
+                  await page.locator('a').nth(randomLink).hover({ timeout: 10000 });
                   await page.waitForTimeout(Math.floor(Math.random() * 500) + 200);
                 }
               } catch (e) {}
@@ -772,7 +772,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 if (elements > 0) {
                   const randomEl = Math.floor(Math.random() * Math.min(elements, 5));
                   // Clicking interactive element
-                  await page.locator(selector).nth(randomEl).click({ timeout: 2000, force: true });
+                  await page.locator(selector).nth(randomEl).click({ timeout: 10000, force: true });
                   await page.waitForTimeout(Math.floor(Math.random() * 1000) + 500);
                 }
               } catch (e) {
@@ -802,7 +802,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                   const ads = await page.locator(selector).count();
                   if (ads > 0) {
                     const randomAd = Math.floor(Math.random() * Math.min(ads, 3));
-                    await page.locator(selector).nth(randomAd).click({ timeout: 2000, force: true });
+                    await page.locator(selector).nth(randomAd).click({ timeout: 10000, force: true });
                     console.log(`      ✓ Clicked on Google Ad!`);
                     await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
                     // Go back to site

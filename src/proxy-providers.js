@@ -15,14 +15,10 @@ function loadProxiesFromFile() {
         if (fs.existsSync(verifiedPath)) {
             const data = fs.readFileSync(verifiedPath, 'utf8');
             const allProxies = JSON.parse(data);
-            // Sort by responseTime (ascending) and take top 50
-            const sortedProxies = allProxies
-                .filter((p) => p.responseTime)
-                .sort((a, b) => a.responseTime - b.responseTime)
-                .slice(0, 50);
-            console.log(`📂 Loaded top 50 fastest proxies from verified-proxies.json (sorted by response time)`);
-            console.log(`   Fastest: ${sortedProxies[0]?.responseTime}ms, Slowest: ${sortedProxies[sortedProxies.length - 1]?.responseTime}ms`);
-            return sortedProxies;
+            // Take top 50 proxies (should be pre-sorted by response time)
+            const top50Proxies = allProxies.slice(0, 50);
+            console.log(`📂 Loaded top 50 proxies from verified-proxies.json`);
+            return top50Proxies;
         }
         // Priority 2: Try temp-verified-proxies.json (temporary file while script is running)
         const tempPath = path.join(process.cwd(), 'temp-verified-proxies.json');
