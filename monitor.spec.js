@@ -285,6 +285,25 @@ function getHardwareFingerprint(userAgent) {
         platform = 'Linux x86_64';
     return { colorDepth, cpuCores, deviceMemory, platform };
 }
+// Get random position within an ad container for clicking
+async function getRandomAdPosition(page, selector, nth) {
+    try {
+        const element = page.locator(selector).nth(nth);
+        const box = await element.boundingBox();
+        if (!box) {
+            return null;
+        }
+        // Random offset: 40-70% of width and height
+        const randomWidthPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
+        const randomHeightPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
+        const x = box.x + (box.width * randomWidthPercent);
+        const y = box.y + (box.height * randomHeightPercent);
+        return { x: Math.round(x), y: Math.round(y) };
+    }
+    catch (e) {
+        return null;
+    }
+}
 // List of geolocations (USA, Canada, Western Europe)
 const geolocations = [
     // USA
@@ -776,8 +795,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                                     const ads = await page.locator(selector).count();
                                     if (ads > 0) {
                                         const randomAd = Math.floor(Math.random() * Math.min(ads, 3));
-                                        await page.locator(selector).nth(randomAd).click({ timeout: 4000, force: true });
-                                        console.log(`      ✓ Clicked on Google Ad!`);
+                                        const position = await getRandomAdPosition(page, selector, randomAd);
+                                        if (position) {
+                                            // Click at random position within the ad (40-70% of width/height)
+                                            await page.mouse.click(position.x, position.y);
+                                            console.log(`      ✓ Clicked on Google Ad at position (${position.x}, ${position.y})!`);
+                                        }
+                                        else {
+                                            // Fallback to regular click if position couldn't be determined
+                                            await page.locator(selector).nth(randomAd).click({ timeout: 4000, force: true });
+                                            console.log(`      ✓ Clicked on Google Ad!`);
+                                        }
                                         await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
                                         // Go back to site
                                         await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => { });
