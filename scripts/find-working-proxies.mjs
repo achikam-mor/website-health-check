@@ -604,10 +604,10 @@ async function findWorkingProxies() {
   console.log(`🚫 Filtered out ${cdnCount} Cloudflare/CDN IPs (they don't work as proxies)`);
   console.log(`✓ ${filteredProxies.length} potential real proxies remaining\n`);
   
-  // Test ALL filtered proxies until we find 100 working ones
+  // Test ALL filtered proxies - no limit!
   const proxiesToTest = filteredProxies; // Test all, no limit
   console.log(`Testing ${proxiesToTest.length} proxies with IP verification (concurrency: 30, timeout: 12s)...\n`);
-  console.log(`⚠️  Will stop after finding 100 verified working proxies\n`);
+  console.log(`⚠️  Will scan ALL proxies (no 100 proxy limit)\n`);
   
   const working = [];
   
@@ -628,12 +628,6 @@ async function findWorkingProxies() {
       for (const p of validInBatch.slice(0, 2)) {
         console.log(`    ✓ ${p.host}:${p.port} → External IP: ${p.externalIP} (${p.responseTime}ms)`);
       }
-    }
-    
-    // Stop if we found 100 working proxies
-    if (working.length >= 100) {
-      console.log(`\n✅ Found ${working.length} VERIFIED working proxies! Stopping validation.\n`);
-      break;
     }
   }
   
