@@ -121,6 +121,316 @@ async function fetchProxies() {
   } catch (error) {
     console.error('Error fetching HTTPS list:', error.message);
   }
+
+  // Source 5: ProxyNova API
+  try {
+    console.log('Fetching from ProxyNova...');
+    const url = 'https://www.proxynova.com/proxy-server-list/';
+    const response = await fetch(url, { 
+      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    
+    if (response.ok) {
+      const text = await response.text();
+      // Parse HTML table - ProxyNova has table with proxy data
+      const ipMatches = text.matchAll(/abbr title="([0-9.]+)"/g);
+      const portMatches = text.matchAll(/proxy-port">(\d+)</g);
+      
+      const ips = Array.from(ipMatches, m => m[1]);
+      const ports = Array.from(portMatches, m => m[1]);
+      
+      for (let i = 0; i < Math.min(ips.length, ports.length); i++) {
+        if (ips[i] && ports[i]) {
+          proxies.push({
+            host: ips[i],
+            port: parseInt(ports[i]),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyNova'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyNova)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxyNova:', error.message);
+  }
+
+  // Source 6: FreeProxyList.net
+  try {
+    console.log('Fetching from FreeProxyList.net...');
+    const url = 'https://free-proxy-list.net/';
+    const response = await fetch(url, { 
+      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    
+    if (response.ok) {
+      const text = await response.text();
+      // Parse textarea with proxy list
+      const matches = text.matchAll(/(\d+\.\d+\.\d+\.\d+):(\d+)/g);
+      
+      for (const match of matches) {
+        proxies.push({
+          host: match[1],
+          port: parseInt(match[2]),
+          protocol: 'http',
+          country: 'Unknown',
+          source: 'FreeProxyList.net'
+        });
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added FreeProxyList.net)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from FreeProxyList.net:', error.message);
+  }
+
+  // Source 7: SpyS.one (Elite Proxies)
+  try {
+    console.log('Fetching from SpyS.one...');
+    const url = 'https://spys.one/en/free-proxy-list/';
+    const response = await fetch(url, { 
+      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const matches = text.matchAll(/(\d+\.\d+\.\d+\.\d+)<[^>]+>(\d+)/g);
+      
+      for (const match of matches) {
+        proxies.push({
+          host: match[1],
+          port: parseInt(match[2]),
+          protocol: 'http',
+          country: 'Unknown',
+          source: 'SpyS.one'
+        });
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added SpyS.one)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from SpyS.one:', error.message);
+  }
+
+  // Source 8: ProxyScan.io
+  try {
+    console.log('Fetching from ProxyScan.io...');
+    const url = 'https://www.proxyscan.io/api/proxy?format=txt&type=http,https&level=anonymous,elite&ping=1000&limit=250';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyScan.io'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyScan.io)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxyScan.io:', error.message);
+  }
+
+  // Source 9: PubProxy (multiple countries)
+  try {
+    console.log('Fetching from PubProxy...');
+    const countries = ['US', 'GB', 'DE', 'FR', 'CA', 'JP', 'SG'];
+    
+    for (const country of countries) {
+      const url = `https://pubproxy.com/api/proxy?limit=20&format=txt&type=http&country=${country}`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      
+      if (response.ok) {
+        const text = await response.text();
+        const lines = text.trim().split('\n');
+        
+        for (const line of lines) {
+          const [host, portStr] = line.trim().split(':');
+          if (host && portStr && !isNaN(parseInt(portStr))) {
+            proxies.push({
+              host,
+              port: parseInt(portStr),
+              protocol: 'http',
+              country: country,
+              source: 'PubProxy'
+            });
+          }
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 500)); // Rate limit
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added PubProxy)`);
+  } catch (error) {
+    console.error('Error fetching from PubProxy:', error.message);
+  }
+
+  // Source 10: ProxyList.plus
+  try {
+    console.log('Fetching from ProxyList.plus...');
+    const url = 'https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1';
+    const response = await fetch(url, { 
+      signal: AbortSignal.timeout(15000),
+      headers: { 'User-Agent': 'Mozilla/5.0' }
+    });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const matches = text.matchAll(/(\d+\.\d+\.\d+\.\d+):(\d+)/g);
+      
+      for (const match of matches) {
+        proxies.push({
+          host: match[1],
+          port: parseInt(match[2]),
+          protocol: 'http',
+          country: 'Unknown',
+          source: 'ProxyList.plus'
+        });
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyList.plus)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxyList.plus:', error.message);
+  }
+
+  // Source 11: ProxyDB.net
+  try {
+    console.log('Fetching from ProxyDB.net...');
+    for (let page = 1; page <= 5; page++) {
+      const url = `https://proxydb.net/?protocol=http&protocol=https&anonlvl=1&anonlvl=2&anonlvl=3&anonlvl=4&country=&page=${page}`;
+      const response = await fetch(url, { 
+        signal: AbortSignal.timeout(15000),
+        headers: { 'User-Agent': 'Mozilla/5.0' }
+      });
+      
+      if (response.ok) {
+        const text = await response.text();
+        const matches = text.matchAll(/(\d+\.\d+\.\d+\.\d+):(\d+)/g);
+        
+        for (const match of matches) {
+          proxies.push({
+            host: match[1],
+            port: parseInt(match[2]),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyDB.net'
+          });
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Rate limit
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyDB.net)`);
+  } catch (error) {
+    console.error('Error fetching from ProxyDB.net:', error.message);
+  }
+
+  // Source 12: GitHub proxy lists (updated daily)
+  try {
+    console.log('Fetching from GitHub proxy lists...');
+    const githubSources = [
+      'https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt',
+      'https://raw.githubusercontent.com/ShiftyTR/Proxy-List/master/http.txt',
+      'https://raw.githubusercontent.com/monosans/proxy-list/main/proxies/http.txt',
+      'https://raw.githubusercontent.com/clarketm/proxy-list/master/proxy-list-raw.txt',
+      'https://raw.githubusercontent.com/sunny9577/proxy-scraper/master/proxies.txt'
+    ];
+    
+    for (const url of githubSources) {
+      try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+        
+        if (response.ok) {
+          const text = await response.text();
+          const lines = text.trim().split('\n');
+          
+          for (const line of lines) {
+            const [host, portStr] = line.trim().split(':');
+            if (host && portStr && !isNaN(parseInt(portStr))) {
+              proxies.push({
+                host,
+                port: parseInt(portStr),
+                protocol: 'http',
+                country: 'Unknown',
+                source: 'GitHub'
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Continue with next source
+      }
+      await new Promise(resolve => setTimeout(resolve, 500)); // Rate limit
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added GitHub lists)`);
+  } catch (error) {
+    console.error('Error fetching from GitHub:', error.message);
+  }
+
+  // Source 13: OpenProxyList
+  try {
+    console.log('Fetching from OpenProxyList...');
+    const url = 'https://api.openproxylist.xyz/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'OpenProxyList'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added OpenProxyList)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from OpenProxyList:', error.message);
+  }
+
+  // Source 14: Proxifly
+  try {
+    console.log('Fetching from Proxifly...');
+    const url = 'https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/protocols/http/data.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'Proxifly'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added Proxifly)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from Proxifly:', error.message);
+  }
   
   // Remove duplicates
   const uniqueProxies = Array.from(
