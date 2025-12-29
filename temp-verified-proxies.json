@@ -1,15 +1,5 @@
 [
   {
-    "host": "159.203.61.169",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 3671,
-    "externalIP": "159.203.61.169",
-    "verified": true
-  },
-  {
     "host": "34.120.39.81",
     "port": 80,
     "protocol": "http",
@@ -130,26 +120,6 @@
     "verified": true
   },
   {
-    "host": "138.68.60.8",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 7775,
-    "externalIP": "138.68.60.8",
-    "verified": true
-  },
-  {
-    "host": "91.109.204.213",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 8029,
-    "externalIP": "91.109.204.213",
-    "verified": true
-  },
-  {
     "host": "213.195.22.139",
     "port": 8888,
     "protocol": "http",
@@ -177,16 +147,6 @@
     "source": "Manual",
     "responseTime": 8540,
     "externalIP": "159.65.128.52",
-    "verified": true
-  },
-  {
-    "host": "45.59.186.60",
-    "port": 80,
-    "protocol": "http",
-    "country": "Unknown",
-    "source": "Manual",
-    "responseTime": 8613,
-    "externalIP": "45.59.186.60",
     "verified": true
   },
   {

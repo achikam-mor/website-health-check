@@ -1,0 +1,110 @@
+[
+  {
+    "host": "38.60.196.214",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED (4 executions, 0% success)",
+    "executions": 4,
+    "failures": 4,
+    "successRate": "0%"
+  },
+  {
+    "host": "51.8.61.60",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED (4 executions, 0% success)",
+    "executions": 4,
+    "failures": 4,
+    "successRate": "0%"
+  },
+  {
+    "host": "193.43.159.200",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED (3 executions, 0% success)",
+    "executions": 3,
+    "failures": 3,
+    "successRate": "0%"
+  },
+  {
+    "host": "45.59.186.60",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED (3 executions, 0% success)",
+    "executions": 3,
+    "failures": 3,
+    "successRate": "0%"
+  },
+  {
+    "host": "46.62.254.141",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED & ERR_EMPTY_RESPONSE (3 executions, 0% success)",
+    "executions": 3,
+    "failures": 3,
+    "successRate": "0%"
+  },
+  {
+    "host": "89.58.55.33",
+    "port": 80,
+    "protocol": "http",
+    "reason": "ERR_TUNNEL_CONNECTION_FAILED (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "80.85.246.217",
+    "port": 5555,
+    "protocol": "http",
+    "reason": "ERR_PROXY_CONNECTION_FAILED & Timeout (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "62.213.13.54",
+    "port": 3128,
+    "protocol": "http",
+    "reason": "ERR_TIMED_OUT (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "8.219.97.248",
+    "port": 80,
+    "protocol": "http",
+    "reason": "Timeout & ERR_TUNNEL_CONNECTION_FAILED (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "159.203.61.169",
+    "port": 3128,
+    "protocol": "http",
+    "reason": "expect(locator).toBeVisible() failed (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "161.35.70.249",
+    "port": 80,
+    "protocol": "http",
+    "reason": "expect(locator).toBeVisible() failed (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  },
+  {
+    "host": "134.209.29.120",
+    "port": 80,
+    "protocol": "http",
+    "reason": "expect(locator).toBeVisible() failed (2 executions, 0% success)",
+    "executions": 2,
+    "failures": 2,
+    "successRate": "0%"
+  }
+]
