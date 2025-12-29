@@ -3,6 +3,65 @@ import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
 import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy, launchBrowserWithVPNBook, launchBrowserWithBlockaway, getLocationName } from './src/browser-factory';
 
+// Interface for tracking proxy statistics
+interface ProxyStats {
+  host: string;
+  port: number;
+  country: string;
+  attempts: number;
+  successes: number;
+  failures: number;
+  successRate: number;
+  failureReasons: string[];
+  lastAttempt: Date;
+  lastSuccess?: Date;
+  lastFailure?: Date;
+}
+
+// Global map to track proxy statistics across test runs
+const proxyStatsMap = new Map<string, ProxyStats>();
+
+// Helper to get proxy key
+function getProxyKey(proxy: ValidatedProxy): string {
+  return `${proxy.host}:${proxy.port}`;
+}
+
+// Helper to update proxy stats
+function updateProxyStats(proxy: ValidatedProxy, success: boolean, failureReason?: string) {
+  const key = getProxyKey(proxy);
+  const existing = proxyStatsMap.get(key);
+  
+  if (existing) {
+    existing.attempts++;
+    if (success) {
+      existing.successes++;
+      existing.lastSuccess = new Date();
+    } else {
+      existing.failures++;
+      existing.lastFailure = new Date();
+      if (failureReason && !existing.failureReasons.includes(failureReason)) {
+        existing.failureReasons.push(failureReason);
+      }
+    }
+    existing.successRate = Math.round((existing.successes / existing.attempts) * 100);
+    existing.lastAttempt = new Date();
+  } else {
+    proxyStatsMap.set(key, {
+      host: proxy.host,
+      port: proxy.port,
+      country: proxy.country,
+      attempts: 1,
+      successes: success ? 1 : 0,
+      failures: success ? 0 : 1,
+      successRate: success ? 100 : 0,
+      failureReasons: failureReason ? [failureReason] : [],
+      lastAttempt: new Date(),
+      lastSuccess: success ? new Date() : undefined,
+      lastFailure: success ? undefined : new Date()
+    });
+  }
+}
+
 // Fisher-Yates shuffle algorithm
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
@@ -870,6 +929,15 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           console.log(`\n⚠️  ${failures.length} page(s) failed from ${locationName}`);
         }
         
+        // Track proxy stats (only for actual proxies, not web proxies or direct)
+        if (config.proxy && config.type === 'proxy') {
+          const success = failures.length === 0;
+          const failureReason = failures.length > 0 
+            ? failures[0].error.split('\n')[0] // Get first line of error
+            : undefined;
+          updateProxyStats(config.proxy, success, failureReason);
+        }
+        
         return {
           location: locationName,
           proxy: config.proxy,
@@ -883,6 +951,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         
         if (browser) {
           await browser.close().catch(() => {});
+        }
+        
+        // Track proxy stats for critical failures too
+        if (config.proxy && config.type === 'proxy') {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          const failureReason = errorMessage.split('\n')[0]; // Get first line
+          updateProxyStats(config.proxy, false, failureReason);
         }
         
         return {
@@ -954,6 +1029,78 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         for (const failure of result.failures) {
           console.log(`     - ${failure.url}: ${failure.error}`);
         }
+      }
+    }
+    
+    console.log('\n' + '='.repeat(70) + '\n');
+    
+    // ============================================================
+    // ACHIKAM PROXY SUMMARY - Track problematic proxies
+    // ============================================================
+    console.log('\n' + '='.repeat(70));
+    console.log('🔍 Achikam proxy summary');
+    console.log('='.repeat(70));
+    
+    // Get all proxies sorted by success rate (worst first)
+    const allProxyStats = Array.from(proxyStatsMap.values())
+      .sort((a, b) => a.successRate - b.successRate);
+    
+    // Define problematic: success rate < 50% OR 0 successes
+    const problematicProxies = allProxyStats.filter(stats => 
+      stats.successRate < 50 || stats.successes === 0
+    );
+    
+    if (problematicProxies.length === 0) {
+      console.log('\n✅ No problematic proxies detected in this run!');
+      console.log('   All tested proxies had success rate ≥ 50%');
+    } else {
+      console.log(`\n⚠️  Found ${problematicProxies.length} problematic proxy(ies):`);
+      console.log('   (Success rate < 50% or 0 successes)\n');
+      
+      for (const stats of problematicProxies) {
+        console.log(`\n📍 Proxy: ${stats.host}:${stats.port} (${stats.country})`);
+        console.log(`   ├─ Attempts: ${stats.attempts}`);
+        console.log(`   ├─ Successes: ${stats.successes}`);
+        console.log(`   ├─ Failures: ${stats.failures}`);
+        console.log(`   ├─ Success Rate: ${stats.successRate}%`);
+        console.log(`   ├─ Last Attempt: ${stats.lastAttempt.toISOString()}`);
+        
+        if (stats.lastSuccess) {
+          console.log(`   ├─ Last Success: ${stats.lastSuccess.toISOString()}`);
+        } else {
+          console.log(`   ├─ Last Success: NEVER`);
+        }
+        
+        if (stats.lastFailure) {
+          console.log(`   ├─ Last Failure: ${stats.lastFailure.toISOString()}`);
+        }
+        
+        if (stats.failureReasons.length > 0) {
+          console.log(`   └─ Failure Reasons:`);
+          stats.failureReasons.forEach((reason, idx) => {
+            const prefix = idx === stats.failureReasons.length - 1 ? '      └─' : '      ├─';
+            console.log(`${prefix} ${reason}`);
+          });
+        }
+      }
+      
+      console.log('\n💡 Recommendation:');
+      console.log('   Run the workflow again with these proxies to verify if failures are consistent.');
+      console.log('   Consider removing proxies with 0% success rate after 3+ test runs.');
+    }
+    
+    // Also show well-performing proxies for reference
+    const goodProxies = allProxyStats.filter(stats => stats.successRate >= 80 && stats.attempts >= 1);
+    if (goodProxies.length > 0) {
+      console.log(`\n\n✅ Well-performing proxies (≥80% success rate):`);
+      console.log(`   ${goodProxies.length} proxy(ies)\n`);
+      
+      for (const stats of goodProxies.slice(0, 10)) { // Show top 10
+        console.log(`   • ${stats.host}:${stats.port} - ${stats.successRate}% (${stats.successes}/${stats.attempts})`);
+      }
+      
+      if (goodProxies.length > 10) {
+        console.log(`   ... and ${goodProxies.length - 10} more`);
       }
     }
     
