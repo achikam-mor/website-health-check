@@ -293,9 +293,9 @@ async function getRandomAdPosition(page, selector, nth) {
         if (!box) {
             return null;
         }
-        // Random offset: 40-70% of width and height
-        const randomWidthPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
-        const randomHeightPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
+        // Random offset: 35-65% of width and 30-60% of height
+        const randomWidthPercent = 0.35 + (Math.random() * 0.3); // 0.35 to 0.65
+        const randomHeightPercent = 0.3 + (Math.random() * 0.3); // 0.3 to 0.6
         const x = box.x + (box.width * randomWidthPercent);
         const y = box.y + (box.height * randomHeightPercent);
         return { x: Math.round(x), y: Math.round(y) };
@@ -622,11 +622,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 }
                 browser = browserSetup.browser;
                 context = browserSetup.context;
-                // Log if this user can click on ads
-                if (isProxyium) {
+                // Determine if this user will click on ads (1/100 chance for proxyium users)
+                const shouldClickAds = isProxyium && Math.random() < (1 / 100);
+                // Log if this user was chosen to click on ads
+                if (shouldClickAds) {
                     console.log('\n' + '='.repeat(80));
-                    console.log('🎯 AD-CLICKING ENABLED FOR THIS USER: ' + config.type.toUpperCase());
-                    console.log('   Probability: 1/100 chance to click on ads');
+                    console.log('🎯 THIS USER WAS CHOSEN TO CLICK ADS (1/100): ' + config.type.toUpperCase());
+                    console.log('   Will ensure market-overview.html is visited for ad clicking');
                     console.log('='.repeat(80) + '\n');
                 }
                 // Get or create page
@@ -647,7 +649,15 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
                 // Shuffle pages and select random subset
                 const shuffledPages = shuffleArray([...innerPages]);
-                const selectedPages = shuffledPages.slice(0, numPagesToVisit - 2); // -2 for homepage visits
+                let selectedPages = shuffledPages.slice(0, numPagesToVisit - 2); // -2 for homepage visits
+                // If user should click ads, ensure market-overview.html is in the pages
+                const marketOverviewUrl = 'https://www.stockscanner.net/market-overview.html';
+                if (shouldClickAds && !selectedPages.includes(marketOverviewUrl)) {
+                    // Replace a random page with market-overview.html
+                    const replaceIndex = Math.floor(Math.random() * selectedPages.length);
+                    selectedPages[replaceIndex] = marketOverviewUrl;
+                    console.log('   📍 Added market-overview.html to pages (for ad clicking)');
+                }
                 // Randomly decide homepage visit pattern
                 const homepagePattern = Math.floor(Math.random() * 3);
                 const homepage = useHttp ? toHttpUrl('https://www.stockscanner.net') : 'https://www.stockscanner.net';
@@ -697,9 +707,37 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                         });
                     }
                     try {
-                        await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
-                        // Verify basic element exists to confirm page load
-                        await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
+                        // Special retry logic for market-overview.html when user is chosen to click ads
+                        const isMarketOverview = url.includes('market-overview.html');
+                        const maxRetries = (shouldClickAds && isMarketOverview) ? 3 : 1;
+                        let retryCount = 0;
+                        let pageLoaded = false;
+                        while (retryCount < maxRetries && !pageLoaded) {
+                            try {
+                                if (retryCount > 0 && shouldClickAds && isMarketOverview) {
+                                    console.log(`      🔄 Retry ${retryCount}/${maxRetries - 1} for market-overview.html (lucky user needs this page for ad clicking)...`);
+                                }
+                                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+                                // Verify basic element exists to confirm page load
+                                await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
+                                pageLoaded = true;
+                                if (retryCount > 0 && shouldClickAds && isMarketOverview) {
+                                    console.log(`      ✅ Successfully loaded market-overview.html after ${retryCount} retry(ies)!`);
+                                }
+                            }
+                            catch (retryError) {
+                                retryCount++;
+                                if (retryCount < maxRetries) {
+                                    // Wait a bit before retrying (5-10 seconds)
+                                    const retryDelay = Math.floor(Math.random() * 5000) + 5000;
+                                    await page.waitForTimeout(retryDelay);
+                                }
+                                else {
+                                    // All retries exhausted, throw the error
+                                    throw retryError;
+                                }
+                            }
+                        }
                         // Simulate realistic mouse movement (CRITICAL for bot detection)
                         const numMouseMoves = Math.floor(Math.random() * 5) + 3; // 3-8 moves
                         for (let i = 0; i < numMouseMoves; i++) {
@@ -777,11 +815,13 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                         }
                         // Perform the scrolling
                         await humanScroll(page);
-                        // CRITICAL: Only croxyproxy/proxyium users can click on Google Ads (1/100 chance)
-                        // Regular proxy users and direct connections do NOT click ads
-                        if (isProxyium && Math.random() < (1 / 100)) {
+                        // CRITICAL: Only users chosen at setup (1/100) can click on Google Ads
+                        // Ad clicks ONLY happen on market-overview.html page
+                        if (shouldClickAds && url.includes('market-overview.html')) {
                             try {
-                                console.log(`      🎯 Attempting to click on Google Ad (1/100 chance for web proxy users)...`);
+                                console.log(`      🎯 Attempting to click on Google Ad (1/100 chance for web proxy users on market-overview.html)...`);
+                                // Capture current URL before clicking
+                                const urlBeforeClick = page.url();
                                 // Common Google Ad selectors
                                 const adSelectors = [
                                     'ins.adsbygoogle',
@@ -791,6 +831,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                                     '[data-ad-slot]',
                                     '.adsbygoogle'
                                 ];
+                                let adClicked = false;
                                 for (const selector of adSelectors) {
                                     const ads = await page.locator(selector).count();
                                     if (ads > 0) {
@@ -800,21 +841,37 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                                             // Click at random position within the ad (40-70% of width/height)
                                             await page.mouse.click(position.x, position.y);
                                             console.log(`      ✓ Clicked on Google Ad at position (${position.x}, ${position.y})!`);
+                                            adClicked = true;
                                         }
                                         else {
                                             // Fallback to regular click if position couldn't be determined
                                             await page.locator(selector).nth(randomAd).click({ timeout: 4000, force: true });
                                             console.log(`      ✓ Clicked on Google Ad!`);
+                                            adClicked = true;
                                         }
-                                        await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000); // Stay on ad 2-5 seconds
+                                        break;
+                                    }
+                                }
+                                if (adClicked) {
+                                    // Wait a moment to see if navigation occurs
+                                    await page.waitForTimeout(2000);
+                                    // Check if URL changed (navigation happened)
+                                    const urlAfterClick = page.url();
+                                    if (urlAfterClick !== urlBeforeClick) {
+                                        console.log(`      ✅ Ad navigation successful! Moved from ${urlBeforeClick} to ${urlAfterClick}`);
+                                        // Stay on ad page for 2-5 seconds
+                                        await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000);
                                         // Go back to site
                                         await page.goBack({ waitUntil: 'domcontentloaded', timeout: 10000 }).catch(() => { });
-                                        break;
+                                        console.log(`      ↩️ Returned to original page`);
+                                    }
+                                    else {
+                                        console.log(`      ⚠️ Ad click did not navigate to new page (URL unchanged) - skipping goBack()`);
                                     }
                                 }
                             }
                             catch (e) {
-                                // Ad might not be clickable or blocked - that's fine
+                                console.log(`      ❌ Failed to click ad: ${e.message}`);
                             }
                         }
                         // Random human behaviors (20% chance)
