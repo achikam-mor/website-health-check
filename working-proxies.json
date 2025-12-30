@@ -1,23 +1,23 @@
 [
     {
-        "host":  "45.88.0.114",
-        "port":  3128,
+        "host":  "157.20.208.43",
+        "port":  3125,
         "protocol":  "http",
         "country":  "Unknown",
         "source":  "OpenProxyList",
-        "responseTime":  2618,
-        "externalIP":  "213.220.62.62",
+        "responseTime":  5693,
+        "externalIP":  "157.20.208.43",
         "verified":  true,
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
     {
-        "host":  "45.88.0.115",
-        "port":  3128,
+        "host":  "193.95.53.131",
+        "port":  8077,
         "protocol":  "http",
         "country":  "Unknown",
         "source":  "OpenProxyList",
-        "responseTime":  2650,
-        "externalIP":  "213.220.62.62",
+        "responseTime":  5730,
+        "externalIP":  "193.95.53.131",
         "verified":  true,
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
@@ -33,13 +33,13 @@
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
     {
-        "host":  "45.88.0.117",
-        "port":  3128,
+        "host":  "101.47.17.165",
+        "port":  7890,
         "protocol":  "http",
         "country":  "Unknown",
         "source":  "OpenProxyList",
-        "responseTime":  2688,
-        "externalIP":  "213.220.62.62",
+        "responseTime":  5737,
+        "externalIP":  "101.47.17.165",
         "verified":  true,
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
@@ -66,13 +66,13 @@
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
     {
-        "host":  "45.88.0.116",
-        "port":  3128,
+        "host":  "59.153.18.174",
+        "port":  1120,
         "protocol":  "http",
         "country":  "Unknown",
         "source":  "OpenProxyList",
-        "responseTime":  2835,
-        "externalIP":  "213.220.62.62",
+        "responseTime":  5823,
+        "externalIP":  "59.153.17.82",
         "verified":  true,
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
@@ -132,13 +132,13 @@
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },
     {
-        "host":  "45.88.0.113",
-        "port":  3128,
+        "host":  "43.224.116.22",
+        "port":  1120,
         "protocol":  "http",
         "country":  "Unknown",
         "source":  "OpenProxyList",
-        "responseTime":  3061,
-        "externalIP":  "213.220.62.62",
+        "responseTime":  5871,
+        "externalIP":  "103.245.205.179",
         "verified":  true,
         "verifiedDate":  "2025-12-29T20:35:03.430Z"
     },

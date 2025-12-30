@@ -178,5 +178,50 @@
         "executions":  3,
         "failures":  3,
         "successRate":  "0%"
+    },
+    {
+        "host":  "45.88.0.114",
+        "port":  3128,
+        "protocol":  "http",
+        "reason":  "ERR_TIMED_OUT (4 failures across 8 runs, 0% success) - 45.88.0.x subnet 100% unreliable",
+        "executions":  4,
+        "failures":  4,
+        "successRate":  "0%"
+    },
+    {
+        "host":  "45.88.0.115",
+        "port":  3128,
+        "protocol":  "http",
+        "reason":  "ERR_TIMED_OUT (3 failures across 8 runs, 0% success) - 45.88.0.x subnet 100% unreliable",
+        "executions":  3,
+        "failures":  3,
+        "successRate":  "0%"
+    },
+    {
+        "host":  "45.88.0.116",
+        "port":  3128,
+        "protocol":  "http",
+        "reason":  "ERR_TIMED_OUT (3 failures across 8 runs, 0% success) - 45.88.0.x subnet 100% unreliable",
+        "executions":  3,
+        "failures":  3,
+        "successRate":  "0%"
+    },
+    {
+        "host":  "45.88.0.117",
+        "port":  3128,
+        "protocol":  "http",
+        "reason":  "ERR_TIMED_OUT (1 failure, blacklisted as part of 45.88.0.x subnet)",
+        "executions":  1,
+        "failures":  1,
+        "successRate":  "0%"
+    },
+    {
+        "host":  "45.88.0.113",
+        "port":  3128,
+        "protocol":  "http",
+        "reason":  "ERR_TIMED_OUT (2 failures across 8 runs, 0% success) - 45.88.0.x subnet 100% unreliable",
+        "executions":  2,
+        "failures":  2,
+        "successRate":  "0%"
     }
 ]
