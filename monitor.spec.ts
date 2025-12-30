@@ -309,9 +309,9 @@ async function getRandomAdPosition(page: Page, selector: string, nth: number): P
       return null;
     }
     
-    // Random offset: 40-70% of width and height
-    const randomWidthPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
-    const randomHeightPercent = 0.4 + (Math.random() * 0.3); // 0.4 to 0.7
+    // Random offset: 35-65% of width and 30-60% of height
+    const randomWidthPercent = 0.35 + (Math.random() * 0.3); // 0.35 to 0.65
+    const randomHeightPercent = 0.3 + (Math.random() * 0.3); // 0.3 to 0.6
     
     const x = box.x + (box.width * randomWidthPercent);
     const y = box.y + (box.height * randomHeightPercent);
@@ -792,10 +792,40 @@ test.describe('StockScanner Multi-Location Health Check', () => {
           }
           
           try {
-            await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+            // Special retry logic for market-overview.html when user is chosen to click ads
+            const isMarketOverview = url.includes('market-overview.html');
+            const maxRetries = (shouldClickAds && isMarketOverview) ? 3 : 1;
+            let retryCount = 0;
+            let pageLoaded = false;
             
-            // Verify basic element exists to confirm page load
-            await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
+            while (retryCount < maxRetries && !pageLoaded) {
+              try {
+                if (retryCount > 0 && shouldClickAds && isMarketOverview) {
+                  console.log(`      🔄 Retry ${retryCount}/${maxRetries - 1} for market-overview.html (lucky user needs this page for ad clicking)...`);
+                }
+                
+                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+                
+                // Verify basic element exists to confirm page load
+                await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
+                
+                pageLoaded = true;
+                
+                if (retryCount > 0 && shouldClickAds && isMarketOverview) {
+                  console.log(`      ✅ Successfully loaded market-overview.html after ${retryCount} retry(ies)!`);
+                }
+              } catch (retryError) {
+                retryCount++;
+                if (retryCount < maxRetries) {
+                  // Wait a bit before retrying (5-10 seconds)
+                  const retryDelay = Math.floor(Math.random() * 5000) + 5000;
+                  await page.waitForTimeout(retryDelay);
+                } else {
+                  // All retries exhausted, throw the error
+                  throw retryError;
+                }
+              }
+            }
             
             // Simulate realistic mouse movement (CRITICAL for bot detection)
             const numMouseMoves = Math.floor(Math.random() * 5) + 3; // 3-8 moves
