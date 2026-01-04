@@ -453,7 +453,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Count proxies with known countries
         const knownCountryCount = workingProxies.filter(p => p.country !== 'Unknown').length;
         
-        console.log(`\n✅ Using ${workingProxies.length} proxies from working-proxies.json:`);
+        console.log(`\n✅ Using ${workingProxies.length} proxies from verified-proxies.json:`);
         console.log(`   📍 ${knownCountryCount} proxies with known countries (prioritized)`);
         console.log(`   ⚡ ${workingProxies.length - knownCountryCount} fastest proxies (by response time)\n`);
         
@@ -553,12 +553,11 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     // 22 sessions × increased timeouts for slow proxies
     test.setTimeout(1080000); // 18 minutes
     
-    // Randomly select 17 proxies from top 50 for this execution
-    const top50Proxies = workingProxies.slice(0, 50);
-    const shuffledProxies = shuffleArray(top50Proxies);
+    // Randomly select 17 proxies from ALL proxies for this execution
+    const shuffledProxies = shuffleArray(workingProxies);
     const selectedProxies = shuffledProxies.slice(0, 17);
     
-    console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from top 50 for this execution\n`);
+    console.log(`\n🎲 Randomly selected ${selectedProxies.length} proxies from ${workingProxies.length} total proxies for this execution\n`);
     
     // Test configurations: 1 direct + 1 proxyium + 1 croxyproxy + 1 vpnbook + 1 blockaway + 17 random proxies = 22 total
     const testConfigs = [

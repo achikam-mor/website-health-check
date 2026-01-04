@@ -5,8 +5,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 /**
- * Load proxies from verified-proxies.json (preferred) or temp-verified-proxies.json (fallback)
- * Falls back to working-proxies.json for backwards compatibility
+ * Load proxies from verified-proxies.json (primary source)
+ * Falls back to temp-verified-proxies.json and working-proxies.json for backwards compatibility
  */
 function loadProxiesFromFile() {
     try {

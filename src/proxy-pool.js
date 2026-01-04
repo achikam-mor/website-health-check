@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
  * @returns {Object} A random proxy object with host, port, protocol, responseTime, etc.
  */
 export function getRandomProxy() {
-  const proxyPoolPath = path.join(__dirname, '..', 'working-proxies.json');
+  const proxyPoolPath = path.join(__dirname, '..', 'verified-proxies.json');
   const proxies = JSON.parse(fs.readFileSync(proxyPoolPath, 'utf8'));
   
   if (proxies.length === 0) {
@@ -26,7 +26,7 @@ export function getRandomProxy() {
  * @returns {Array} Array of all proxy objects
  */
 export function getAllProxies() {
-  const proxyPoolPath = path.join(__dirname, '..', 'working-proxies.json');
+  const proxyPoolPath = path.join(__dirname, '..', 'verified-proxies.json');
   return JSON.parse(fs.readFileSync(proxyPoolPath, 'utf8'));
 }
 
