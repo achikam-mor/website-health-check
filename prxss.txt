@@ -1,0 +1,3302 @@
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 160.251.142.232:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:50:38.327Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:50:38.327Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:50:46.425Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:50:46.425Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:50:49.985Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:50:49.985Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:50:51.731Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:50:51.731Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:51:23.598Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:51:23.598Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:51:33.941Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:51:33.941Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:51:37.797Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:51:37.797Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 194.26.141.202:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:51:42.520Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:51:42.520Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:51:47.258Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:51:47.258Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:52:02.472Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:52:02.472Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:52:51.468Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:52:51.468Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 45.186.6.104:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:54:50.117Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:54:50.117Z
+   └─ Failure Reasons:
+      └─ page.goForward: Timeout 10000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 143.110.160.230:8888 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+   
+   
+   ======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:27:57.989Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:27:57.989Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/export.html
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:28:02.726Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:28:02.726Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:28:31.554Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:28:31.554Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:28:48.958Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:28:48.958Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 115.114.77.133:9090 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:29:07.401Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:29:07.401Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 113.11.127.179:64300 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:30:41.215Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:30:41.215Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:30:54.780Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:30:54.780Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:31:06.761Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:31:06.761Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:33:40.787Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:33:40.787Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 209.97.150.167:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:36:22.507Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:36:22.507Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T03:38:46.081Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T03:38:46.081Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 200.174.198.32:8888 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 43.224.116.22:1120 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 216.229.112.25:8080 - 100% (1/1)
+   • 147.83.77.10:3128 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:38:19.775Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:38:19.775Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:38:32.792Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:38:32.792Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:38:49.288Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:38:49.288Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:39:17.599Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:39:17.599Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 202.5.37.220:21225 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:39:25.317Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:39:25.317Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/export.html
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:39:43.515Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:39:43.515Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:39:55.413Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:39:55.413Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:40:21.663Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:40:21.663Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 209.97.150.167:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:41:26.399Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:41:26.399Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:41:43.496Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:41:43.496Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T02:42:34.378Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T02:42:34.378Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 175.99.220.171:80 - 100% (1/1)
+   • 62.60.246.164:9080 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 41.254.48.192:1978 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 10 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 101.47.17.165:7890 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:09:32.158Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:09:32.158Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 202.5.37.220:21225 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:09:54.124Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:09:54.124Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 194.26.141.202:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:10:05.041Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:10:05.041Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:10:40.955Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:10:40.955Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 65.108.203.37:28080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:10:41.743Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:10:41.743Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:11:55.151Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:11:55.151Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 45.186.6.104:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:13:16.079Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:13:16.079Z
+   └─ Failure Reasons:
+      └─ page.goBack: Timeout 10000ms exceeded.
+
+📍 Proxy: 209.97.150.167:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:13:17.477Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:13:17.477Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:16:33.265Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:16:33.265Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T01:19:28.776Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T01:19:28.776Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   7 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 43.224.118.154:1120 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 59.153.18.174:1120 - 100% (1/1)
+   • 200.174.198.32:8888 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 160.251.142.232:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:58:29.632Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:58:29.632Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:58:48.606Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:58:48.606Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:58:55.232Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:58:55.232Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 8.212.160.196:443 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:58:58.110Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:58:58.110Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:59:10.903Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:59:10.903Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:59:19.485Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:59:19.485Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:59:22.583Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:59:22.583Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T00:00:59.597Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T00:00:59.597Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 200.174.198.32:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T00:02:13.239Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T00:02:13.239Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T00:06:26.703Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T00:06:26.703Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-05T00:08:00.983Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-05T00:08:00.983Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 65.108.203.37:28080 - 100% (1/1)
+   • 194.26.141.202:3128 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 163.223.78.87:3127 - 100% (1/1)
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:04.449Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:04.449Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:21.774Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:21.774Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:27.108Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:27.108Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:36.408Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:36.408Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:47.296Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:47.296Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 8.212.160.196:443 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:53:49.203Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:53:49.203Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:54:02.117Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:54:02.117Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:54:16.445Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:54:16.445Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:54:59.196Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:54:59.196Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 46.161.6.165:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:55:14.530Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:55:14.530Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:55:42.269Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:55:42.269Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:58:52.586Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:58:52.586Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 45.186.6.104:3128 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+
+======================================================================
+
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:34:48.195Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:34:48.195Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 160.251.142.232:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:35:21.647Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:35:21.647Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:35:46.070Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:35:46.070Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 45.186.6.104:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:35:54.091Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:35:54.091Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:35:54.927Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:35:54.927Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:36:00.289Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:36:00.289Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:36:29.152Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:36:29.152Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 101.47.17.165:7890 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:36:47.128Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:36:47.128Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.116.22:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:37:40.846Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:37:40.846Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:38:37.946Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:38:37.946Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:39:03.199Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:39:03.199Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:39:21.570Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:39:21.570Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 65.108.203.37:28080 - 100% (1/1)
+   • 194.26.141.202:3128 - 100% (1/1)
+
+======================================================================
+
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 10 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:25:31.504Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:25:31.504Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:25:33.122Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:25:33.122Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:25:59.230Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:25:59.230Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 65.108.203.37:28080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:26:34.204Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:26:34.204Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:27:26.519Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:27:26.519Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:27:49.248Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:27:49.248Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:28:28.745Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:28:28.745Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:29:54.612Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:29:54.612Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:29:54.789Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:29:54.789Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:30:40.542Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:30:40.542Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   7 proxy(ies)
+
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 195.234.68.34:3128 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 143.110.160.230:8888 - 100% (1/1)
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:04:36.164Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:04:36.164Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:04:45.101Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:04:45.101Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:04:59.863Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:04:59.863Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:05:12.362Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:05:12.362Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.116.22:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:05:12.996Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:05:12.996Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/export.html
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:05:31.206Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:05:31.206Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:05:39.984Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:05:39.984Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:06:06.091Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:06:06.091Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 46.161.6.165:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:07:36.891Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:07:36.891Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:08:10.306Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:08:10.306Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:14:45.476Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:14:45.476Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 41.223.119.156:3128 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:52:54.220Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:52:54.220Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:53:15.742Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:53:15.742Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:54:18.240Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:54:18.240Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 143.110.160.230:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:54:26.040Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:54:26.040Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:54:43.799Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:54:43.799Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:55:10.597Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:55:10.597Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:56:06.084Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:56:06.084Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 200.174.198.32:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:56:06.604Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:56:06.604Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:56:33.489Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:56:33.489Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:56:45.107Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:56:45.107Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T23:00:12.302Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T23:00:12.302Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 163.223.78.87:3127 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 216.229.112.25:8080 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 10 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:22:32.704Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:22:32.704Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:22:43.776Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:22:43.776Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 65.108.203.37:28080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:23:30.854Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:23:30.854Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 91.109.204.213:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:23:39.136Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:23:39.136Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:24:03.311Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:24:03.311Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 8.212.160.196:443 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:24:05.299Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:24:05.299Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:24:27.760Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:24:27.760Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:25:13.755Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:25:13.755Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 143.110.160.230:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:25:16.023Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:25:16.023Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:27:51.116Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:27:51.116Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   7 proxy(ies)
+
+   • 216.229.112.25:8080 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 59.153.18.174:1120 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 43.224.116.22:1120 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:07:38.148Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:07:38.148Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:00.329Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:00.329Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:08.731Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:08.731Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:10.291Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:10.291Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:17.460Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:17.460Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:50.386Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:50.386Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 143.110.160.230:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:09:12.652Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:09:12.652Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:10:00.680Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:10:00.680Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:10:04.472Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:10:04.472Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:10:34.729Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:10:34.729Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:11:19.732Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:11:19.732Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 41.223.119.156:3128 - 100% (1/1)
+
+======================================================================
+
+✅ Well-performing proxies (≥80% success rate):
+   7 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 65.108.203.37:28080 - 100% (1/1)
+   • 175.99.220.171:80 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:38.791Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:38.791Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 185.200.37.242:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:51.763Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:51.763Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 91.109.204.213:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:55.623Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:55.623Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:59.109Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:59.109Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:00.872Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:00.872Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/market-overview.html
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:39.336Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:39.336Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/export.html
+
+📍 Proxy: 101.47.17.165:7890 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:43.753Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:43.753Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:56:04.831Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:56:04.831Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 194.26.141.202:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:56:13.624Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:56:13.624Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:56:39.697Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:56:39.697Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:57:44.574Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:57:44.574Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:00:44.467Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:00:44.467Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 9 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:53:44.317Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:53:44.317Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 163.61.112.245:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:00.994Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:00.994Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:24.134Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:24.134Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 91.109.204.213:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:42.082Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:42.082Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:28.733Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:28.733Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:38.071Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:38.071Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:56:20.011Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:56:20.011Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:04:08.717Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:04:08.717Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T22:08:32.339Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T22:08:32.339Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   8 proxy(ies)
+
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 65.108.203.37:28080 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 194.26.141.202:3128 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 13 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:50:48.366Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:50:48.366Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:51:15.187Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:51:15.187Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:51:24.866Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:51:24.866Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 46.161.6.165:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:51:53.705Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:51:53.705Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 143.110.160.230:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:51:53.960Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:51:53.960Z
+   └─ Failure Reasons:
+      └─ page.goBack: Timeout 10000ms exceeded.
+
+📍 Proxy: 43.224.116.22:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:51:56.145Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:51:56.145Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:52:00.754Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:52:00.754Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 65.108.203.37:28080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:52:06.862Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:52:06.862Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/watch-list.html
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:52:07.256Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:52:07.256Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:53:20.174Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:53:20.174Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:07.446Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:07.446Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:54:10.036Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:54:10.036Z
+   └─ Failure Reasons:
+      └─ page.goto: Timeout 120000ms exceeded.
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:56:53.462Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:56:53.462Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   4 proxy(ies)
+
+   • 194.26.141.202:3128 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:43:11.430Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:43:11.430Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:43:37.774Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:43:37.774Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:43:46.461Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:43:46.461Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.118.154:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:44:30.292Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:44:30.292Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:44:38.321Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:44:38.321Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 91.109.204.213:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:44:42.420Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:44:42.420Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 113.11.127.179:64300 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:44:42.804Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:44:42.804Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:45:01.367Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:45:01.367Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_CONNECTION_RESET at http://www.stockscanner.net/
+
+📍 Proxy: 200.174.198.32:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:46:31.204Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:46:31.204Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:53:52.965Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:53:52.965Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:55:08.663Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:55:08.663Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 194.26.141.202:3128 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 177.43.248.58:3128 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 5 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:39:37.703Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:39:37.703Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 160.251.142.232:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:39:50.414Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:39:50.414Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:40:23.271Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:40:23.271Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 113.11.127.179:64300 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:41:06.017Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:41:06.017Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:44:20.582Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:44:20.582Z
+   └─ Failure Reasons:
+      └─ page.evaluate: Execution context was destroyed, most likely because of a navigation
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   12 proxy(ies)
+
+   • 65.108.203.37:28080 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 147.83.77.10:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+   • 41.254.48.192:1978 - 100% (1/1)
+   ... and 2 more
+
+======================================================================
+
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:28:45.460Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:28:45.460Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:28:47.566Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:28:47.566Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:28:48.041Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:28:48.041Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/export.html
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:29:04.477Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:29:04.477Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 8.212.160.196:443 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:30:03.385Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:30:03.385Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:30:10.569Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:30:10.569Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 202.5.37.220:21225 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:30:50.565Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:30:50.565Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 176.126.103.194:44214 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:30:53.984Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:30:53.984Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:31:39.798Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:31:39.798Z
+   └─ Failure Reasons:
+      └─ page.goBack: Timeout 10000ms exceeded.
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:32:19.935Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:32:19.935Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:36:53.300Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:36:53.300Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+   • 143.110.160.230:8888 - 100% (1/1)
+   • 43.224.116.22:1120 - 100% (1/1)
+   • 183.88.214.84:8080 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 62.133.63.236:1111 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:19:24.058Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:19:24.058Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:19:35.587Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:19:35.587Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 202.5.37.220:21225 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:20:28.165Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:20:28.165Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 157.20.208.43:3125 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:20:30.604Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:20:30.604Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 91.109.204.213:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:20:31.945Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:20:31.945Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:20:41.042Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:20:41.042Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:21:10.699Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:21:10.699Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:22:07.315Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:22:07.315Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:22:22.079Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:22:22.079Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:23:18.467Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:23:18.467Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 209.97.150.167:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:27:31.395Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:27:31.395Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:32:47.658Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:32:47.658Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 167.206.113.248:3128 - 100% (1/1)
+   • 62.60.246.164:9080 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+
+======================================================================
+
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 11 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 170.81.241.226:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:01:33.540Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:01:33.540Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.116.22:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:02:07.096Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:02:07.096Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:02:09.688Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:02:09.688Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:02:26.193Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:02:26.193Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:02:26.370Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:02:26.370Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:02:32.949Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:02:32.949Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 163.223.78.87:3127 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:03:00.228Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:03:00.228Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 193.95.53.131:8077 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:03:17.379Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:03:17.379Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 46.161.6.165:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:03:42.339Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:03:42.339Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 190.12.150.244:999 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:04:13.145Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:04:13.145Z
+   └─ Failure Reasons:
+      └─ page.reload: Timeout 10000ms exceeded.
+
+📍 Proxy: 209.97.150.167:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T21:11:06.642Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T21:11:06.642Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   6 proxy(ies)
+
+   • 216.229.112.25:8080 - 100% (1/1)
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 175.99.220.171:80 - 100% (1/1)
+   • 202.5.37.220:21225 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 212.34.153.180:5555 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 10 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:50:50.633Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:50:50.633Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:50:55.194Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:50:55.194Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 175.99.220.171:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:50:56.810Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:50:56.810Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 113.11.127.179:64300 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:51:18.044Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:51:18.044Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:51:22.523Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:51:22.523Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 213.154.2.210:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:51:40.856Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:51:40.856Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 101.47.17.165:7890 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:51:57.371Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:51:57.371Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:52:48.958Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:52:48.958Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/chart-viewer.html
+
+📍 Proxy: 200.174.198.32:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:54:41.458Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:54:41.458Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/favorites.html
+
+📍 Proxy: 147.83.77.10:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:57:10.135Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:57:10.135Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   7 proxy(ies)
+
+   • 212.34.153.180:5555 - 100% (1/1)
+   • 52.188.28.218:3128 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 194.26.141.202:3128 - 100% (1/1)
+   • 190.12.150.244:999 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+   • 46.161.6.165:8080 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 12 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:45:37.271Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:45:37.271Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/filtered-stocks.html
+
+📍 Proxy: 43.225.150.97:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:45:37.275Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:45:37.275Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:45:44.725Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:45:44.725Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 101.47.17.165:7890 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:46:07.353Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:46:07.353Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 200.174.198.32:8888 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:46:44.502Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:46:44.502Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 8.212.160.196:443 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:46:56.793Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:46:56.793Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 62.60.246.164:9080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:47:02.761Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:47:02.761Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/compare.html
+
+📍 Proxy: 59.153.18.174:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:47:21.496Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:47:21.496Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 43.224.116.22:1120 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:47:25.995Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:47:25.995Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:47:36.698Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:47:36.698Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 209.97.150.167:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:55:36.475Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:55:36.475Z
+   └─ Failure Reasons:
+      └─ expect(locator).toBeVisible() failed
+
+📍 Proxy: 41.223.119.156:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:59:11.094Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:59:11.094Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   5 proxy(ies)
+
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 59.6.25.118:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 143.110.160.230:8888 - 100% (1/1)
+   • 176.126.103.194:44214 - 100% (1/1)
+
+======================================================================
+
+======================================================================
+🔍 Achikam proxy summary
+======================================================================
+
+⚠️  Found 8 problematic proxy(ies):
+   (Success rate < 50% or 0 successes)
+
+
+📍 Proxy: 218.54.90.225:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:39:29.014Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:39:29.014Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_EMPTY_RESPONSE at http://www.stockscanner.net/
+
+📍 Proxy: 41.254.48.192:1978 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:39:54.253Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:39:54.253Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 160.251.142.232:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:40:10.530Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:40:10.530Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 5.75.198.72:80 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:40:48.964Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:40:48.964Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/hot-stocks.html
+
+📍 Proxy: 103.131.19.44:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:40:49.858Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:40:49.858Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 113.11.127.179:64300 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:40:50.664Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:40:50.664Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+📍 Proxy: 195.234.68.34:3128 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:41:28.781Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:41:28.781Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_PROXY_CONNECTION_FAILED at http://www.stockscanner.net/
+
+📍 Proxy: 183.88.214.84:8080 (Unknown)
+   ├─ Attempts: 1
+   ├─ Successes: 0
+   ├─ Failures: 1
+   ├─ Success Rate: 0%
+   ├─ Last Attempt: 2026-01-04T20:41:51.594Z
+   ├─ Last Success: NEVER
+   ├─ Last Failure: 2026-01-04T20:41:51.594Z
+   └─ Failure Reasons:
+      └─ page.goto: net::ERR_TIMED_OUT at http://www.stockscanner.net/
+
+💡 Recommendation:
+   Run the workflow again with these proxies to verify if failures are consistent.
+   Consider removing proxies with 0% success rate after 3+ test runs.
+
+
+✅ Well-performing proxies (≥80% success rate):
+   9 proxy(ies)
+
+   • 46.161.6.165:8080 - 100% (1/1)
+   • 143.110.160.230:8888 - 100% (1/1)
+   • 101.47.16.15:7890 - 100% (1/1)
+   • 216.229.112.25:8080 - 100% (1/1)
+   • 177.43.248.58:3128 - 100% (1/1)
+   • 80.85.246.214:5555 - 100% (1/1)
+   • 68.235.35.171:3128 - 100% (1/1)
+   • 115.114.77.133:9090 - 100% (1/1)
+   • 154.3.236.202:3128 - 100% (1/1)
+
+======================================================================
