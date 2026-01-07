@@ -2,8 +2,8 @@ name: Multi-Location Website Traffic & Health
 
 on:
   schedule:
-    # Run every 12 minutes
-    - cron: '*/12 * * * *'
+    # Run every 10 minutes
+    - cron: '*/10 * * * *'
   workflow_dispatch: # Allows manual trigger
 
 jobs:
