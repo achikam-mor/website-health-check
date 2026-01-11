@@ -263,7 +263,8 @@ export class ProxyiumAccessor {
         '/market-overview',
         '/scanner',
         '/settings',
-        '/help'
+        '/help',
+        '/patterns-detector.html'
       ];
 
       // Visit 5-10 random pages
