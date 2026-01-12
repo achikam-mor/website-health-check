@@ -649,17 +649,6 @@
         "verifiedDate": "2025-12-29T20:35:03.430Z"
     },
     {
-        "host": "8.212.160.196",
-        "port": 8080,
-        "protocol": "http",
-        "country": "Unknown",
-        "source": "OpenProxyList",
-        "responseTime": 9263,
-        "externalIP": "8.212.160.196",
-        "verified": true,
-        "verifiedDate": "2025-12-29T20:35:03.430Z"
-    },
-    {
         "host": "47.251.57.165",
         "port": 1080,
         "protocol": "http",
