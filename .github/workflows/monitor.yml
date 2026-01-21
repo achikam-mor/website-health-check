@@ -2,8 +2,8 @@ name: Multi-Location Website Traffic & Health
 
 on:
   schedule:
-    # Run every 5 minutes
-    - cron: '*/5 * * * *'
+    # Run every 15 minutes
+    - cron: '*/15 * * * *'
   workflow_dispatch: # Allows manual trigger
 
 jobs:
@@ -12,6 +12,8 @@ jobs:
     timeout-minutes: 90  # Increased for sequential execution (26 browsers × ~2min each + proxyium)
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -38,6 +40,16 @@ jobs:
         run: node test-proxyium.mjs
         env:
           NODE_TLS_REJECT_UNAUTHORIZED: '0'
+        continue-on-error: true
+      
+      # Commit updated proxy pointer for round-robin persistence
+      - name: Commit proxy pointer
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add proxy-pointer.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update proxy pointer for round-robin [skip ci]"
+          git push
         continue-on-error: true
         
       - name: Upload Report on Failure

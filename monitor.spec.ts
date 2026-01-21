@@ -2,6 +2,66 @@ import { test, expect, Page } from '@playwright/test';
 import { fetchAllProxies, getRegionalProxies, getHardcodedProxies } from './src/proxy-providers';
 import { validateProxies, selectDiverseProxies, ValidatedProxy } from './src/proxy-validator';
 import { launchBrowserWithProxy, launchBrowserWithProxyium, launchBrowserWithCroxyProxy, launchBrowserWithVPNBook, launchBrowserWithBlockaway, getLocationName } from './src/browser-factory';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Round-robin pointer management
+interface ProxyPointer {
+  currentIndex: number;
+  lastUpdated: string;
+}
+
+function loadProxyPointer(): ProxyPointer {
+  const pointerPath = path.join(process.cwd(), 'proxy-pointer.json');
+  try {
+    if (fs.existsSync(pointerPath)) {
+      const data = fs.readFileSync(pointerPath, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.log('⚠️  Could not load proxy pointer, starting from 0');
+  }
+  return { currentIndex: 0, lastUpdated: new Date().toISOString() };
+}
+
+function saveProxyPointer(pointer: ProxyPointer): void {
+  const pointerPath = path.join(process.cwd(), 'proxy-pointer.json');
+  try {
+    fs.writeFileSync(pointerPath, JSON.stringify(pointer, null, 2));
+    console.log(`📍 Updated proxy pointer to index ${pointer.currentIndex}`);
+  } catch (error) {
+    console.error('❌ Error saving proxy pointer:', error);
+  }
+}
+
+function selectProxiesRoundRobin(proxies: any[], count: number): any[] {
+  const pointer = loadProxyPointer();
+  let startIndex = pointer.currentIndex;
+  
+  // Ensure startIndex is within bounds
+  if (startIndex >= proxies.length) {
+    startIndex = 0;
+  }
+  
+  const selected: any[] = [];
+  let currentIndex = startIndex;
+  
+  for (let i = 0; i < count; i++) {
+    selected.push(proxies[currentIndex]);
+    currentIndex = (currentIndex + 1) % proxies.length; // Wrap around to beginning
+  }
+  
+  // Update pointer for next execution
+  const newPointer: ProxyPointer = {
+    currentIndex: currentIndex,
+    lastUpdated: new Date().toISOString()
+  };
+  saveProxyPointer(newPointer);
+  
+  console.log(`🔄 Round-robin selection: picked proxies from index ${startIndex} to ${currentIndex - 1} (wrapping if needed)`);
+  
+  return selected;
+}
 
 // Interface for tracking proxy statistics
 interface ProxyStats {
@@ -436,8 +496,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
     try {
-      // Generate random number between 15 and 25
-      const randomProxyCount = Math.floor(Math.random() * (25 - 15 + 1)) + 15;
+      // Generate random number between 30 and 40
+      const randomProxyCount = Math.floor(Math.random() * (40 - 30 + 1)) + 30;
       console.log(`🎲 Randomly selected proxy count for this execution: ${randomProxyCount}`);
       
       // First, try hardcoded proxies if available
@@ -447,9 +507,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       if (hardcodedProxies.length > 0) {
         console.log(`✅ Found ${hardcodedProxies.length} proxies in verified-proxies.json`);
         
-        // Shuffle and select random proxies from the entire list
-        const shuffledProxies = shuffleArray(hardcodedProxies);
-        const selectedProxies = shuffledProxies.slice(0, randomProxyCount);
+        // Use round-robin selection instead of random shuffle
+        const selectedProxies = selectProxiesRoundRobin(hardcodedProxies, randomProxyCount);
         
         // Use selected proxies directly without validation
         workingProxies = selectedProxies.map(p => ({
@@ -461,7 +520,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         // Count proxies with known countries
         const knownCountryCount = workingProxies.filter(p => p.country !== 'Unknown').length;
         
-        console.log(`\n✅ Using ${workingProxies.length} randomly selected proxies from verified-proxies.json:`);
+        console.log(`\n✅ Using ${workingProxies.length} proxies from verified-proxies.json (round-robin selection):`);
         console.log(`   📍 ${knownCountryCount} proxies with known countries (prioritized)`);
         console.log(`   ⚡ ${workingProxies.length - knownCountryCount} fastest proxies (by response time)\n`);
         
@@ -561,12 +620,12 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     // Dynamic timeout based on actual proxy count + 4 web proxies
     test.setTimeout(1080000); // 18 minutes
     
-    // Use ALL proxies from beforeAll (already randomly selected 15-25)
+    // Use ALL proxies from beforeAll (already selected via round-robin, 30-40 count)
     const selectedProxies = workingProxies;
     
-    console.log(`\n🎲 Using ${selectedProxies.length} randomly selected proxies for this execution\n`);
+    console.log(`\n🔄 Using ${selectedProxies.length} proxies selected via round-robin for this execution\n`);
     
-    // Test configurations: 4 web proxies + N random proxies from verified-proxies.json
+    // Test configurations: 4 web proxies + N proxies from verified-proxies.json (30-40 via round-robin)
     const testConfigs = [
       // Proxyium web proxy
       { proxy: undefined, location: 'Proxyium Web Proxy', type: 'proxyium' },
@@ -576,7 +635,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
       { proxy: undefined, location: 'VPNBook Web Proxy', type: 'vpnbook' },
       // Blockaway web proxy
       { proxy: undefined, location: 'Blockaway Web Proxy', type: 'blockaway' },
-      // Random 15-25 proxies from verified-proxies.json
+      // 30-40 proxies from verified-proxies.json (round-robin selection)
       ...selectedProxies.map(proxy => ({ 
         proxy, 
         location: `${proxy.country} - ${proxy.host}`,
@@ -589,7 +648,7 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log(`   📍 1 CroxyProxy web proxy`);
     console.log(`   📍 1 VPNBook web proxy`);
     console.log(`   📍 1 Blockaway web proxy`);
-    console.log(`   📍 ${selectedProxies.length} Randomly selected proxy locations\n`);
+    console.log(`   📍 ${selectedProxies.length} Round-robin selected proxy locations\n`);
     
     // Function to test a single location
     const testLocation = async (config: typeof testConfigs[0], index: number, startDelay: number): Promise<LocationTestResult> => {

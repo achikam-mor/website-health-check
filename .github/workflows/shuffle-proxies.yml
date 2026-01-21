@@ -1,0 +1,33 @@
+name: Shuffle Verified Proxies
+
+on:
+  schedule:
+    # Run every day at 23:00 UTC
+    - cron: '0 23 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  shuffle-proxies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Shuffle Proxies
+        run: node scripts/shuffle-proxies.mjs
+
+      - name: Commit shuffled proxies
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add verified-proxies.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Daily proxy shuffle [skip ci]"
+          git push
+        continue-on-error: false

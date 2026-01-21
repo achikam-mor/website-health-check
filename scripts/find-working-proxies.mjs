@@ -431,6 +431,388 @@ async function fetchProxies() {
   } catch (error) {
     console.error('Error fetching from Proxifly:', error.message);
   }
+
+  // Source 15: GeoNode
+  try {
+    console.log('Fetching from GeoNode...');
+    for (let page = 1; page <= 5; page++) {
+      const url = `https://proxylist.geonode.com/api/proxy-list?limit=500&page=${page}&sort_by=lastChecked&sort_type=desc&protocols=http,https`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data && Array.isArray(data.data)) {
+          for (const proxy of data.data) {
+            if (proxy.ip && proxy.port) {
+              proxies.push({
+                host: proxy.ip,
+                port: parseInt(proxy.port),
+                protocol: 'http',
+                country: proxy.country || 'Unknown',
+                source: 'GeoNode'
+              });
+            }
+          }
+        }
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000));
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added GeoNode)`);
+  } catch (error) {
+    console.error('Error fetching from GeoNode:', error.message);
+  }
+
+  // Source 16: ProxySpace
+  try {
+    console.log('Fetching from ProxySpace...');
+    const url = 'https://api.proxyspace.pro/api/v1/proxies?protocol=http&status=online';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data && Array.isArray(data)) {
+        for (const proxy of data) {
+          if (proxy.ip && proxy.port) {
+            proxies.push({
+              host: proxy.ip,
+              port: parseInt(proxy.port),
+              protocol: 'http',
+              country: proxy.country || 'Unknown',
+              source: 'ProxySpace'
+            });
+          }
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxySpace)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxySpace:', error.message);
+  }
+
+  // Source 17: Proxy-Daily
+  try {
+    console.log('Fetching from Proxy-Daily GitHub...');
+    const urls = [
+      'https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/http.txt',
+      'https://raw.githubusercontent.com/vakhov/fresh-proxy-list/master/https.txt'
+    ];
+    
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+        if (response.ok) {
+          const text = await response.text();
+          const lines = text.trim().split('\n');
+          for (const line of lines) {
+            const [host, portStr] = line.trim().split(':');
+            if (host && portStr && !isNaN(parseInt(portStr))) {
+              proxies.push({
+                host,
+                port: parseInt(portStr),
+                protocol: 'http',
+                country: 'Unknown',
+                source: 'Proxy-Daily'
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Continue
+      }
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added Proxy-Daily)`);
+  } catch (error) {
+    console.error('Error fetching from Proxy-Daily:', error.message);
+  }
+
+  // Source 18: Proxy11
+  try {
+    console.log('Fetching from Proxy11...');
+    const url = 'https://raw.githubusercontent.com/roosterkid/openproxylist/main/HTTPS_RAW.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'Proxy11'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added Proxy11)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from Proxy11:', error.message);
+  }
+
+  // Source 19: Jetkai Proxy List
+  try {
+    console.log('Fetching from Jetkai Proxy List...');
+    const urls = [
+      'https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-http.txt',
+      'https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/txt/proxies-https.txt'
+    ];
+    
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+        if (response.ok) {
+          const text = await response.text();
+          const lines = text.trim().split('\n');
+          for (const line of lines) {
+            const [host, portStr] = line.trim().split(':');
+            if (host && portStr && !isNaN(parseInt(portStr))) {
+              proxies.push({
+                host,
+                port: parseInt(portStr),
+                protocol: 'http',
+                country: 'Unknown',
+                source: 'Jetkai'
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Continue
+      }
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added Jetkai)`);
+  } catch (error) {
+    console.error('Error fetching from Jetkai:', error.message);
+  }
+
+  // Source 20: MertGuvencli Proxy List
+  try {
+    console.log('Fetching from MertGuvencli HTTP Proxy List...');
+    const url = 'https://raw.githubusercontent.com/mertguvencli/http-proxy-list/main/proxy-list/data.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'MertGuvencli'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added MertGuvencli)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from MertGuvencli:', error.message);
+  }
+
+  // Source 21: Proxyscrape Premium
+  try {
+    console.log('Fetching from Proxyscrape Premium endpoints...');
+    const urls = [
+      'https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=ipport&format=text&timeout=20000',
+      'https://api.proxyscrape.com/v2/?request=get&protocol=http&timeout=10000&country=all&ssl=all&anonymity=elite'
+    ];
+    
+    for (const url of urls) {
+      try {
+        const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+        if (response.ok) {
+          const text = await response.text();
+          const lines = text.trim().split('\n');
+          for (const line of lines) {
+            const [host, portStr] = line.trim().split(':');
+            if (host && portStr && !isNaN(parseInt(portStr))) {
+              proxies.push({
+                host,
+                port: parseInt(portStr),
+                protocol: 'http',
+                country: 'Unknown',
+                source: 'ProxyscrapePremium'
+              });
+            }
+          }
+        }
+      } catch (e) {
+        // Continue
+      }
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    console.log(`✓ Fetched ${proxies.length} total proxies (added Proxyscrape Premium)`);
+  } catch (error) {
+    console.error('Error fetching from Proxyscrape Premium:', error.message);
+  }
+
+  // Source 22: ProxyRotator
+  try {
+    console.log('Fetching from ProxyRotator GitHub...');
+    const url = 'https://raw.githubusercontent.com/officialputuid/KangProxy/KangProxy/http/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyRotator'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ProxyRotator)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ProxyRotator:', error.message);
+  }
+
+  // Source 23: Prox7 List
+  try {
+    console.log('Fetching from Prox7...');
+    const url = 'https://raw.githubusercontent.com/Zaeem20/FREE_PROXIES_LIST/master/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'Prox7'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added Prox7)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from Prox7:', error.message);
+  }
+
+  // Source 24: ALIILAPRO Proxy List
+  try {
+    console.log('Fetching from ALIILAPRO...');
+    const url = 'https://raw.githubusercontent.com/ALIILAPRO/Proxy/main/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ALIILAPRO'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ALIILAPRO)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ALIILAPRO:', error.message);
+  }
+
+  // Source 25: ErcinDedeoglu Proxies
+  try {
+    console.log('Fetching from ErcinDedeoglu...');
+    const url = 'https://raw.githubusercontent.com/ErcinDedeoglu/proxies/main/proxies/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ErcinDedeoglu'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added ErcinDedeoglu)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from ErcinDedeoglu:', error.message);
+  }
+
+  // Source 26: HyperBeats Proxy List
+  try {
+    console.log('Fetching from HyperBeats...');
+    const url = 'https://raw.githubusercontent.com/HyperBeats/proxy-list/main/http.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'HyperBeats'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added HyperBeats)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from HyperBeats:', error.message);
+  }
+
+  // Source 27: Proxy-List-World
+  try {
+    console.log('Fetching from Proxy-List-World...');
+    const url = 'https://raw.githubusercontent.com/proxy-list-world/Proxy-List-World/master/proxy-list.txt';
+    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+    
+    if (response.ok) {
+      const text = await response.text();
+      const lines = text.trim().split('\n');
+      for (const line of lines) {
+        const [host, portStr] = line.trim().split(':');
+        if (host && portStr && !isNaN(parseInt(portStr))) {
+          proxies.push({
+            host,
+            port: parseInt(portStr),
+            protocol: 'http',
+            country: 'Unknown',
+            source: 'ProxyListWorld'
+          });
+        }
+      }
+      console.log(`✓ Fetched ${proxies.length} total proxies (added Proxy-List-World)`);
+    }
+  } catch (error) {
+    console.error('Error fetching from Proxy-List-World:', error.message);
+  }
   
   // Remove duplicates
   const uniqueProxies = Array.from(
@@ -597,10 +979,64 @@ async function findWorkingProxies() {
     console.log('❌ No proxies found');
     return;
   }
+
+  // Load blacklist and verified-proxies to avoid retesting
+  console.log('📋 Loading blacklist and verified proxies to avoid duplicates...');
+  const fs = await import('fs');
+  const path = await import('path');
+  
+  let blacklistedProxies = new Set();
+  let verifiedProxies = new Set();
+  
+  // Load BlackListProxies.json
+  try {
+    const blacklistPath = path.join(process.cwd(), 'BlackListProxies.json');
+    if (fs.existsSync(blacklistPath)) {
+      const blacklistData = JSON.parse(fs.readFileSync(blacklistPath, 'utf8'));
+      for (const proxy of blacklistData) {
+        blacklistedProxies.add(`${proxy.host}:${proxy.port}`);
+      }
+      console.log(`   ✓ Loaded ${blacklistedProxies.size} blacklisted proxies`);
+    }
+  } catch (error) {
+    console.log('   ⚠️  Could not load blacklist:', error.message);
+  }
+  
+  // Load verified-proxies.json
+  try {
+    const verifiedPath = path.join(process.cwd(), 'verified-proxies.json');
+    if (fs.existsSync(verifiedPath)) {
+      const verifiedData = JSON.parse(fs.readFileSync(verifiedPath, 'utf8'));
+      for (const proxy of verifiedData) {
+        verifiedProxies.add(`${proxy.host}:${proxy.port}`);
+      }
+      console.log(`   ✓ Loaded ${verifiedProxies.size} already verified proxies`);
+    }
+  } catch (error) {
+    console.log('   ⚠️  Could not load verified proxies:', error.message);
+  }
+  
+  // Filter out blacklisted and already verified proxies
+  const filteredByBlacklist = allProxies.filter(p => {
+    const key = `${p.host}:${p.port}`;
+    return !blacklistedProxies.has(key) && !verifiedProxies.has(key);
+  });
+  
+  const blacklistFilteredCount = allProxies.length - filteredByBlacklist.length;
+  console.log(`🚫 Filtered out ${blacklistFilteredCount} proxies (blacklisted or already verified)`);
+  console.log(`   • ${blacklistedProxies.size} in blacklist`);
+  console.log(`   • ${verifiedProxies.size} already verified`);
+  
+  if (filteredByBlacklist.length === 0) {
+    console.log('❌ No new proxies to test after filtering');
+    return;
+  }
+  
+  console.log(`✓ ${filteredByBlacklist.length} new proxies to test\n`);
   
   // Pre-filter Cloudflare/CDN IPs
-  const filteredProxies = allProxies.filter(p => !isCloudflareOrCDN(p.host));
-  const cdnCount = allProxies.length - filteredProxies.length;
+  const filteredProxies = filteredByBlacklist.filter(p => !isCloudflareOrCDN(p.host));
+  const cdnCount = filteredByBlacklist.length - filteredProxies.length;
   console.log(`🚫 Filtered out ${cdnCount} Cloudflare/CDN IPs (they don't work as proxies)`);
   console.log(`✓ ${filteredProxies.length} potential real proxies remaining\n`);
   
