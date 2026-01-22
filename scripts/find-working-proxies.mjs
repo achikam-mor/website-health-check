@@ -982,7 +982,7 @@ async function findWorkingProxies() {
 
   // Load blacklist and verified-proxies to avoid retesting
   console.log('📋 Loading blacklist and verified proxies to avoid duplicates...');
-  const fs = await import('fs');
+  // const fs = await import('fs'); // Removed duplicate import
   const path = await import('path');
   
   let blacklistedProxies = new Set();
