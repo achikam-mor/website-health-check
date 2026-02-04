@@ -414,6 +414,53 @@ function toHttpUrl(url: string): string {
   return url.replace('https://', 'http://');
 }
 
+// Function to navigate to pages via header buttons/links
+async function navigateViaHeader(page: Page, targetUrl: string): Promise<boolean> {
+  try {
+    // Extract the page name from URL (e.g., "market-overview.html" -> "market overview")
+    const urlParts = targetUrl.split('/');
+    const filename = urlParts[urlParts.length - 1];
+    const pageName = filename.replace('.html', '').replace(/-/g, ' ');
+    
+    // Common selectors for header navigation
+    const headerSelectors = [
+      'header a', 'nav a', '.header a', '.navbar a', '.nav a', 
+      '.menu a', '.navigation a', '#header a', '#nav a'
+    ];
+    
+    // Try to find and click the navigation link
+    for (const selector of headerSelectors) {
+      const links = page.locator(selector);
+      const count = await links.count();
+      
+      for (let i = 0; i < count; i++) {
+        const link = links.nth(i);
+        const text = await link.textContent();
+        const href = await link.getAttribute('href');
+        
+        // Match by text or href
+        if ((text && text.toLowerCase().includes(pageName)) || 
+            (href && href.includes(filename))) {
+          // Human-like pause before clicking (200-800ms)
+          await page.waitForTimeout(Math.floor(Math.random() * 600) + 200);
+          
+          // Click the header link
+          await link.click({ timeout: 5000 });
+          
+          // Wait for navigation
+          await page.waitForLoadState('domcontentloaded', { timeout: 30000 });
+          return true;
+        }
+      }
+    }
+    
+    // If header navigation fails, return false to fall back to direct navigation
+    return false;
+  } catch (e) {
+    return false;
+  }
+}
+
 // Function to simulate human-like scrolling with complete randomization
 async function humanScroll(page: Page) {
   const scrollHeight = await page.evaluate(() => document.body.scrollHeight);
@@ -428,17 +475,20 @@ async function humanScroll(page: Page) {
   // 1. Scroll Down
   let currentScroll = 0;
   while (currentScroll < targetScroll) {
-    // Variable step size (100-400px)
-    const step = Math.floor(Math.random() * 300) + 100;
+    // Smaller step size for slower scrolling (50-200px instead of 100-400px)
+    const step = Math.floor(Math.random() * 150) + 50;
     currentScroll += step;
     if (currentScroll > targetScroll) currentScroll = targetScroll;
 
     await page.evaluate((y) => window.scrollTo(0, y), currentScroll);
     
-    // Variable pause while "reading" (200ms to 2000ms, affected by scroll speed)
-    const pause = Math.floor((Math.random() * 1800 + 200) / scrollSpeed);
+    // Longer pause while "reading" (500ms to 3500ms, affected by scroll speed)
+    const pause = Math.floor((Math.random() * 3000 + 500) / scrollSpeed);
     await page.waitForTimeout(pause);
   }
+
+  // Additional pause after scrolling down (2-5 seconds)
+  await page.waitForTimeout(Math.floor(Math.random() * 3000) + 2000);
 
   // 2. Random pause at reading position (1-4 seconds)
   await page.waitForTimeout(Math.floor(Math.random() * 3000) + 1000);
@@ -496,8 +546,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
     try {
-      // Generate random number between 30 and 40
-      const randomProxyCount = Math.floor(Math.random() * (40 - 30 + 1)) + 30;
+      // Generate random number between 10 and 15
+      const randomProxyCount = Math.floor(Math.random() * (15 - 10 + 1)) + 10;
       console.log(`🎲 Randomly selected proxy count for this execution: ${randomProxyCount}`);
       
       // First, try hardcoded proxies if available
@@ -784,9 +834,9 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         
         // Config ready (detailed logs removed for cleaner output)
         
-        // Randomize behavior: each user visits different number of pages (5-10) in random order
+        // Randomize behavior: each user visits 6-8 pages (75% minimum of 8 total pages)
         const useHttp = !!config.proxy && config.type !== 'proxyium' && config.type !== 'croxyproxy';
-        const numPagesToVisit = Math.floor(Math.random() * 6) + 5; // 5-10 pages
+        const numPagesToVisit = Math.floor(Math.random() * 3) + 6; // 6-8 pages (75%+ coverage)
         
         // Shuffle pages and select random subset
         const shuffledPages = shuffleArray([...innerPages]);
@@ -871,7 +921,17 @@ test.describe('StockScanner Multi-Location Health Check', () => {
                 //   console.log(`      🔄 Retry ${retryCount}/${maxRetries - 1} for market-overview.html (lucky user needs this page for ad clicking)...`);
                 // }
                 
-                await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+                // Try to navigate via header first (more human-like)
+                let navigatedViaHeader = false;
+                if (pageIndex > 0 && !url.includes('stockscanner.net/index') && !url.endsWith('stockscanner.net') && !url.endsWith('stockscanner.net/')) {
+                  // Try header navigation for inner pages (not homepage)
+                  navigatedViaHeader = await navigateViaHeader(page, url);
+                }
+                
+                // If header navigation failed or it's the homepage, use direct navigation
+                if (!navigatedViaHeader) {
+                  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 120000 });
+                }
                 
                 // Verify basic element exists to confirm page load
                 await expect(page.locator('body')).toBeVisible({ timeout: 60000 });
@@ -1142,10 +1202,10 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     // This allows browsers to run simultaneously while starting with realistic delays
     console.log('⏱️  Launching all 27 sessions in parallel with staggered starts (1-3s between each)...\n');
     
-    // Create promises with staggered delays
+    // Create promises with staggered delays (increased for more natural spacing)
     const testPromises = testConfigs.map((config, index) => {
-      // Calculate stagger delay: 0s for first, then 1-3s random for each subsequent
-      const startDelay = index === 0 ? 0 : Math.floor(Math.random() * 2000) + 1000; // 1-3 seconds
+      // Calculate stagger delay: 0s for first, then 2-5s random for each subsequent
+      const startDelay = index === 0 ? 0 : Math.floor(Math.random() * 3000) + 2000; // 2-5 seconds
       return testLocation(config, index, startDelay);
     });
     
