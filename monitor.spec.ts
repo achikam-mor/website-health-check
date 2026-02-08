@@ -546,8 +546,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
     console.log('\n🌍 ========== MULTI-LOCATION PROXY SETUP ==========');
     
     try {
-      // Generate random number between 10 and 15
-      const randomProxyCount = Math.floor(Math.random() * (15 - 10 + 1)) + 10;
+      // Generate random number between 18 and 25
+      const randomProxyCount = Math.floor(Math.random() * (25 - 18 + 1)) + 18;
       console.log(`🎲 Randomly selected proxy count for this execution: ${randomProxyCount}`);
       
       // First, try hardcoded proxies if available
@@ -617,8 +617,8 @@ test.describe('StockScanner Multi-Location Health Check', () => {
         return;
       }
       
-      // Calculate how many API proxies to add (target 19 total, minus hardcoded)
-      const targetTotal = 19;
+      // Calculate how many API proxies to add (using random count)
+      const targetTotal = randomProxyCount;
       const neededFromAPI = Math.max(0, targetTotal - (workingHardcoded?.length || 0));
       
       // Randomize and select diverse working proxies from non-US pool
