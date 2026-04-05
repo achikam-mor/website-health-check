@@ -5,10 +5,7 @@ permissions:
 name: Shuffle Verified Proxies
 
 on:
-  schedule:
-    # Run every day at 23:00 UTC
-    - cron: '0 23 * * *'
-  workflow_dispatch: # Allows manual trigger
+  workflow_dispatch: # Disabled: manual trigger only (schedule removed)
 
 jobs:
   shuffle-proxies:
